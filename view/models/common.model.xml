@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Model>
+  <DataType name="AbstractEntity" meta="child:AuditEntity,Industry,Log,TreeNode,Permission,Region,QRCode">
+    <Property name="autoCreatePropertyDefs">true</Property>
+    <Property name="matchType">com.kam.qs.entity.AbstractEntity</Property>
+  </DataType>
+  <DataType name="AuditEntity" parent="AbstractEntity" meta="child:User,Award,Unit,Liaisons">
+    <Property name="autoCreatePropertyDefs">true</Property>
+    <Property name="matchType">com.kam.qs.entity.AuditEntity</Property>
+  </DataType>
+  <DataType name="Award" parent="AuditEntity">
+    <Property name="autoCreatePropertyDefs">true</Property>
+    <Property name="matchType">com.kam.qs.entity.common.Award</Property>
+    <Property name="defaultDisplayProperty">name</Property>
+  </DataType>
+  <DataType name="Industry" parent="AbstractEntity">
+    <Property name="autoCreatePropertyDefs">true</Property>
+    <Property name="matchType">com.kam.qs.entity.common.Industry</Property>
+    <Property name="defaultDisplayProperty">name</Property>
+  </DataType>
+  <DataType name="Liaisons" parent="AuditEntity">
+    <Property name="autoCreatePropertyDefs">true</Property>
+    <Property name="matchType">com.kam.qs.entity.common.Liaisons</Property>
+    <Property name="defaultDisplayProperty">name</Property>
+  </DataType>
+  <DataType name="Log" parent="AbstractEntity">
+    <Property name="autoCreatePropertyDefs">true</Property>
+    <Property name="matchType">com.kam.qs.entity.common.Log</Property>
+  </DataType>
+  <DataType name="Permission" parent="AbstractEntity">
+    <Property name="autoCreatePropertyDefs">true</Property>
+    <Property name="matchType">com.kam.qs.entity.common.Permission</Property>
+  </DataType>
+  <DataType name="QRCode" parent="AbstractEntity">
+    <Property name="autoCreatePropertyDefs">true</Property>
+    <Property name="matchType">com.kam.qs.entity.common.QRCode</Property>
+  </DataType>
+  <DataType name="Region" parent="AbstractEntity">
+    <Property name="autoCreatePropertyDefs">true</Property>
+    <Property name="matchType">com.kam.qs.entity.common.Region</Property>
+    <Property name="defaultDisplayProperty">name</Property>
+  </DataType>
+  <DataType name="TreeNode" parent="AbstractEntity">
+    <Property name="autoCreatePropertyDefs">true</Property>
+    <Property name="matchType">com.kam.qs.entity.common.TreeNode</Property>
+    <Property name="defaultDisplayProperty">label</Property>
+  </DataType>
+  <DataType name="Unit" parent="AuditEntity">
+    <Property name="autoCreatePropertyDefs">true</Property>
+    <Property name="matchType">com.kam.qs.entity.common.Unit</Property>
+    <Property name="defaultDisplayProperty">name</Property>
+  </DataType>
+  <DataType name="User" parent="AuditEntity">
+    <Property name="autoCreatePropertyDefs">true</Property>
+    <Property name="matchType">com.kam.qs.entity.common.User</Property>
+    <Property name="defaultDisplayProperty">name</Property>
+  </DataType>
+</Model>

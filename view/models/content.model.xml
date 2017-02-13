@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Model>
+  <DataType name="Participator" parent="AuditEntity">
+    <Property name="autoCreatePropertyDefs">true</Property>
+    <Property name="matchType">com.kam.qs.entity.content.Participator</Property>
+    <Property name="defaultDisplayProperty">nickName</Property>
+  </DataType>
+  <DataType name="Score" parent="AbstractEntity">
+    <Property name="autoCreatePropertyDefs">true</Property>
+    <Property name="matchType">com.kam.qs.entity.content.Score</Property>
+  </DataType>
+  <DataType name="Sheet" parent="AuditEntity">
+    <Property name="autoCreatePropertyDefs">true</Property>
+    <Property name="matchType">com.kam.qs.entity.content.Sheet</Property>
+  </DataType>
+  <DataType name="Statistics" parent="AbstractEntity">
+    <Property name="autoCreatePropertyDefs">true</Property>
+    <Property name="matchType">com.kam.qs.entity.content.Statistics</Property>
+  </DataType>
+  <DataType name="StatisticsDetail" parent="AbstractEntity">
+    <Property name="autoCreatePropertyDefs">true</Property>
+    <Property name="matchType">com.kam.qs.entity.content.StatisticsDetail</Property>
+  </DataType>
+</Model>

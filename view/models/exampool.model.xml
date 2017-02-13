@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Model>
+  <DataType name="Answer" parent="AbstractEntity">
+    <Property name="autoCreatePropertyDefs">true</Property>
+    <Property name="matchType">com.kam.qs.entity.exampool.Answer</Property>
+    <Property name="defaultDisplayProperty">content</Property>
+  </DataType>
+  <DataType name="Instance" parent="AbstractEntity">
+    <Property name="autoCreatePropertyDefs">true</Property>
+    <Property name="matchType">com.kam.qs.entity.exampool.Instance</Property>
+  </DataType>
+  <DataType name="Question" parent="AuditEntity">
+    <Property name="autoCreatePropertyDefs">true</Property>
+    <Property name="matchType">com.kam.qs.entity.exampool.Question</Property>
+    <Property name="defaultDisplayProperty">question</Property>
+  </DataType>
+  <DataType name="Template" parent="AuditEntity">
+    <Property name="autoCreatePropertyDefs">true</Property>
+    <Property name="matchType">com.kam.qs.entity.exampool.Template</Property>
+    <Property name="defaultDisplayProperty">name</Property>
+  </DataType>
+</Model>

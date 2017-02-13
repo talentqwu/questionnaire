@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Model>
+  <DataType name="Batch" parent="AbstractEntity">
+    <Property name="autoCreatePropertyDefs">true</Property>
+    <Property name="matchType">com.kam.qs.entity.task.Batch</Property>
+  </DataType>
+  <DataType name="Prize" parent="AuditEntity">
+    <Property name="autoCreatePropertyDefs">true</Property>
+    <Property name="matchType">com.kam.qs.entity.task.Prize</Property>
+    <Property name="defaultDisplayProperty">name</Property>
+  </DataType>
+  <DataType name="SubTask" parent="AbstractEntity">
+    <Property name="autoCreatePropertyDefs">true</Property>
+    <Property name="matchType">com.kam.qs.entity.task.SubTask</Property>
+  </DataType>
+  <DataType name="Task" parent="AuditEntity">
+    <Property name="autoCreatePropertyDefs">true</Property>
+    <Property name="matchType">com.kam.qs.entity.task.Task</Property>
+    <Property name="defaultDisplayProperty">name</Property>
+  </DataType>
+</Model>

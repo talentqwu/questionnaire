@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:jee="http://www.springframework.org/schema/jee" xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.0.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+	<bean class="com.bstek.dorado.web.filter.FilterProxy">
+		<property name="name" value="openSessionInViewFilter" />
+		<property name="filter">
+			<bean class="org.springframework.orm.hibernate3.support.OpenSessionInViewFilter" />
+		</property>
+		<property name="initParameters">
+			<props>
+				<prop key="excludeSuffixs">js,css,jpg,gif,png</prop>
+			</props>
+		</property>
+		<property name="urlPatterns">
+			<list>
+				<value>*.d</value>
+				<value>*.c</value>
+				<value>/dorado/*</value>
+			</list>
+		</property>
+	</bean>
+
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" destroy-method="close">
+    	<!-- 数据库基本信息配置 -->  
+    	<property name="driverClassName" value="${jdbc.driver}" />
+		<property name="url" value="${jdbc.url}" />
+		<property name="username" value="${jdbc.userName}" />
+		<property name="password" value="${jdbc.password}" />
+		<!-- 最小空闲连接数 -->  
+        <property name="minIdle" value="${jdbc.minIdle}" />  
+        <!-- 配置获取连接等待超时的时间 -->  
+        <property name="maxWait" value="${jdbc.maxWait}" />  
+        
+		<!-- ***以下是阿里巴巴Druid的特有配置*** -->
+        <property name="filters" value="${alibaba.druid.filters}" />
+        <!-- 初始化连接数量 -->  
+        <property name="initialSize" value="${alibaba.druid.initialSize}" />  
+        <!-- 最大并发连接数 -->  
+        <property name="maxActive" value="${alibaba.druid.maxActive}" />  
+        <!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->  
+        <property name="timeBetweenEvictionRunsMillis" value="${alibaba.druid.timeBetweenEvictionRunsMillis}" />  
+        <!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->  
+        <property name="minEvictableIdleTimeMillis" value="${alibaba.druid.minEvictableIdleTimeMillis}" />    
+        <property name="validationQuery" value="${alibaba.druid.validationQuery}" />    
+        <property name="testWhileIdle" value="${alibaba.druid.testWhileIdle}" />    
+        <property name="testOnBorrow" value="${alibaba.druid.testOnBorrow}" />    
+        <property name="testOnReturn" value="${alibaba.druid.testOnReturn}" />    
+        <property name="maxOpenPreparedStatements" value="${alibaba.druid.maxOpenPreparedStatements}" />  
+        <!-- 打开 removeAbandoned 功能 -->  
+        <property name="removeAbandoned" value="${alibaba.druid.removeAbandoned}" />  
+        <!-- 1800 秒，也就是 30 分钟 -->  
+        <property name="removeAbandonedTimeout" value="${alibaba.druid.removeAbandonedTimeout}" />  
+        <!-- 关闭 abanded 连接时输出错误日志 -->     
+        <property name="logAbandoned" value="${alibaba.druid.logAbandoned}" /> 
+    </bean>
+ 
+	<bean id="entityAuditListener" lazy-init="true" class="com.kam.util.EntityAuditListener" />
+		
+	<bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="entityInterceptor" ref="dorado.unByteCodeProxyInterceptor" />
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.default_schema">${hibernate.default_schema}</prop>
+				<prop key="hibernate.dialect">${hibernate.dialect}</prop>
+				<prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop>
+				<prop key="hibernate.show_sql">${hibernate.showSql}</prop>
+				<prop key="hibernate.format_sql">${hibernate.formatSql}</prop>
+			</props>
+		</property>
+		<property name="packagesToScan">
+			<list>
+				<value>com/kam/qs/entity</value>
+			</list>
+		</property>
+		<property name="eventListeners">    
+            <map>  
+                <entry key="save-update">  
+                    <ref bean="entityAuditListener" />  
+                </entry>
+            </map>  
+        </property>
+	</bean>
+
+	<bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true" />
+
+	<context:component-scan base-package="com.kam.qs" />
+</beans>

@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ViewConfig>
+  <Arguments/>
+  <Context/>
+  <Model/>
+  <View layout="anchor">
+    <Property name="packages">font-awesome</Property>
+    <Property name="title">武陵政法10分满意民调管理系统</Property>
+    <HtmlContainer layoutConstraint="left:0;right:0;top:0">
+      <Property name="contentOverflow">hidden</Property>
+      <Property name="style">
+        <Property name="background">#00b2f5</Property>
+      </Property>
+      <Property name="height">48</Property>
+      <Label layoutConstraint="padding:12">
+        <Property name="style">
+          <Property name="color">#ffffff</Property>
+          <Property name="font-size">13pt</Property>
+          <Property name="font-style">italic</Property>
+          <Property name="white-space">nowrap</Property>
+        </Property>
+        <Property name="text">『武陵政法 10分满意』为民服务调查管理系统</Property>
+      </Label>
+    </HtmlContainer>
+    <SplitPanel layoutConstraint="anchorTop:previous;bottom:0;left:0;right:0;top:0">
+      <Property name="position">200</Property>
+      <MainControl>
+        <TabControl/>
+      </MainControl>
+      <SideControl>
+        <Accordion>
+          <Section>
+            <Property name="caption">任务管理</Property>
+            <Menu id="menuTask">
+              <MenuItem>
+                <Property name="caption">进行当中的任务</Property>
+              </MenuItem>
+              <MenuItem>
+                <Property name="caption">已经归档的任务</Property>
+              </MenuItem>
+            </Menu>
+          </Section>
+          <Section>
+            <Property name="caption">统计分析</Property>
+            <Menu id="menuAnalysis">
+              <MenuItem>
+                <Property name="caption">按单位筛选调查者</Property>
+              </MenuItem>
+              <MenuItem>
+                <Property name="caption">按时间筛选调查者</Property>
+              </MenuItem>
+              <MenuItem>
+                <Property name="caption">每个单位加权重后的总得分</Property>
+              </MenuItem>
+              <MenuItem>
+                <Property name="caption">每个单位每道题目的平均得分</Property>
+              </MenuItem>
+              <MenuItem>
+                <Property name="caption">按设定得分筛选调查者</Property>
+              </MenuItem>
+            </Menu>
+          </Section>
+          <Section>
+            <Property name="caption">系统设置</Property>
+            <Menu id="menuSetting">
+              <MenuItem>
+                <Property name="caption">奖品管理</Property>
+              </MenuItem>
+              <MenuItem>
+                <Property name="caption">题目及问卷模板管理</Property>
+              </MenuItem>
+              <MenuItem>
+                <Property name="caption">微信命令管理</Property>
+              </MenuItem>
+              <MenuItem>
+                <Property name="caption">角色权限管理</Property>
+              </MenuItem>
+              <MenuItem>
+                <Property name="caption">系统参数设置</Property>
+              </MenuItem>
+              <MenuItem>
+                <Property name="caption">基本资料管理</Property>
+                <MenuItem>
+                  <Property name="caption">区域管理</Property>
+                </MenuItem>
+                <MenuItem>
+                  <Property name="caption">行业管理</Property>
+                </MenuItem>
+                <MenuItem>
+                  <Property name="caption">单位管理</Property>
+                </MenuItem>
+                <MenuItem>
+                  <Property name="caption">联络员管理</Property>
+                </MenuItem>
+              </MenuItem>
+            </Menu>
+          </Section>
+        </Accordion>
+      </SideControl>
+    </SplitPanel>
+  </View>
+</ViewConfig>
