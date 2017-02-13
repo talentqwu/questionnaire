@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ViewConfig>
+  <Arguments/>
+  <Context/>
+  <Model/>
+  <View>
+    <Property name="title">武陵政法10分满意民调管理系统</Property>
+    <AjaxAction id="actionLogin">
+      <Property name="service">qs.main#login</Property>
+    </AjaxAction>
+    <Dialog id="dialogLogin">
+      <Property name="caption">系统登陆</Property>
+      <Property name="width">300</Property>
+      <Property name="height">150</Property>
+      <Property name="maximizeable">false</Property>
+      <Property name="showCaptionBar">true</Property>
+      <Property name="contentOverflow">hidden</Property>
+      <Property name="border">curve</Property>
+      <Property name="modalType">transparent</Property>
+      <Property name="closeable">false</Property>
+      <Buttons>
+        <Button id="btnReset">
+          <Property name="caption">重置</Property>
+        </Button>
+        <Button id="btnLogin">
+          <Property name="caption">登陆</Property>
+          <Property name="action">actionLogin</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <AutoForm id="formLogin">
+          <Property name="cols">*</Property>
+          <Property name="createPrivateDataSet">true</Property>
+          <Property name="labelAlign">right</Property>
+          <Property name="labelSeparator">：</Property>
+          <AutoFormElement>
+            <Property name="label">用户</Property>
+            <Property name="property">userName</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="label">密码</Property>
+            <Property name="editorType">PasswordEditor</Property>
+            <Property name="property">password</Property>
+            <Editor/>
+          </AutoFormElement>
+        </AutoForm>
+      </Children>
+      <Tools/>
+    </Dialog>
+  </View>
+</ViewConfig>

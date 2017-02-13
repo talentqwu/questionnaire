@@ -12,8 +12,9 @@ public class Constants {
 	// APPLICATION中的数据缓存键值
 	public static final String CACHED_MAP_VALUE_KEY_NAME = "CACHED_MAP_VALUE_KEYS";
 	
-	// 登录错误页URL
-	public static final String AUTH_ERROR_VIEW_PATH = "view.AuthError.d";
+	// 页面常量定义
+	public static final String LOGIN_VIEW_PATH = "view.Login.d";
+	public static final String MAIN_VIEW_PATH = "view.Main.d";
 	
 	public static final String ADMIN_PASSWORD = "b5PBuO48sJjxEvnU8o1FhA==";
 }

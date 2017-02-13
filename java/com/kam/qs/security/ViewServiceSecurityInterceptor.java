@@ -55,8 +55,11 @@ public class ViewServiceSecurityInterceptor extends PatternMethodInterceptor {
 				action = JsonUtils.getString(objectNode, "action");
 				if (objectNode.get("context") != null && objectNode.get("context").get("PAGE_NAME") != null)
 					currentPage = objectNode.get("context").get("PAGE_NAME").getTextValue();
-				if (action.equals("remote-service")) 
+				if (action.equals("remote-service")) {
 					serviceName = JsonUtils.getString(objectNode, "service");
+					if (serviceName.equals("qs.main#login"))
+						break;
+				}
 				if (action.equals("resolve-data")) 
 					serviceName = JsonUtils.getString(objectNode,"dataResolver");
 				if (action.equals("load-data")) 

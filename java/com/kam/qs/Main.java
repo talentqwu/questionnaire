@@ -7,16 +7,32 @@ import java.util.Map;
 import org.springframework.stereotype.Component;
 
 import com.bstek.dorado.annotation.Expose;
+import com.bstek.dorado.core.Context;
 import com.bstek.dorado.web.DoradoContext;
+import com.kam.qs.security.AuthenticationManager;
 import com.kam.qs.util.Constants;
 
 @Component(value = "qs.main")
 public class Main {
 
+	private AuthenticationManager authenticationManager;
+	
 	@Expose
 	public void logout() {
 		DoradoContext.getCurrent().removeAttribute(
 				DoradoContext.SESSION, Constants.CURRENT_USER);
+	}
+	
+	@Expose
+	public boolean login(String userName, String password) {
+		try {
+			authenticationManager = (AuthenticationManager)
+					Context.getCurrent().getServiceBean("&authenticationManager");
+		} catch(Exception e) {
+			authenticationManager = new AuthenticationManager();
+		}
+		
+		return authenticationManager.authenticate(userName, password);
 	}
 	
 	@Expose

@@ -47,12 +47,17 @@ public class HtmlViewSecurityInterceptor extends HandlerInterceptorAdapter {
 		Boolean loginStatus = authenticationManager.isAuthenticated(request);
 		if (handler instanceof HtmlViewResolver
 				&& PathUtils.match(interceptedNamePattern, path.replace('/', '.'))) {
-			if (loginStatus) {
+			if (!loginStatus &&
+					path.indexOf(Constants.LOGIN_VIEW_PATH) < 0) {
+				response.sendRedirect(Constants.LOGIN_VIEW_PATH);
+				return false;
+			} else if (loginStatus) {
 				boolean pass = true;
 				// 检查用户角色，防止用户直接从URL中进入系统设置与管理功能
 				User currentUser = (User)request.getSession().getAttribute(Constants.CURRENT_USER);
 				String url = path.substring(path.lastIndexOf('/') + 1);
-				if (url.startsWith("view.setting") || url.startsWith("view.manage") || url.startsWith("view.mytask")) {
+				if (url.startsWith("view.setting") || url.startsWith("view.manage") || 
+						url.startsWith("view.task") || url.startsWith("view.analysis")) {
 					TreeNodeDao treeNodeDao = (TreeNodeDao)DoradoContext.getCurrent().getServiceBean("&treeNodeDao");
 					List<TreeNode> treeNodes = treeNodeDao.getByUrl(url);
 					if (treeNodes != null && treeNodes.size() > 0) {
@@ -67,20 +72,10 @@ public class HtmlViewSecurityInterceptor extends HandlerInterceptorAdapter {
 						}
 						// 没有授权使用URL时的处理
 						if (!pass) {
-							response.sendRedirect(Constants.AUTH_ERROR_VIEW_PATH);
+							response.sendRedirect(Constants.LOGIN_VIEW_PATH);
 							return false;
 						}
 					}
-				}
-			} else if (path.indexOf(Constants.AUTH_ERROR_VIEW_PATH) < 0) {
-				if (DoradoContext.getCurrent().getRequest() == null)
-					DoradoContext.init(request.getServletContext(), request);
-				String user = request.getParameter("user");
-				String uuid = request.getParameter("uuid");
-				boolean flag = authenticationManager.authenticate(user, uuid);
-				if (!flag) {
-					response.sendRedirect(Constants.AUTH_ERROR_VIEW_PATH);
-					return false;
 				}
 			}
 		}
