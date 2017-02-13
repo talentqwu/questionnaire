@@ -166,7 +166,7 @@ public class TreeNode extends AbstractEntity {
 		TASK	   ("任务管理"),
 		ANALYSIS   ("统计分析"),
 		SETTING    ("系统设置"),
-		SYSTEM     ("系统管理");
+		MANAGE     ("系统管理");
 
 		private String description;
 		
