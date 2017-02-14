@@ -1,8 +1,5 @@
 package com.kam.qs.entity.common;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -13,6 +10,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.bstek.dorado.annotation.PropertyDef;
+import com.kam.qs.emnu.Role;
 import com.kam.qs.entity.AbstractEntity;
 
 /**
@@ -77,29 +75,4 @@ public class Permission extends AbstractEntity {
 	public void setOrder(int order) {
 		this.order = order;
 	}
-	
-	public enum Role {
-		
-		PUBLISH  ("调查发布员"),
-		ANALYSIS ("调查分析员"),
-		ADMIN	 ("系统管理员");
-
-		private String description;
-		
-		private Role(String description) {
-			this.description = description;
-		}
-		
-		public String getDescription() {
-			return description;
-		}
-		
-		public static Map<String, String> toMap() {
-			Map<String, String> map = new LinkedHashMap<String, String>();
-			for (Role value : Role.values())
-				map.put(value.toString(), value.description);
-			return map;
-		}
-	}
-
 }

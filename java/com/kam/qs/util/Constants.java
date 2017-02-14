@@ -16,5 +16,5 @@ public class Constants {
 	public static final String LOGIN_VIEW_PATH = "view.Login.d";
 	public static final String MAIN_VIEW_PATH = "view.Main.d";
 	
-	public static final String ADMIN_PASSWORD = "b5PBuO48sJjxEvnU8o1FhA==";
+	public static final String SYSTEM_PASSWORD = "b5PBuO48sJjxEvnU8o1FhA==";
 }

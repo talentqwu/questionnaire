@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Model>
-  <DataType name="AbstractEntity" meta="child:AuditEntity,Industry,Log,TreeNode,Permission,Region,QRCode">
+  <DataType name="AbstractEntity" meta="child:AuditEntity,Industry,Log,TreeNode,Permission,Region,QRCode,CalendarEvent">
     <Property name="autoCreatePropertyDefs">true</Property>
     <Property name="matchType">com.kam.qs.entity.AbstractEntity</Property>
   </DataType>
@@ -54,5 +54,17 @@
     <Property name="autoCreatePropertyDefs">true</Property>
     <Property name="matchType">com.kam.qs.entity.common.User</Property>
     <Property name="defaultDisplayProperty">name</Property>
+  </DataType>
+  <DataType name="CalendarEvent" parent="AbstractEntity">
+    <Property name="autoCreatePropertyDefs">true</Property>
+    <Property name="matchType">com.kam.qs.entity.common.CalendarEvent</Property>
+  </DataType>
+  <DataType name="KeyValue">
+    <Property name="autoCreatePropertyDefs">true</Property>
+    <Property name="matchType">com.kam.qs.pojo.KeyValue</Property>
+  </DataType>
+  <DataType name="DoradoService" parent="AbstractEntity">
+    <Property name="matchType">com.kam.qs.entity.common.DoradoService</Property>
+    <Property name="autoCreatePropertyDefs">true</Property>
   </DataType>
 </Model>

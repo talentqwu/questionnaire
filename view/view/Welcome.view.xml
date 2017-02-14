@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ViewConfig>
+  <Arguments/>
+  <Context/>
+  <Model>
+    <DataType name="Event" parent="global:CalendarEvent">
+      <PropertyDef name="title">
+        <Property name="label">标题</Property>
+        <Property name="required">true</Property>
+      </PropertyDef>
+      <PropertyDef name="startTime">
+        <Property name="label">开始时间</Property>
+        <Property name="dataType">DateTime</Property>
+        <Property name="required">true</Property>
+      </PropertyDef>
+      <PropertyDef name="endTime">
+        <Property name="label">结束时间</Property>
+        <Property name="dataType">DateTime</Property>
+        <Property name="required">true</Property>
+      </PropertyDef>
+      <PropertyDef name="allDay">
+        <Property name="label">全天</Property>
+        <Property name="dataType">boolean</Property>
+        <Property name="defaultValue">false</Property>
+      </PropertyDef>
+      <PropertyDef name="backgroundColor">
+        <Property name="label">背景颜色</Property>
+      </PropertyDef>
+      <PropertyDef name="color">
+        <Property name="label">标题颜色</Property>
+      </PropertyDef>
+    </DataType>
+  </Model>
+  <View>
+    <Property name="packages">font-awesome,page-welcome</Property>
+    <DataSet id="dataSetEvent">
+      <Property name="dataType">[Event]</Property>
+      <Property name="dataProvider">qs.main#getEvents</Property>
+    </DataSet>
+    <UpdateAction id="actionUpdate">
+      <Property name="dataResolver">qs.main#saveEvent</Property>
+      <UpdateItem>
+        <Property name="dataSet">dataSetEvent</Property>
+        <Property name="dataPath">!CASCADE_DIRTY</Property>
+      </UpdateItem>
+    </UpdateAction>
+    <FloatPanel id="panelAddEvent">
+      <Property name="caption">添加事件</Property>
+      <Property name="closeable">true</Property>
+      <Property name="width">300</Property>
+      <Property name="showAnimateType">slide</Property>
+      <Property name="hideAnimateType">slide</Property>
+      <Buttons>
+        <Button id="btnSaveAdd">
+          <Property name="caption">确定</Property>
+        </Button>
+        <Button id="btnCancelAdd">
+          <Property name="caption">取消</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <AutoForm id="formAddEvent">
+          <Property name="cols">*</Property>
+          <Property name="createPrivateDataSet">true</Property>
+          <Property name="dataType">Event</Property>
+          <Property name="showHint">false</Property>
+          <AutoFormElement>
+            <Property name="name">title</Property>
+            <Property name="property">title</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">startTime</Property>
+            <Property name="property">startTime</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">endTime</Property>
+            <Property name="property">endTime</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">allDay</Property>
+            <Property name="property">allDay</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">color</Property>
+            <Property name="property">color</Property>
+            <Editor>
+              <ColorEditor>
+                <Property name="showPalette">true</Property>
+                <Property name="preferredFormat">hex6</Property>
+                <Property name="showInput">false</Property>
+              </ColorEditor>
+            </Editor>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="property">backgroundColor</Property>
+            <Property name="name">backgroundColor</Property>
+            <Editor>
+              <ColorEditor>
+                <Property name="showPalette">true</Property>
+                <Property name="preferredFormat">hex6</Property>
+              </ColorEditor>
+            </Editor>
+          </AutoFormElement>
+        </AutoForm>
+      </Children>
+      <Tools/>
+    </FloatPanel>
+    <FloatPanel id="panelEditEvent">
+      <Property name="caption"> 编辑事件</Property>
+      <Property name="closeable">true</Property>
+      <Property name="width">300</Property>
+      <Property name="showAnimateType">slide</Property>
+      <Property name="hideAnimateType">slide</Property>
+      <Buttons>
+        <Button id="btnSaveEdit">
+          <Property name="caption">确定</Property>
+        </Button>
+        <Button id="btnDeleteEdit">
+          <Property name="caption">删除</Property>
+        </Button>
+        <Button id="btnCancelEdit">
+          <Property name="caption">取消</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <AutoForm id="formEditEvent">
+          <Property name="cols">*</Property>
+          <Property name="showHint">false</Property>
+          <Property name="createPrivateDataSet">true</Property>
+          <Property name="dataType">Event</Property>
+          <AutoFormElement>
+            <Property name="name">title</Property>
+            <Property name="property">title</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">startTime</Property>
+            <Property name="property">startTime</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">endTime</Property>
+            <Property name="property">endTime</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">allDay</Property>
+            <Property name="property">allDay</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">color</Property>
+            <Property name="property">color</Property>
+            <Editor>
+              <ColorEditor>
+                <Property name="showPalette">true</Property>
+                <Property name="preferredFormat">hex6</Property>
+              </ColorEditor>
+            </Editor>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="property">backgroundColor</Property>
+            <Property name="name">backgroundColor</Property>
+            <Editor>
+              <ColorEditor>
+                <Property name="showPalette">true</Property>
+                <Property name="preferredFormat">hex6</Property>
+              </ColorEditor>
+            </Editor>
+          </AutoFormElement>
+        </AutoForm>
+      </Children>
+      <Tools/>
+    </FloatPanel>
+    <Calendar id="calendar">
+      <Property name="firstDay">mon</Property>
+      <Property name="currentView">week</Property>
+      <Property name="scrollTime">07:30:00</Property>
+      <Property name="weekends">true</Property>
+    </Calendar>
+  </View>
+</ViewConfig>

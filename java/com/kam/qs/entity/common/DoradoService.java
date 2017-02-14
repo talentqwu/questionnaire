@@ -11,8 +11,8 @@ import javax.persistence.Transient;
 import org.hibernate.util.StringHelper;
 
 import com.bstek.dorado.annotation.PropertyDef;
+import com.kam.qs.emnu.Role;
 import com.kam.qs.entity.AbstractEntity;
-import com.kam.qs.entity.common.Permission.Role;
 
 /**
  * Dorado服务信息。

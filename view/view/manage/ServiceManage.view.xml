@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ViewConfig>
+  <Arguments/>
+  <Context/>
+  <Model>
+    <DataType name="DoradoService" parent="global:DoradoService">
+      <PropertyDef name="roles">
+        <Property name="dataType">[Role]</Property>
+        <Property name="required">true</Property>
+      </PropertyDef>
+    </DataType>
+    <DataType name="Role" parent="global:KeyValue"/>
+  </Model>
+  <View>
+    <Property name="packages">font-awesome,page-manage-service</Property>
+    <DataSet id="dataSetRole">
+      <Property name="dataType">[Role]</Property>
+      <Property name="dataProvider">qs.commonService#getEnumKeyValues</Property>
+      <Property name="loadMode">preload</Property>
+      <Property name="parameter">Role</Property>
+    </DataSet>
+    <DataSet id="dataSetService">
+      <Property name="dataType">[DoradoService]</Property>
+      <Property name="dataProvider">qs.commonService#getDoradoServices</Property>
+    </DataSet>
+    <UpdateAction id="actionUpdate">
+      <Property name="dataResolver">qs.commonService#saveDoradoServices</Property>
+      <Property name="successMessage">数据已经成功处理！</Property>
+      <UpdateItem>
+        <Property name="dataSet">dataSetService</Property>
+        <Property name="dataPath">!CASCADE_DIRTY</Property>
+        <Property name="refreshMode">cascade</Property>
+        <Property name="submitOldData">true</Property>
+      </UpdateItem>
+    </UpdateAction>
+    <Container>
+      <ToolBar>
+        <ToolBarButton id="btnCreate">
+          <Property name="caption">添加</Property>
+          <Property name="iconClass">fa fa-plus</Property>
+        </ToolBarButton>
+        <ToolBarButton id="btnDelete">
+          <Property name="caption">删除</Property>
+          <Property name="iconClass">fa fa-minus</Property>
+          <Property name="tags">button-irc</Property>
+        </ToolBarButton>
+        <ToolBarButton id="btnCancel">
+          <Property name="caption">取消</Property>
+          <Property name="iconClass">fa fa-undo</Property>
+          <Property name="tags">button-irc</Property>
+        </ToolBarButton>
+        <Fill/>
+        <ToolBarButton id="btnRefresh">
+          <Property name="iconClass">fa fa-refresh</Property>
+        </ToolBarButton>
+      </ToolBar>
+      <DataGrid id="gridService">
+        <Property name="dataSet">dataSetService</Property>
+        <Property name="readOnly">true</Property>
+        <IndicatorColumn/>
+        <RowNumColumn/>
+        <DataColumn>
+          <Property name="property">serviceName</Property>
+          <Property name="name">serviceName</Property>
+          <Property name="caption">服务名称</Property>
+          <Property name="width">150</Property>
+        </DataColumn>
+        <DataColumn>
+          <Property name="property">methodName</Property>
+          <Property name="name">methodName</Property>
+          <Property name="caption">方法名称</Property>
+        </DataColumn>
+        <DataColumn>
+          <Property name="name">description</Property>
+          <Property name="property">description</Property>
+          <Property name="caption">描述</Property>
+          <Editor/>
+        </DataColumn>
+        <DataColumn>
+          <Property name="name">type</Property>
+          <Property name="property">type</Property>
+          <Property name="caption">类型</Property>
+          <Property name="width">60</Property>
+          <Property name="align">center</Property>
+          <Editor/>
+        </DataColumn>
+        <DataColumn>
+          <Property name="name">relationView</Property>
+          <Property name="property">relationView</Property>
+          <Property name="caption">相关视图</Property>
+          <Property name="width">150</Property>
+          <Editor/>
+        </DataColumn>
+        <DataColumn>
+          <Property name="name">resultDataType</Property>
+          <Property name="property">resultDataType</Property>
+          <Property name="caption">返回类型</Property>
+          <Property name="width">120</Property>
+          <Editor/>
+        </DataColumn>
+      </DataGrid>
+    </Container>
+    <Dialog id="dialogService">
+      <Property name="width">500</Property>
+      <Property name="caption">Dorado服务定义</Property>
+      <Buttons>
+        <Button id="btnDialogOK">
+          <Property name="caption">确定</Property>
+          <Property name="iconClass">fa fa-check</Property>
+        </Button>
+        <Button id="btnDialogCancel">
+          <Property name="caption">取消</Property>
+          <Property name="iconClass">fa fa-times</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <AutoForm>
+          <Property name="dataSet">dataSetService</Property>
+          <Property name="cols">*</Property>
+          <Property name="labelWidth">120</Property>
+          <Property name="labelSeparator">：</Property>
+          <Property name="labelAlign">right</Property>
+          <AutoFormElement>
+            <Property name="name">serviceName</Property>
+            <Property name="property">serviceName</Property>
+            <Property name="label">服务名称</Property>
+            <Property name="editable">false</Property>
+            <Property name="trigger">autoOpenMappingDropDown1</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="label">方法名称</Property>
+            <Property name="name">methodName</Property>
+            <Property name="property">methodName</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">description</Property>
+            <Property name="property">description</Property>
+            <Property name="label">描述</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">type</Property>
+            <Property name="property">type</Property>
+            <Property name="label">类型</Property>
+            <Property name="editable">false</Property>
+            <Property name="trigger">autoOpenMappingDropDown1</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">parameters</Property>
+            <Property name="property">parameters</Property>
+            <Property name="label">调用参数</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="label">相关视图</Property>
+            <Property name="name">relationView</Property>
+            <Property name="property">relationView</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">resultDataType</Property>
+            <Property name="property">resultDataType</Property>
+            <Property name="label">返回数据类型</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="label">拦截服务名称</Property>
+            <Property name="name">interceptorServiceName</Property>
+            <Property name="property">interceptorServiceName</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="label">角色清单</Property>
+            <Property name="height">150</Property>
+            <Editor>
+              <Container>
+                <DataGrid id="gridRole">
+                  <Property name="dataSet">dataSetRole</Property>
+                  <Property name="readOnly">true</Property>
+                  <Property name="selectionMode">multiRows</Property>
+                  <Property name="showHeader">true</Property>
+                  <Property name="highlightCurrentRow">false</Property>
+                  <RowSelectorColumn/>
+                  <DataColumn>
+                    <Property name="name">value</Property>
+                    <Property name="property">value</Property>
+                    <Property name="caption">名称</Property>
+                    <Property name="filterable">true</Property>
+                    <Editor/>
+                  </DataColumn>
+                </DataGrid>
+              </Container>
+            </Editor>
+          </AutoFormElement>
+        </AutoForm>
+      </Children>
+      <Tools/>
+    </Dialog>
+  </View>
+</ViewConfig>

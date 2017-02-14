@@ -2,9 +2,23 @@
 <ViewConfig>
   <Arguments/>
   <Context/>
-  <Model/>
+  <Model>
+    <DataType name="TreeNode" parent="global:TreeNode">
+      <Property name="autoCreatePropertyDefs">true</Property>
+      <Property name="defaultDisplayProperty">label</Property>
+      <PropertyDef name="children">
+        <Property name="dataType">[SELF]</Property>
+      </PropertyDef>
+      <PropertyDef name="hasChild">
+        <Property name="dataType">boolean</Property>
+      </PropertyDef>
+      <PropertyDef name="childCount">
+        <Property name="dataType">int</Property>
+      </PropertyDef>
+    </DataType>
+  </Model>
   <View layout="anchor">
-    <Property name="packages">font-awesome</Property>
+    <Property name="packages">font-awesome,page-main</Property>
     <Property name="title">武陵政法10分满意民调管理系统</Property>
     <HtmlContainer layoutConstraint="left:0;right:0;top:0">
       <Property name="contentOverflow">hidden</Property>
@@ -25,75 +39,109 @@
     <SplitPanel layoutConstraint="anchorTop:previous;bottom:0;left:0;right:0;top:0">
       <Property name="position">200</Property>
       <MainControl>
-        <TabControl/>
+        <TabControl id="tabControl"/>
       </MainControl>
       <SideControl>
-        <Accordion>
-          <Section>
+        <Accordion id="accNavigator">
+          <Section id="stTask">
             <Property name="caption">任务管理</Property>
-            <Menu id="menuTask">
-              <MenuItem>
-                <Property name="caption">进行当中的任务</Property>
-              </MenuItem>
-              <MenuItem>
-                <Property name="caption">已经归档的任务</Property>
-              </MenuItem>
-            </Menu>
+            <Property name="iconClass">fa fa-user</Property>
+            <Container>
+              <DataSet id="dsTreeNodeTask">
+                <Property name="dataType">[TreeNode]</Property>
+                <Property name="dataProvider">qs.commonService#getTreeRootRestrictPermission</Property>
+                <Property name="parameter">TASK</Property>
+              </DataSet>
+              <DataTree id="treeTask">
+                <Property name="dataSet">dsTreeNodeTask</Property>
+                <Property name="tags">main-tree</Property>
+                <BindingConfigs>
+                  <BindingConfig>
+                    <Property name="labelProperty">label</Property>
+                    <Property name="recursive">true</Property>
+                    <Property name="childrenProperty">children</Property>
+                    <Property name="expandedIconClass">fa fa-folder-open-o</Property>
+                    <Property name="iconClass">fa fa-folder-o</Property>
+                    <Property name="hasChildProperty">hasChild</Property>
+                  </BindingConfig>
+                </BindingConfigs>
+              </DataTree>
+            </Container>
           </Section>
-          <Section>
+          <Section id="stAnalysis">
             <Property name="caption">统计分析</Property>
-            <Menu id="menuAnalysis">
-              <MenuItem>
-                <Property name="caption">按单位筛选调查者</Property>
-              </MenuItem>
-              <MenuItem>
-                <Property name="caption">按时间筛选调查者</Property>
-              </MenuItem>
-              <MenuItem>
-                <Property name="caption">每个单位加权重后的总得分</Property>
-              </MenuItem>
-              <MenuItem>
-                <Property name="caption">每个单位每道题目的平均得分</Property>
-              </MenuItem>
-              <MenuItem>
-                <Property name="caption">按设定得分筛选调查者</Property>
-              </MenuItem>
-            </Menu>
+            <Property name="iconClass">fa fa-bar-chart-o</Property>
+            <Container>
+              <DataSet id="dsTreeNodeAnalysis">
+                <Property name="dataType">[TreeNode]</Property>
+                <Property name="dataProvider">qs.commonService#getTreeRootRestrictPermission</Property>
+                <Property name="parameter">ANALYSIS</Property>
+              </DataSet>
+              <DataTree id="treeAnalysis">
+                <Property name="dataSet">dsTreeNodeAnalysis</Property>
+                <Property name="tags">main-tree</Property>
+                <BindingConfigs>
+                  <BindingConfig>
+                    <Property name="labelProperty">label</Property>
+                    <Property name="recursive">true</Property>
+                    <Property name="childrenProperty">children</Property>
+                    <Property name="expandedIconClass">fa fa-folder-open-o</Property>
+                    <Property name="iconClass">fa fa-folder-o</Property>
+                    <Property name="hasChildProperty">hasChild</Property>
+                  </BindingConfig>
+                </BindingConfigs>
+              </DataTree>
+            </Container>
           </Section>
-          <Section>
+          <Section id="stSetting">
             <Property name="caption">系统设置</Property>
-            <Menu id="menuSetting">
-              <MenuItem>
-                <Property name="caption">奖品管理</Property>
-              </MenuItem>
-              <MenuItem>
-                <Property name="caption">题目及问卷模板管理</Property>
-              </MenuItem>
-              <MenuItem>
-                <Property name="caption">微信命令管理</Property>
-              </MenuItem>
-              <MenuItem>
-                <Property name="caption">角色权限管理</Property>
-              </MenuItem>
-              <MenuItem>
-                <Property name="caption">系统参数设置</Property>
-              </MenuItem>
-              <MenuItem>
-                <Property name="caption">基本资料管理</Property>
-                <MenuItem>
-                  <Property name="caption">区域管理</Property>
-                </MenuItem>
-                <MenuItem>
-                  <Property name="caption">行业管理</Property>
-                </MenuItem>
-                <MenuItem>
-                  <Property name="caption">单位管理</Property>
-                </MenuItem>
-                <MenuItem>
-                  <Property name="caption">联络员管理</Property>
-                </MenuItem>
-              </MenuItem>
-            </Menu>
+            <Property name="iconClass">fa fa-cogs</Property>
+            <Container>
+              <DataSet id="dsTreeNodeSetting">
+                <Property name="dataType">[TreeNode]</Property>
+                <Property name="dataProvider">qs.commonService#getTreeRootRestrictPermission</Property>
+                <Property name="parameter">SETTING</Property>
+              </DataSet>
+              <DataTree id="treeSetting">
+                <Property name="dataSet">dsTreeNodeSetting</Property>
+                <Property name="tags">main-tree</Property>
+                <BindingConfigs>
+                  <BindingConfig>
+                    <Property name="labelProperty">label</Property>
+                    <Property name="recursive">true</Property>
+                    <Property name="childrenProperty">children</Property>
+                    <Property name="expandedIconClass">fa fa-folder-open-o</Property>
+                    <Property name="iconClass">fa fa-folder-o</Property>
+                    <Property name="hasChildProperty">hasChild</Property>
+                  </BindingConfig>
+                </BindingConfigs>
+              </DataTree>
+            </Container>
+          </Section>
+          <Section id="stManage">
+            <Property name="caption">系统管理</Property>
+            <Property name="iconClass">fa fa-lock</Property>
+            <Container>
+              <DataSet id="dsTreeNodeManage">
+                <Property name="dataType">[TreeNode]</Property>
+                <Property name="dataProvider">qs.commonService#getTreeRootRestrictPermission</Property>
+                <Property name="parameter">MANAGE</Property>
+              </DataSet>
+              <DataTree id="treeManage">
+                <Property name="dataSet">dsTreeNodeManage</Property>
+                <Property name="tags">main-tree</Property>
+                <BindingConfigs>
+                  <BindingConfig>
+                    <Property name="labelProperty">label</Property>
+                    <Property name="recursive">true</Property>
+                    <Property name="childrenProperty">children</Property>
+                    <Property name="expandedIconClass">fa fa-folder-open-o</Property>
+                    <Property name="iconClass">fa fa-folder-o</Property>
+                    <Property name="hasChildProperty">hasChild</Property>
+                  </BindingConfig>
+                </BindingConfigs>
+              </DataTree>
+            </Container>
           </Section>
         </Accordion>
       </SideControl>

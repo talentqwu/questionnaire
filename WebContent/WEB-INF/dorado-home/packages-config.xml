@@ -8,6 +8,28 @@
 	</Patterns>
 
 	<Packages>
-		<Package name="common" pattern="js"></Package>
+		<Package name="common" pattern="js">
+			classpath:libraries/common/permission,
+			classpath:libraries/common/constants,
+			classpath:libraries/common/enums,
+			classpath:libraries/common/types,
+			classpath:libraries/common/context,
+			classpath:libraries/common/other
+		</Package>
+		
+		<!-- 主页面相关的包定义 -->
+		<Package name="page-main" pattern="js">
+			classpath:libraries/pages/main
+		</Package>
+		<Package name="page-welcome" pattern="js">
+			classpath:libraries/pages/welcome
+		</Package>
+		
+		<Package name="page-manage-treenode" pattern="js">
+			classpath:libraries/pages/manage/treenode
+		</Package>
+		<Package name="page-manage-service" pattern="js">
+			classpath:libraries/pages/manage/service
+		</Package>
 	</Packages>
 </config>

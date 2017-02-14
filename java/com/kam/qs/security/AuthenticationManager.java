@@ -9,8 +9,8 @@ import com.bstek.dorado.core.Context;
 import com.bstek.dorado.web.DoradoContext;
 import com.kam.qs.dao.common.UnitDao;
 import com.kam.qs.dao.common.UserDao;
+import com.kam.qs.emnu.Role;
 import com.kam.qs.entity.common.Permission;
-import com.kam.qs.entity.common.Permission.Role;
 import com.kam.qs.entity.common.User;
 import com.kam.qs.util.Constants;
 import com.kam.util.CommonUtils;
@@ -38,9 +38,9 @@ public class AuthenticationManager implements com.bstek.dorado.console.authentic
 			init();
 			User user = null;
 			// 系统默认的管理员
-			if (name.equals("administrator")) {
-				if (CommonUtils.encoderByMd5(password).equals(Constants.ADMIN_PASSWORD)) {
-					user = createAdminUser();
+			if (name.equals("system")) {
+				if (CommonUtils.encoderByMd5(password).equals(Constants.SYSTEM_PASSWORD)) {
+					user = createSystemUser();
 					flag = true;
 				}
 			} else {
@@ -69,11 +69,13 @@ public class AuthenticationManager implements com.bstek.dorado.console.authentic
 		return loginStatus;
 	}
 
-	private User createAdminUser() {
-		User user = new User("administrator", "Administrator");
-		Permission permission = new Permission(null, Role.ADMIN);
+	private User createSystemUser() {
+		User user = new User("system", "System");
 		List<Permission> permissions = new ArrayList<Permission>();
-		permissions.add(permission);
+		permissions.add(new Permission(null, Role.ADMIN));
+		permissions.add(new Permission(null, Role.SYSTEM));
+		permissions.add(new Permission(null, Role.ANALYSIS));
+		permissions.add(new Permission(null, Role.PUBLISH));
 		user.setPermissions(permissions);
 		
 		return user;

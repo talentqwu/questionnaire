@@ -7,8 +7,8 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
+import com.kam.qs.emnu.TreeNodeCategory;
 import com.kam.qs.entity.common.TreeNode;
-import com.kam.qs.entity.common.TreeNode.TreeNodeCategory;
 import com.kam.util.DoradoHibernateDao;
 
 @Repository

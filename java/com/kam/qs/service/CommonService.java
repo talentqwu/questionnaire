@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.StringTokenizer;
 
 import javax.annotation.Resource;
@@ -16,17 +17,21 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.bstek.dorado.annotation.DataProvider;
+import com.bstek.dorado.annotation.DataResolver;
 import com.bstek.dorado.annotation.Expose;
 import com.bstek.dorado.data.entity.EntityUtils;
 import com.bstek.dorado.web.DoradoContext;
+import com.kam.qs.dao.common.DoradoServiceDao;
 import com.kam.qs.dao.common.LogDao;
 import com.kam.qs.dao.common.TreeNodeDao;
+import com.kam.qs.emnu.Role;
+import com.kam.qs.emnu.TreeNodeCategory;
+import com.kam.qs.entity.common.DoradoService;
 import com.kam.qs.entity.common.Log;
 import com.kam.qs.entity.common.Permission;
-import com.kam.qs.entity.common.Permission.Role;
 import com.kam.qs.entity.common.TreeNode;
-import com.kam.qs.entity.common.TreeNode.TreeNodeCategory;
 import com.kam.qs.entity.common.User;
+import com.kam.qs.pojo.KeyValue;
 import com.kam.qs.util.Constants;
 
 @Component(value = "qs.commonService")
@@ -38,7 +43,21 @@ public class CommonService {
 	private TreeNodeDao treeNodeDao;
 	
 	@Resource
+	private DoradoServiceDao doradoServiceDao;
+	
+	@Resource
 	private LogDao logDao;
+	
+	@DataProvider
+	public List<DoradoService> getDoradoServices() {
+		return doradoServiceDao.getAll();
+	}
+	
+	@DataResolver
+	@Transactional
+	public void saveDoradoServices(List<DoradoService> datas) {
+		doradoServiceDao.persistEntities(datas);
+	}
 	
 	@DataProvider
 	public List<Log> getLogByEntityId(String entityId) {
@@ -67,6 +86,26 @@ public class CommonService {
 	public List<TreeNode> getTreeChildren(String parentId) throws Exception {
 		List<Object[]> results = treeNodeDao.getChildrenByParentId(parentId);
 		return addPropertiesToTreeNode(results);
+	}
+	
+	@DataProvider
+	@SuppressWarnings("unchecked")
+	public List<KeyValue> getEnumKeyValues(String enumClassName) throws Exception {
+		List<KeyValue> results = new ArrayList<KeyValue>();
+		
+		String enumClassFullName = Role.class.getPackage().getName() + "." + enumClassName;
+		Class<?> enumClass = Class.forName(enumClassFullName);
+		Map<String, String> map = (Map<String, String>)enumClass.getMethod("toMap").invoke(null);
+		for (String key : map.keySet())
+			results.add(new KeyValue(key, map.get(key)));
+		
+		return results;
+	}
+	
+	@DataResolver
+	@Transactional
+	public void updateTreeNodeSignle(List<TreeNode> treeNodes) {
+		treeNodeDao.persistEntities(treeNodes);
 	}
 	
 	@Expose

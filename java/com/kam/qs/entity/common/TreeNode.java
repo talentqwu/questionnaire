@@ -1,9 +1,7 @@
 package com.kam.qs.entity.common;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -21,8 +19,9 @@ import javax.persistence.Transient;
 import org.hibernate.util.StringHelper;
 
 import com.bstek.dorado.annotation.PropertyDef;
+import com.kam.qs.emnu.Role;
+import com.kam.qs.emnu.TreeNodeCategory;
 import com.kam.qs.entity.AbstractEntity;
-import com.kam.qs.entity.common.Permission.Role;
 
 /**
  * 树形菜单数据。
@@ -160,29 +159,5 @@ public class TreeNode extends AbstractEntity {
 			roleStr = buffer.substring(0, buffer.length() - 1);
 		} else
 			roleStr = null;
-	}
-	
-	public enum TreeNodeCategory {
-		TASK	   ("任务管理"),
-		ANALYSIS   ("统计分析"),
-		SETTING    ("系统设置"),
-		MANAGE     ("系统管理");
-
-		private String description;
-		
-		private TreeNodeCategory(String description) {
-			this.description = description;
-		}
-		
-		public String getDescription() {
-			return description;
-		}
-		
-		public static Map<String, String> toMap() {
-			Map<String, String> map = new LinkedHashMap<String, String>();
-			for (TreeNodeCategory value : TreeNodeCategory.values())
-				map.put(value.toString(), value.description);
-			return map;
-		}
 	}
 }
