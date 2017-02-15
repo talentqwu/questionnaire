@@ -319,6 +319,24 @@ public class CommonService {
 		logger.info("所有的行业分类资料都已经初始化。");
 	}
 	
+	@Expose
+	@Transactional
+	public void initRegions() throws IOException {
+		if (regionDao.getAll().size() > 0) return;
+		
+		logger.info("初始GB/4754-2011行业分类资料... ...");
+		String root = DoradoContext.getCurrent().getServletContext().getRealPath("/"), line;
+		String filePath = root + "data" + File.separatorChar + "region.txt";
+		BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(filePath),"UTF-8"));
+		while((line = br.readLine()) != null) {
+			String[] datas = line.split(",");
+			// code,name
+			regionDao.save(new Region(datas[0], datas[1]));
+		}
+		br.close();
+		logger.info("所有的行业分类资料都已经初始化。");
+	}
+	
 	private List<TreeNode> addPropertiesToTreeNode(List<Object[]> results) throws Exception {
 		List<TreeNode> treeNodes = new ArrayList<TreeNode>();
 		

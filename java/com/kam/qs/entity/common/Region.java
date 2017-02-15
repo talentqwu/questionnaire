@@ -25,6 +25,13 @@ public class Region extends AbstractEntity {
 	@Column(length = 32, nullable = false, unique = true)
 	private String code;
 
+	public Region() {}
+	
+	public Region(String code, String name) {
+		this.code = code;
+		this.name = name;
+	}
+	
 	public String getName() {
 		return name;
 	}

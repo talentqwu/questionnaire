@@ -19,5 +19,6 @@ public class Starter extends EngineStartupListener {
 		service.initArchives();
 		service.initTreeNode();
 		service.initIndustries();
+		service.initRegions();
 	}
 }
