@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
@@ -21,11 +22,14 @@ import com.bstek.dorado.annotation.DataResolver;
 import com.bstek.dorado.annotation.Expose;
 import com.bstek.dorado.data.entity.EntityUtils;
 import com.bstek.dorado.web.DoradoContext;
+import com.kam.qs.dao.common.ArchivesDao;
 import com.kam.qs.dao.common.DoradoServiceDao;
 import com.kam.qs.dao.common.LogDao;
 import com.kam.qs.dao.common.TreeNodeDao;
+import com.kam.qs.emnu.ArchivesType;
 import com.kam.qs.emnu.Role;
 import com.kam.qs.emnu.TreeNodeCategory;
+import com.kam.qs.entity.common.Archives;
 import com.kam.qs.entity.common.DoradoService;
 import com.kam.qs.entity.common.Log;
 import com.kam.qs.entity.common.Permission;
@@ -38,6 +42,9 @@ import com.kam.qs.util.Constants;
 public class CommonService {
 
 	private static final org.apache.commons.logging.Log logger = LogFactory.getLog(CommonService.class);
+	
+	@Resource
+	private ArchivesDao archivesDao;
 	
 	@Resource
 	private TreeNodeDao treeNodeDao;
@@ -102,6 +109,40 @@ public class CommonService {
 		return results;
 	}
 	
+	@DataProvider
+	@SuppressWarnings("unchecked")
+	public Map<String, String> getArchivesMapValues(String typeName) throws Exception {
+		if (typeName == null || typeName.length() == 0)
+			throw new Exception("getArchiveMapValues参数category不能为空！");
+		
+		ArchivesType type = ArchivesType.valueOf(typeName);
+		logger.debug("====> qs.commonService#getArchivesMapValues." + typeName);
+		
+		DoradoContext context = DoradoContext.getCurrent();
+		Map<String, String> results = (Map<String, String>)context.getAttribute(
+				DoradoContext.APPLICATION, typeName);
+		if (results == null) {
+			results = new LinkedHashMap<String, String>();
+			List<Archives> archiveses = archivesDao.getByType(type);
+			for (Archives archives : archiveses)
+				results.put(archives.getCode(), archives.getContent());
+			
+			context.setAttribute(DoradoContext.APPLICATION, typeName, results);
+			// 保存键值
+			List<String> mapValueKeys = (List<String>)context.getAttribute(
+					DoradoContext.APPLICATION, Constants.CACHED_MAP_VALUE_KEY_NAME);
+			if (mapValueKeys == null)
+				mapValueKeys = new ArrayList<String>();
+			mapValueKeys.add(typeName);
+			context.setAttribute(DoradoContext.APPLICATION, 
+					Constants.CACHED_MAP_VALUE_KEY_NAME, mapValueKeys);
+			
+			logger.debug("将MapValue放入到系统的缓存中：" + typeName);
+		}
+		
+		return results;
+	}
+	
 	@DataResolver
 	@Transactional
 	public void updateTreeNodeSignle(List<TreeNode> treeNodes) {
@@ -111,6 +152,8 @@ public class CommonService {
 	@Expose
 	@Transactional
 	public void initTreeNode() throws IOException {
+		if (treeNodeDao.getAll().size() > 0) return;
+		
 		int count = 0;
 		TreeNode parent = null, current = null;
 		List<TreeNode> parents = null;
@@ -145,6 +188,32 @@ public class CommonService {
 		}
 		br.close();
 		logger.info("所有的树形菜单都已经初始化。");
+	}
+	
+	@Expose
+	@Transactional
+	public void initArchives() throws IOException {
+		if (archivesDao.getAll().size() > 0) return;
+		
+		int count = 0;
+		ArchivesType archivesType = null;
+		String root = DoradoContext.getCurrent().getServletContext().getRealPath("/"), line;
+		String filePath = root + "data" + File.separatorChar + "archives.txt";
+		BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(filePath),"UTF-8"));
+		while((line = br.readLine()) != null){
+			if (line.startsWith("-")) {
+				count = 0;
+				archivesType = ArchivesType.valueOf(line.split("\\|")[1]);
+				logger.info("初始系统设置档案（" + archivesType.getDescription() + "）... ...");
+			} else {
+				String[] datas = line.split(",");
+				// code,content,type,order
+				Archives archives = new Archives(datas[0], datas[1], archivesType, count++);
+				archivesDao.save(archives);
+			}
+		}
+		br.close();
+		logger.info("所有的系统设置档案都已经初始化。");
 	}
 	
 	private List<TreeNode> addPropertiesToTreeNode(List<Object[]> results) throws Exception {

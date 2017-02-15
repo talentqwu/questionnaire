@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Model>
-  <DataType name="AbstractEntity" meta="child:AuditEntity,Industry,Log,TreeNode,Permission,Region,QRCode,CalendarEvent">
+  <DataType name="AbstractEntity" meta="child:AuditEntity,Industry,Log,TreeNode,Permission,Region,QRCode,CalendarEvent,DoradoService,Archives">
     <Property name="autoCreatePropertyDefs">true</Property>
     <Property name="matchType">com.kam.qs.entity.AbstractEntity</Property>
   </DataType>
@@ -65,6 +65,20 @@
   </DataType>
   <DataType name="DoradoService" parent="AbstractEntity">
     <Property name="matchType">com.kam.qs.entity.common.DoradoService</Property>
+    <Property name="autoCreatePropertyDefs">true</Property>
+    <PropertyDef name="serviceName">
+      <Property name="mapping">
+        <Property name="mapValues">${dorado.getDataProvider(&quot;qs.commonService#getArchivesMapValues&quot;).getResult(&quot;SERVICE_NAME&quot;)}</Property>
+      </Property>
+    </PropertyDef>
+    <PropertyDef name="type">
+      <Property name="mapping">
+        <Property name="mapValues">${dorado.getDataProvider(&quot;qs.commonService#getArchivesMapValues&quot;).getResult(&quot;SERVICE_ACTION_TYPE&quot;)}</Property>
+      </Property>
+    </PropertyDef>
+  </DataType>
+  <DataType name="Archives" parent="AbstractEntity">
+    <Property name="matchType">com.kam.qs.entity.common.Archives</Property>
     <Property name="autoCreatePropertyDefs">true</Property>
   </DataType>
 </Model>

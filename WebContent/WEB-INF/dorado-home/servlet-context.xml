@@ -11,8 +11,6 @@
 		http://www.bstek.com/dorado/schema http://www.bstek.com/dorado/schema/spring-dorado-7.0.xsd
 		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
 
-	<bean id="authenticationManager" class="com.kam.qs.security.AuthenticationManager"/>
-		 
 	<!-- 服务访问安全拦截器 -->
 	<bean parent="dorado.viewServiceInterceptorRegister">
 		<property name="methodInterceptor">

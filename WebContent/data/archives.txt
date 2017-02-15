@@ -1,0 +1,9 @@
+-服务名称|SERVICE_NAME
+qs.commonService,通用服务
+qs.contentService,问卷服务
+qs.exampoolService,题库服务
+qs.taskService,任务服务
+-服务方法类型|SERVICE_ACTION_TYPE
+remote-service,远程服务
+resolve-data,处理数据
+load-data,加载数据

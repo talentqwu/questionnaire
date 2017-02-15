@@ -26,6 +26,9 @@ public class Main {
 	@Resource
 	private CalendarEventDao calendarEventDao;
 	
+	@Resource
+	private AuthenticationManager authenticationManager;
+	
 	@Expose
 	public void logout() {
 		DoradoContext.getCurrent().removeAttribute(
@@ -34,7 +37,6 @@ public class Main {
 	
 	@Expose
 	public boolean login(String userName, String password) {
-		AuthenticationManager authenticationManager = new AuthenticationManager();
 		return authenticationManager.authenticate(userName, password);
 	}
 	
