@@ -27,7 +27,7 @@ public class Unit extends AuditEntity {
 	private static final long serialVersionUID = 1L;
 
 	@PropertyDef(label = "名称")
-	@Column(length = 256, nullable = false)
+	@Column(length = 256, nullable = false, unique = true)
 	private String name;
 	
 	@PropertyDef(label = "代码")

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ViewConfig>
+  <Arguments/>
+  <Context/>
+  <Model/>
+  <View>
+    <DataSet id="dataSetRegion">
+      <Property name="dataProvider">qs.commonService#getAllRegion</Property>
+      <Property name="dataType">[Region]</Property>
+    </DataSet>
+    <UpdateAction id="actionUpdate">
+      <Property name="successMessage">保存成功!</Property>
+      <Property name="executingMessage">正在保存...</Property>
+      <Property name="dataResolver">qs.commonService#saveRegion</Property>
+      <UpdateItem>
+        <Property name="dataSet">dataSetRegion</Property>
+      </UpdateItem>
+    </UpdateAction>
+    <ToolBar>
+      <DataPilot>
+        <Property name="dataSet">dataSetRegion</Property>
+        <Property name="itemCodes">+,-,x</Property>
+      </DataPilot>
+      <Separator/>
+      <ToolBarButton>
+        <Property name="caption">保存</Property>
+        <Property name="icon">url(>skin>common/icons.gif) -140px -20px</Property>
+        <Property name="action">actionUpdate</Property>
+      </ToolBarButton>
+    </ToolBar>
+    <DataGrid>
+      <Property name="dataSet">dataSetRegion</Property>
+      <Property name="dataType">Region</Property>
+      <DataColumn name="code">
+        <Property name="property">code</Property>
+        <Property name="caption">代码</Property>
+        <Property name="width">180</Property>
+      </DataColumn>
+      <DataColumn name="name">
+        <Property name="property">name</Property>
+        <Property name="caption">名称</Property>
+      </DataColumn>
+    </DataGrid>
+  </View>
+</ViewConfig>

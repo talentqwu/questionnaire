@@ -18,5 +18,6 @@ public class Starter extends EngineStartupListener {
 	public void onStartup() throws Exception {
 		service.initArchives();
 		service.initTreeNode();
+		service.initIndustries();
 	}
 }

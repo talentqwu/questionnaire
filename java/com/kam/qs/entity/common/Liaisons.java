@@ -26,7 +26,7 @@ public class Liaisons  extends AuditEntity {
 	private String name;
 	
 	@PropertyDef(label = "手机号")
-	@Column(length = 11, nullable = false)
+	@Column(length = 11, nullable = false, unique = true)
 	private String telphone;
 	
 	@PropertyDef(label = "验证密钥")
@@ -37,11 +37,11 @@ public class Liaisons  extends AuditEntity {
 	 * 有在用户将公众号绑定到微信开放平台帐号后，才会出现该字段。
 	 */
 	@PropertyDef(label = "开放平台帐号")
-	@Column(length = 64)
+	@Column(length = 64, unique = true)
 	private String unionid;
 	
 	@PropertyDef(label = "唯一标识")
-	@Column(length = 64)
+	@Column(length = 64, unique = true)
 	private String openid;
 	
 	@PropertyDef(label = "昵称")

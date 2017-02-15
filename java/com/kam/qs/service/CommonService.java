@@ -6,6 +6,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,18 +23,26 @@ import com.bstek.dorado.annotation.DataProvider;
 import com.bstek.dorado.annotation.DataResolver;
 import com.bstek.dorado.annotation.Expose;
 import com.bstek.dorado.data.entity.EntityUtils;
+import com.bstek.dorado.data.entity.FilterType;
+import com.bstek.dorado.data.provider.Page;
 import com.bstek.dorado.web.DoradoContext;
 import com.kam.qs.dao.common.ArchivesDao;
 import com.kam.qs.dao.common.DoradoServiceDao;
+import com.kam.qs.dao.common.IndustryDao;
+import com.kam.qs.dao.common.LiaisonsDao;
 import com.kam.qs.dao.common.LogDao;
+import com.kam.qs.dao.common.RegionDao;
 import com.kam.qs.dao.common.TreeNodeDao;
 import com.kam.qs.emnu.ArchivesType;
 import com.kam.qs.emnu.Role;
 import com.kam.qs.emnu.TreeNodeCategory;
 import com.kam.qs.entity.common.Archives;
 import com.kam.qs.entity.common.DoradoService;
+import com.kam.qs.entity.common.Industry;
+import com.kam.qs.entity.common.Liaisons;
 import com.kam.qs.entity.common.Log;
 import com.kam.qs.entity.common.Permission;
+import com.kam.qs.entity.common.Region;
 import com.kam.qs.entity.common.TreeNode;
 import com.kam.qs.entity.common.User;
 import com.kam.qs.pojo.KeyValue;
@@ -54,6 +64,81 @@ public class CommonService {
 	
 	@Resource
 	private LogDao logDao;
+	
+	@Resource
+	private IndustryDao industryDao;
+	
+	@Resource
+	private RegionDao regionDao;
+	
+	@Resource
+	private LiaisonsDao liaisonsDao;
+	
+	@DataProvider
+	public void queryLiaisons(Page<Liaisons> page, Map<String, Object> parameter) {
+		liaisonsDao.getByParameter(page, parameter);
+	}
+	
+	@DataResolver
+	@Transactional
+	public void saveLiaisons(Collection<Liaisons> datas) throws Exception {
+		for (Iterator<Liaisons> iter = EntityUtils.getIterator(datas,
+				FilterType.DELETED, Liaisons.class); iter.hasNext();) {
+			 liaisonsDao.delete(iter.next());
+		}
+		for (Iterator<Liaisons> iter = EntityUtils.getIterator(datas,
+				FilterType.MODIFIED, Liaisons.class); iter.hasNext();) {
+			liaisonsDao.save(iter.next());
+		}
+		for (Iterator<Liaisons> iter = EntityUtils.getIterator(datas,
+				FilterType.NEW, Liaisons.class); iter.hasNext();) {
+			 liaisonsDao.save(iter.next());
+		}
+	}
+	
+	@DataProvider
+	public List<Region> getAllRegion() {
+		return regionDao.getAll();
+	}
+	
+	@DataResolver
+	@Transactional
+	public void saveRegion(Collection<Region> datas) throws Exception {
+		for (Iterator<Region> iter = EntityUtils.getIterator(datas,
+				FilterType.DELETED, Region.class); iter.hasNext();) {
+			regionDao.delete(iter.next());
+		}
+		for (Iterator<Region> iter = EntityUtils.getIterator(datas,
+				FilterType.MODIFIED, Region.class); iter.hasNext();) {
+			regionDao.save(iter.next());
+		}
+		for (Iterator<Region> iter = EntityUtils.getIterator(datas,
+				FilterType.NEW, Region.class); iter.hasNext();) {
+			regionDao.save(iter.next());
+		}
+	}
+	
+	@DataProvider
+	public List<Industry> getAllIndustry() {
+		return industryDao.getAll();
+	}
+	
+	@DataResolver
+	@Transactional
+	public void saveIndustry(Collection<Industry> datas) throws Exception {
+		for (Iterator<Industry> iter = EntityUtils.getIterator(datas,
+				FilterType.DELETED, Industry.class); iter.hasNext();) {
+			industryDao.delete(iter.next());
+		}
+		for (Iterator<Industry> iter = EntityUtils.getIterator(datas,
+				FilterType.MODIFIED, Industry.class); iter.hasNext();) {
+			industryDao.save(iter.next());
+		}
+		for (Iterator<Industry> iter = EntityUtils.getIterator(datas,
+				FilterType.NEW, Industry.class); iter.hasNext();) {
+			industryDao.save(iter.next());
+		}
+	}
 	
 	@DataProvider
 	public List<DoradoService> getDoradoServices() {
@@ -200,7 +285,7 @@ public class CommonService {
 		String root = DoradoContext.getCurrent().getServletContext().getRealPath("/"), line;
 		String filePath = root + "data" + File.separatorChar + "archives.txt";
 		BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(filePath),"UTF-8"));
-		while((line = br.readLine()) != null){
+		while((line = br.readLine()) != null) {
 			if (line.startsWith("-")) {
 				count = 0;
 				archivesType = ArchivesType.valueOf(line.split("\\|")[1]);
@@ -214,6 +299,24 @@ public class CommonService {
 		}
 		br.close();
 		logger.info("所有的系统设置档案都已经初始化。");
+	}
+	
+	@Expose
+	@Transactional
+	public void initIndustries() throws IOException {
+		if (industryDao.getAll().size() > 0) return;
+		
+		logger.info("初始GB/4754-2011行业分类资料... ...");
+		String root = DoradoContext.getCurrent().getServletContext().getRealPath("/"), line;
+		String filePath = root + "data" + File.separatorChar + "industry.txt";
+		BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(filePath),"UTF-8"));
+		while((line = br.readLine()) != null) {
+			String[] datas = line.split(",");
+			// code,name
+			industryDao.save(new Industry(datas[0], datas[1]));
+		}
+		br.close();
+		logger.info("所有的行业分类资料都已经初始化。");
 	}
 	
 	private List<TreeNode> addPropertiesToTreeNode(List<Object[]> results) throws Exception {

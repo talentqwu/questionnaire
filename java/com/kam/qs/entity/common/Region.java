@@ -18,11 +18,11 @@ public class Region extends AbstractEntity {
 	private static final long serialVersionUID = 1L;
 
 	@PropertyDef(label = "名称")
-	@Column(length = 256, nullable = false)
+	@Column(length = 256, nullable = false, unique = true)
 	private String name;
 	
 	@PropertyDef(label = "代码")
-	@Column(length = 32, nullable = false)
+	@Column(length = 32, nullable = false, unique = true)
 	private String code;
 
 	public String getName() {
