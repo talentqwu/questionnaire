@@ -29,9 +29,13 @@ public class Liaisons  extends AuditEntity {
 	@Column(length = 11, nullable = false, unique = true)
 	private String telphone;
 	
+	@PropertyDef(label = "邮件地址")
+	@Column(length = 256, unique = true)
+	private String email;
+	
 	@PropertyDef(label = "验证密钥")
 	@Column(name = "secret_key", length = 12, nullable = false)
-	private String secretKey;
+	private String secretKey = String.valueOf((int)((Math.random()*9+1)*100000));
 	
 	/**
 	 * 有在用户将公众号绑定到微信开放平台帐号后，才会出现该字段。
@@ -121,5 +125,13 @@ public class Liaisons  extends AuditEntity {
 
 	public void setSecretKey(String secretKey) {
 		this.secretKey = secretKey;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 }

@@ -33,6 +33,7 @@ import com.kam.qs.dao.common.LiaisonsDao;
 import com.kam.qs.dao.common.LogDao;
 import com.kam.qs.dao.common.RegionDao;
 import com.kam.qs.dao.common.TreeNodeDao;
+import com.kam.qs.dao.common.UnitDao;
 import com.kam.qs.emnu.ArchivesType;
 import com.kam.qs.emnu.Role;
 import com.kam.qs.emnu.TreeNodeCategory;
@@ -44,6 +45,7 @@ import com.kam.qs.entity.common.Log;
 import com.kam.qs.entity.common.Permission;
 import com.kam.qs.entity.common.Region;
 import com.kam.qs.entity.common.TreeNode;
+import com.kam.qs.entity.common.Unit;
 import com.kam.qs.entity.common.User;
 import com.kam.qs.pojo.KeyValue;
 import com.kam.qs.util.Constants;
@@ -73,6 +75,24 @@ public class CommonService {
 	
 	@Resource
 	private LiaisonsDao liaisonsDao;
+	
+	@Resource
+	private UnitDao unitDao;
+	
+	@DataProvider
+	public List<Unit> getUnitRoot() throws Exception {
+		List<Unit> units = new ArrayList<Unit>();
+		
+		List<Object[]> datas = unitDao.getRoot();
+		for (Object[] data : datas) {
+			Unit unit = EntityUtils.toEntity(data[0]);
+			EntityUtils.setValue(unit, "region", data[1]);
+			EntityUtils.setValue(unit, "industry", data[2]);
+			units.add(unit);
+		}
+		
+		return units;
+	}
 	
 	@DataProvider
 	public void queryLiaisons(Page<Liaisons> page, Map<String, Object> parameter) {

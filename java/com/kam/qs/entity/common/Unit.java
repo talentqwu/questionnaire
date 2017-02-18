@@ -30,10 +30,6 @@ public class Unit extends AuditEntity {
 	@Column(length = 256, nullable = false, unique = true)
 	private String name;
 	
-	@PropertyDef(label = "代码")
-	@Column(length = 32, nullable = false)
-	private String code;
-	
 	@PropertyDef(label = "人数")
 	@Column(name = "people_number", nullable = false)
 	private int peopleNumber = 0;
@@ -70,14 +66,6 @@ public class Unit extends AuditEntity {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public String getCode() {
-		return code;
-	}
-
-	public void setCode(String code) {
-		this.code = code;
 	}
 
 	public int getPeopleNumber() {

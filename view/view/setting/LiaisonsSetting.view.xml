@@ -36,7 +36,7 @@ switch(arg.code){&#xD;
 		arg.processDefault=false;&#xD;
 		break;&#xD;
 	}&#xD;
-}</ClientEvent>
+</ClientEvent>
         <Property name="dataSet">dataSetLiaisons</Property>
         <Property name="itemCodes">pages,+,-,x</Property>
       </DataPilot>
@@ -74,44 +74,45 @@ with (view.get(&quot;#dataSetLiaisons&quot;)){&#xD;
         <Editor/>
       </AutoFormElement>
       <AutoFormElement>
-        <Property name="name">telphone</Property>
-        <Property name="label">手机号</Property>
-        <Editor/>
-      </AutoFormElement>
-      <AutoFormElement>
         <Property name="name">nickName</Property>
         <Property name="label">昵称</Property>
         <Editor/>
       </AutoFormElement>
+      <AutoFormElement>
+        <Property name="name">telphone</Property>
+        <Property name="label">手机号</Property>
+        <Editor/>
+      </AutoFormElement>
     </AutoForm>
     <DataGrid>
+      <ClientEvent name="onDataRowDoubleClick">view.get(&quot;#dialogLiaisons&quot;).show();</ClientEvent>
       <Property name="dataSet">dataSetLiaisons</Property>
       <Property name="dataType">Liaisons</Property>
       <Property name="readOnly">true</Property>
       <DataColumn name="name">
         <Property name="property">name</Property>
         <Property name="caption">姓名</Property>
+        <Property name="width">150</Property>
       </DataColumn>
       <DataColumn name="nickName">
         <Property name="property">nickName</Property>
         <Property name="caption">昵称</Property>
+        <Property name="width">150</Property>
       </DataColumn>
       <DataColumn name="telphone">
         <Property name="property">telphone</Property>
         <Property name="caption">手机</Property>
+        <Property name="width">150</Property>
       </DataColumn>
-      <DataColumn name="unionid">
-        <Property name="property">unionid</Property>
-        <Property name="caption">开放平台帐号</Property>
-      </DataColumn>
-      <DataColumn name="openid">
-        <Property name="property">openid</Property>
-        <Property name="caption">唯一标识</Property>
+      <DataColumn>
+        <Property name="property">email</Property>
+        <Property name="caption">邮件地址</Property>
+        <Property name="name">email</Property>
       </DataColumn>
     </DataGrid>
     <Dialog id="dialogLiaisons">
       <Property name="center">true</Property>
-      <Property name="width">300</Property>
+      <Property name="width">450</Property>
       <Property name="height">220</Property>
       <Property name="modal">true</Property>
       <Property name="closeable">false</Property>
@@ -163,10 +164,11 @@ dorado.MessageBox.confirm(&quot;您真的要取消当前操作吗？&quot;,funct
             <Property name="label">手机</Property>
             <Editor/>
           </AutoFormElement>
-          <AutoFormElement name="secretKey">
-            <Property name="name">secretKey</Property>
-            <Property name="property">secretKey</Property>
-            <Property name="label">验证密钥</Property>
+          <AutoFormElement>
+            <Property name="name">email</Property>
+            <Property name="property">email</Property>
+            <Property name="label">邮件地址</Property>
+            <Property name="name">email</Property>
             <Editor/>
           </AutoFormElement>
         </AutoForm>
