@@ -21,22 +21,22 @@
       <DataPilot>
         <ClientEvent name="onSubControlAction">var datas = view.get(&quot;#dataSetLiaisons.data&quot;);&#xD;
 var action = view.get(&quot;#actionUpdate&quot;);&#xD;
-switch(arg.code){&#xD;
+switch (arg.code) {&#xD;
 	case &quot;+&quot;:{&#xD;
 		datas.insert();&#xD;
 		view.get(&quot;#dialogLiaisons&quot;).show();&#xD;
-		arg.processDefault=false;&#xD;
+		arg.processDefault = false;&#xD;
 		break;&#xD;
 	}&#xD;
 	case &quot;-&quot;:{&#xD;
-		dorado.MessageBox.confirm(&quot;您真的想删除当前数据吗?&quot;,function(){&#xD;
+		dorado.MessageBox.confirm(&quot;您真的想删除当前数据吗?&quot;, function(){&#xD;
 			datas.remove();&#xD;
 			actionUpdate.execute();&#xD;
 		});&#xD;
-		arg.processDefault=false;&#xD;
+		arg.processDefault = false;&#xD;
 		break;&#xD;
 	}&#xD;
-</ClientEvent>
+}</ClientEvent>
         <Property name="dataSet">dataSetLiaisons</Property>
         <Property name="itemCodes">pages,+,-,x</Property>
       </DataPilot>
@@ -89,15 +89,18 @@ with (view.get(&quot;#dataSetLiaisons&quot;)){&#xD;
       <Property name="dataSet">dataSetLiaisons</Property>
       <Property name="dataType">Liaisons</Property>
       <Property name="readOnly">true</Property>
+      <IndicatorColumn/>
+      <RowNumColumn/>
       <DataColumn name="name">
         <Property name="property">name</Property>
         <Property name="caption">姓名</Property>
         <Property name="width">150</Property>
       </DataColumn>
-      <DataColumn name="nickName">
-        <Property name="property">nickName</Property>
-        <Property name="caption">昵称</Property>
+      <DataColumn>
+        <Property name="property">duty</Property>
+        <Property name="caption">职务</Property>
         <Property name="width">150</Property>
+        <Property name="name">duty</Property>
       </DataColumn>
       <DataColumn name="telphone">
         <Property name="property">telphone</Property>
@@ -152,10 +155,11 @@ dorado.MessageBox.confirm(&quot;您真的要取消当前操作吗？&quot;,funct
             <Property name="label">姓名</Property>
             <Editor/>
           </AutoFormElement>
-          <AutoFormElement name="nickName">
-            <Property name="name">nickName</Property>
-            <Property name="property">nickName</Property>
-            <Property name="label">昵称</Property>
+          <AutoFormElement>
+            <Property name="name">duty</Property>
+            <Property name="property">duty</Property>
+            <Property name="label">职务</Property>
+            <Property name="name">duty</Property>
             <Editor/>
           </AutoFormElement>
           <AutoFormElement name="telphone">

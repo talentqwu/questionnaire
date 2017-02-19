@@ -25,12 +25,16 @@ public class Liaisons  extends AuditEntity {
 	@Column(length = 64, nullable = false)
 	private String name;
 	
+	@PropertyDef(label = "职务")
+	@Column(length = 64)
+	private String duty;
+	
 	@PropertyDef(label = "手机号")
 	@Column(length = 11, nullable = false, unique = true)
 	private String telphone;
 	
 	@PropertyDef(label = "邮件地址")
-	@Column(length = 256, unique = true)
+	@Column(length = 256, nullable = false, unique = true)
 	private String email;
 	
 	@PropertyDef(label = "验证密钥")
@@ -133,5 +137,13 @@ public class Liaisons  extends AuditEntity {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public String getDuty() {
+		return duty;
+	}
+
+	public void setDuty(String duty) {
+		this.duty = duty;
 	}
 }

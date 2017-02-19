@@ -70,17 +70,28 @@ function btnRemoveLiaisonsOnClick(self, arg) {
 	
 }
 
-// @Bind btnCloseLiaisonsDialog.onClick
+// @Bind #btnCloseLiaisonsDialog.onClick
 function btnCloseLiaisonsDialogOnClick(self, arg) {
-	view.get("#dialogLiaisons").hide();
+	view.get("#dialogSelectLiaisons").hide();
 }
 
 // @Bind #btnConfirmLiaisons.onClick
 function btnConfirmLiaisonsOnClick(self, arg) {
 	var data = view.get('#dataSetLiaisons.data');
 	if (data.current) {
-		view.get('#dataSetUnit.data.current.liaisonses').insert(dorado.Core.clone(data.current, true));
-		view.get('#dialogSelectLiaisons').hide();
+		var liaisonses = view.get('#dataSetUnit.data.current.liaisonses');
+		var liaisons = dorado.Core.clone(data.current, true);
+		var found = false;
+		liaisonses.each(function(item){
+			if (item.get('id') == liaisons.get('id'))
+				found = true;
+		});
+		if (found) 
+			dorado.widget.NotifyTipManager.notify('该联络员已经添加！');
+		else {
+			liaisonses.insert(liaisons);
+			view.get('#dialogSelectLiaisons').hide();
+		}
 	}
 }
 
@@ -91,4 +102,25 @@ function btnLiaisonsQueryOnClick(self, arg) {
 		set("parameter", data);
 		flushAsync();
 	}
+}
+
+// @Bind #gridUnit.#liaisonses.onRenderCell
+function gridUnitLiaisonsesOnRenderCell(self, arg) {
+	if (!arg.rowType) {
+		var text = '';
+		var liaisonses = arg.data.get('liaisonses');
+		if (liaisonses) {
+			liaisonses.each(function(liaisons){
+				text += liaisons.get('name') + '(' + liaisons.get('telphone') + '),';
+			});
+			if (text.length > 1)
+				text = text.substr(0, text.length - 1);
+		}
+		arg.dom.innerHTML = text;
+	}
+}
+
+// @Bind #gridSelectLiaisons.onDataRowDoubleClick
+function gridSelectLiaisonsOnDataRowDoubleClick(self, arg) {
+	view.get('#btnConfirmLiaisons').fireEvent('onClick');
 }

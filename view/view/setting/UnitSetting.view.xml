@@ -32,6 +32,11 @@
     <DataSet id="dataSetUnit">
       <Property name="dataType">[Unit]</Property>
     </DataSet>
+    <DataSet id="dataSetLiaisons">
+      <Property name="dataProvider">qs.commonService#queryLiaisons</Property>
+      <Property name="dataType">[Liaisons]</Property>
+      <Property name="pageSize">20</Property>
+    </DataSet>
     <DataSet id="dataSetIndustry">
       <Property name="dataType">[Industry]</Property>
       <Property name="dataProvider">qs.commonService#getAllIndustry</Property>
@@ -93,15 +98,17 @@
         <Editor/>
       </AutoFormElement>
     </AutoForm>
-    <DataTreeGrid>
+    <DataTreeGrid id="gridUnit">
       <Property name="dataSet">dataSetUnit</Property>
       <Property name="dataType"></Property>
       <Property name="treeColumn">name</Property>
+      <Property name="readOnly">true</Property>
       <BindingConfigs>
         <BindingConfig>
           <Property name="hasChildProperty">hasChild</Property>
           <Property name="labelProperty">name</Property>
           <Property name="recursive">true</Property>
+          <Property name="childrenProperty">children</Property>
         </BindingConfig>
       </BindingConfigs>
       <Columns>
@@ -111,32 +118,41 @@
           <Property name="name">name</Property>
           <Property name="property">name</Property>
           <Property name="caption">名称</Property>
+          <Property name="width">250</Property>
           <Editor/>
         </DataColumn>
         <DataColumn>
           <Property name="name">peopleNumber</Property>
           <Property name="property">peopleNumber</Property>
           <Property name="caption">人数</Property>
-          <Property name="width">100</Property>
+          <Property name="width">60</Property>
           <Editor/>
         </DataColumn>
         <DataColumn>
           <Property name="name">enableShare</Property>
           <Property name="property">enableShare</Property>
           <Property name="caption">一包多</Property>
-          <Property name="width">80</Property>
+          <Property name="width">50</Property>
           <Editor/>
         </DataColumn>
         <DataColumn>
           <Property name="name">industry</Property>
           <Property name="property">industry</Property>
           <Property name="caption">所属行业</Property>
+          <Property name="width">250</Property>
           <Editor/>
         </DataColumn>
         <DataColumn>
           <Property name="name">region</Property>
           <Property name="property">region</Property>
           <Property name="caption">所在社区</Property>
+          <Property name="width">100</Property>
+          <Editor/>
+        </DataColumn>
+        <DataColumn>
+          <Property name="property">liaisonses</Property>
+          <Property name="name">liaisonses</Property>
+          <Property name="caption">联络人</Property>
           <Editor/>
         </DataColumn>
       </Columns>
@@ -219,15 +235,17 @@
                   </ToolBarButton>
                 </ToolBar>
                 <DataGrid id="gridLiaisons">
+                  <Property name="readOnly">true</Property>
                   <Property name="dataPath">#.liaisonses</Property>
-                  <RowSelectorColumn/>
+                  <Property name="dataSet">dataSetUnit</Property>
                   <DataColumn name="name">
                     <Property name="property">name</Property>
                     <Property name="caption">姓名</Property>
                   </DataColumn>
-                  <DataColumn name="nickName">
-                    <Property name="property">nickName</Property>
-                    <Property name="caption">昵称</Property>
+                  <DataColumn>
+                    <Property name="property">duty</Property>
+                    <Property name="caption">职务</Property>
+                    <Property name="name">duty</Property>
                   </DataColumn>
                   <DataColumn name="telphone">
                     <Property name="property">telphone</Property>
@@ -237,73 +255,69 @@
               </Container>
             </Editor>
           </AutoFormElement>
-          <Dialog id="dialogSelectLiaisons">
-            <Property name="height">300</Property>
-            <Property name="width">380</Property>
-            <Buttons>
-              <Button id="btnConfirmLiaisons">
-                <Property name="caption">确定</Property>
-                <Property name="icon">url(>skin>common/icons.gif) -140px -20px</Property>
-              </Button>
-              <Button id="btnCloseLiaisonsDialog">
-                <Property name="caption">取消</Property>
-                <Property name="icon">url(>skin>common/icons.gif) -40px -0px</Property>
-              </Button>
-            </Buttons>
-            <Children>
-              <DataSet id="dataSetLiaisons">
-                <Property name="dataProvider">qs.commonService#queryLiaisons</Property>
-                <Property name="dataType">[Liaisons]</Property>
-                <Property name="pageSize">20</Property>
-              </DataSet>
-              <ToolBar>
-                <DataPilot>
-                  <Property name="dataSet">dataSetLiaisons</Property>
-                  <Property name="itemCodes">pages</Property>
-                </DataPilot>
-                <Separator/>
-                <ToolBarButton id="btnLiaisonsQuery">
-                  <Property name="caption">查询</Property>
-                  <Property name="icon">url(>skin>common/icons.gif) -20px -40px</Property>
-                </ToolBarButton>
-              </ToolBar>
-              <AutoForm id="formLiaisonsCondition">
-                <Property name="cols">*,*</Property>
-                <Property name="labelAlign">right</Property>
-                <Property name="labelSeparator">：</Property>
-                <AutoFormElement>
-                  <Property name="name">name</Property>
-                  <Property name="label">姓名</Property>
-                  <Editor/>
-                </AutoFormElement>
-                <AutoFormElement>
-                  <Property name="name">nickName</Property>
-                  <Property name="label">昵称</Property>
-                  <Editor/>
-                </AutoFormElement>
-              </AutoForm>
-              <DataGrid id="gridSelectLiaisons">
-                <Property name="dataSet">dataSetLiaisons</Property>
-                <Property name="selectionMode">singleRow</Property>
-                <Property name="readOnly">true</Property>
-                <RowSelectorColumn/>
-                <DataColumn name="name">
-                  <Property name="property">name</Property>
-                  <Property name="caption">姓名</Property>
-                </DataColumn>
-                <DataColumn name="nickName">
-                  <Property name="property">nickName</Property>
-                  <Property name="caption">昵称</Property>
-                </DataColumn>
-                <DataColumn name="telphone">
-                  <Property name="property">telphone</Property>
-                  <Property name="caption">手机</Property>
-                </DataColumn>
-              </DataGrid>
-            </Children>
-            <Tools/>
-          </Dialog>
         </AutoForm>
+      </Children>
+      <Tools/>
+    </Dialog>
+    <Dialog id="dialogSelectLiaisons">
+      <Property name="height">300</Property>
+      <Property name="width">380</Property>
+      <Buttons>
+        <Button id="btnConfirmLiaisons">
+          <Property name="caption">确定</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -140px -20px</Property>
+        </Button>
+        <Button id="btnCloseLiaisonsDialog">
+          <Property name="caption">取消</Property>
+          <Property name="icon">url(>skin>common/icons.gif) -40px -0px</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <ToolBar>
+          <DataPilot>
+            <Property name="dataSet">dataSetLiaisons</Property>
+            <Property name="itemCodes">pages</Property>
+          </DataPilot>
+          <Separator/>
+          <ToolBarButton id="btnLiaisonsQuery">
+            <Property name="caption">查询</Property>
+            <Property name="icon">url(>skin>common/icons.gif) -20px -40px</Property>
+          </ToolBarButton>
+        </ToolBar>
+        <AutoForm id="formLiaisonsCondition">
+          <Property name="cols">*,*</Property>
+          <Property name="labelAlign">right</Property>
+          <Property name="labelSeparator">：</Property>
+          <Property name="labelWidth">50</Property>
+          <AutoFormElement>
+            <Property name="name">name</Property>
+            <Property name="label">姓名</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">telphone</Property>
+            <Property name="label">电话</Property>
+            <Editor/>
+          </AutoFormElement>
+        </AutoForm>
+        <DataGrid id="gridSelectLiaisons">
+          <Property name="dataSet">dataSetLiaisons</Property>
+          <Property name="selectionMode">none</Property>
+          <Property name="readOnly">true</Property>
+          <DataColumn name="name">
+            <Property name="property">name</Property>
+            <Property name="caption">姓名</Property>
+          </DataColumn>
+          <DataColumn>
+            <Property name="property">duty</Property>
+            <Property name="caption">职务</Property>
+            <Property name="name">duty</Property>
+          </DataColumn>
+          <DataColumn name="telphone">
+            <Property name="property">telphone</Property>
+            <Property name="caption">手机</Property>
+          </DataColumn>
+        </DataGrid>
       </Children>
       <Tools/>
     </Dialog>
