@@ -106,6 +106,11 @@ public class CommonService {
 		liaisonsDao.getByParameter(page, parameter);
 	}
 	
+	@DataProvider
+	public List<Liaisons> getAllLiaisons() {
+		return liaisonsDao.getAllOrderName();
+	}
+	
 	@DataResolver
 	@Transactional
 	public void saveLiaisons(Collection<Liaisons> datas) throws Exception {

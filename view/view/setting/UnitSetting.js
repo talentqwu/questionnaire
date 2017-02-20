@@ -1,45 +1,51 @@
 // @Bind #btnUnitCreateBrother.onClick
 function btnUnitCreateBrotherOnClick(self, arg) {
-//	var tree = view.get('#gridUnit');
-//	var currentNode = tree.get('currentNode') ? tree.get('currentNode') : tree.get('root');
-//	currentNode.addNode({name: '<新单位>'});
-//	tree.refreshNode();
-	
+	var treeGrid = view.get('#gridUnit');
 	var datas = view.get("#dataSetUnit.data");
-	var entity = datas.current;
-	var parent = entity ? entity.get('parent') : null;
-	var newEntity = datas.insert();
-	if (parent) 
-		parent.get('children').insert(newEntity);
-	
-	datas.setCurrent(newEntity);
-	view.get("#dialogUnit").show();
+	var currentNode = treeGrid.get("currentNode");
+	var newEntity = null;
+	if (currentNode) {
+		var currentEntity = currentNode.get("data");
+		newEntity = currentEntity.createBrother({name: '<新单位>'});
+	} else
+		newEntity = datas.insert({name: '<新单位>'});
+	treeGrid.set('currentEntity', newEntity);
 }
 
 // @Bind #btnUnitCreateChild.onClick
 function btnUnitCreateChildOnClick(self, arg) {
-	var datas = view.get("#dataSetUnit.data");
-	var entity = datas.current;
-	if (entity) {
-		var newEntity = datas.insert();
-		entity.get('children').insert(newEntity);
-		entity.get('children').setCurrent(newEntity);
-		view.get("#dialogUnit").show();
+	var treeGrid = view.get('#gridUnit');
+	var currentNode = treeGrid.get("currentNode");
+	if (currentNode.get('level') == 2) 
+		dorado.widget.NotifyTipManager.notify('最多只能创建两层单位！');
+	else if (currentNode) {
+		var currentEntity = currentNode.get("data");
+		currentNode.expandAsync(function() {
+			var newEntity = currentEntity.createChild("children", {name: '<新单位>'});
+			treeGrid.set('currentEntity', newEntity);
+		});
 	} else
 		dorado.widget.NotifyTipManager.notify('请先创建父单位再创建子单位！');
 }
 
 // @Bind #btnUnitDelete.onClick
 function btnUnitDeleteOnClick(self, arg) {
-	dorado.MessageBox.confirm("您真的想删除当前数据吗(所有下级都将被同时删除)?",function(){
-		view.get("#dataSetUnit.data").remove();
-		actionUpdate.execute();
-	});
+	var treeGrid = view.get('#gridUnit');
+	var currentNode = treeGrid.get("currentNode");
+	if (currentNode.get('hasChild'))
+		dorado.widget.NotifyTipManager.notify('请先删除子单位再删除父单位！');
+	else
+		dorado.MessageBox.confirm("您真的想删除当前数据吗?",function(){
+			var currentEntity = treeGrid.get("currentEntity");
+			currentEntity.remove();
+		});
 }
 
-// @Bind #gridUnit.onDataRowDoubleClick
-function gridUnitOnDataRowDoubleClick(self, arg) {
-	view.get("#dialogUnit").show();
+//@Bind #btnUnitSave.onClick
+function btnUnitSaveOnClick(self, arg) {
+	dorado.MessageBox.confirm("您真的要保存吗?",function(){
+		view.get("#actionUpdate").execute();
+	})
 }
 
 // @Bind #btnUnitQuery.onClick
@@ -51,69 +57,13 @@ function btnUnitQueryOnClick(self, arg) {
 	}
 }
 
-// @Bind #btnUnitSave.onClick
-function btnUnitSaveOnClick(self, arg) {
-	var dialog=view.get("#dialogUnit");
-	var action=view.get("#actionUpdate");
-	dorado.MessageBox.confirm("您真的要保存吗?",function(){
-		action.execute(function(){
-			dialog.hide();
-		});
-	})
-}
-
 // @Bind #btnUnitCancel.onClick
 function btnUnitCancelOnClick(self, arg) {
-	var data=view.get("#dataSetUnit").getData();
-	var dialog=view.get("#dialogUnit");
+	var treeGrid = view.get('#gridUnit');
 	dorado.MessageBox.confirm("您真的要取消当前操作吗？",function(){
-		data.cancel();
-		dialog.hide();
+		var currentEntity = treeGrid.get("currentEntity");
+		currentEntity.cancel();
 	});
-}
-
-//@Bind #btnAddLiaisons.onClick
-function btnAddLiaisonsOnClick(self, arg) {
-	view.get('#dialogSelectLiaisons').show();
-}
-
-// @Bind #btnRemoveLiaisons.onClick
-function btnRemoveLiaisonsOnClick(self, arg) {
-	
-}
-
-// @Bind #btnCloseLiaisonsDialog.onClick
-function btnCloseLiaisonsDialogOnClick(self, arg) {
-	view.get("#dialogSelectLiaisons").hide();
-}
-
-// @Bind #btnConfirmLiaisons.onClick
-function btnConfirmLiaisonsOnClick(self, arg) {
-	var data = view.get('#dataSetLiaisons.data');
-	if (data.current) {
-		var liaisonses = view.get('#dataSetUnit.data.current.liaisonses');
-		var liaisons = dorado.Core.clone(data.current, true);
-		var found = false;
-		liaisonses.each(function(item){
-			if (item.get('id') == liaisons.get('id'))
-				found = true;
-		});
-		if (found) 
-			dorado.widget.NotifyTipManager.notify('该联络员已经添加！');
-		else {
-			liaisonses.insert(liaisons);
-			view.get('#dialogSelectLiaisons').hide();
-		}
-	}
-}
-
-// @Bind #btnLiaisonsQuery.onClick
-function btnLiaisonsQueryOnClick(self, arg) {
-	var data = view.get("#formLiaisonsCondition.entity");
-	with (view.get("#dataSetLiaisons")){
-		set("parameter", data);
-		flushAsync();
-	}
 }
 
 // @Bind #gridUnit.#liaisonses.onRenderCell
@@ -134,5 +84,6 @@ function gridUnitLiaisonsesOnRenderCell(self, arg) {
 
 // @Bind #gridSelectLiaisons.onDataRowDoubleClick
 function gridSelectLiaisonsOnDataRowDoubleClick(self, arg) {
-	view.get('#btnConfirmLiaisons').fireEvent('onClick');
+	var dropDown = dorado.widget.DropDown.findDropDown(self);
+	dropDown.close(dorado.Core.clone(arg.data));
 }

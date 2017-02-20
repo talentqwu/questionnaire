@@ -1,5 +1,6 @@
 package com.kam.qs.dao.common;
 
+import java.util.List;
 import java.util.Map;
 
 import org.hibernate.Criteria;
@@ -32,5 +33,10 @@ public class LiaisonsDao extends DoradoHibernateDao<Liaisons, String> {
 		}
 		
 		find(page, criteria);
+	}
+
+	public List<Liaisons> getAllOrderName() {
+		String hql = "FROM Liaisons l ORDER BY l.name";
+		return find(hql);
 	}
 }
