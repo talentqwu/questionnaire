@@ -23,14 +23,16 @@
       <PropertyDef name="region">
         <Property name="dataType">Region</Property>
       </PropertyDef>
-      <Reference name="liaisonses">
+      <PropertyDef name="liaisonses">
         <Property name="dataType">[Liaisons]</Property>
-      </Reference>
+      </PropertyDef>
     </DataType>
   </Model>
   <View>
+    <Property name="packages">font-awesome</Property>
     <DataSet id="dataSetUnit">
       <Property name="dataType">[Unit]</Property>
+      <Property name="dataProvider">qs.commonService#getUnitRoot</Property>
     </DataSet>
     <DataSet id="dataSetLiaisons">
       <Property name="dataProvider">qs.commonService#queryLiaisons</Property>
@@ -45,6 +47,11 @@
       <Property name="dataType">[Region]</Property>
       <Property name="dataProvider">qs.commonService#getAllRegion</Property>
     </DataSet>
+    <UpdateAction id="actionUpdate">
+      <UpdateItem>
+        <Property name="dataSet">dataSetUnit</Property>
+      </UpdateItem>
+    </UpdateAction>
     <DataSetDropDown id="dropDownRegion">
       <Property name="dataSet">dataSetRegion</Property>
       <Property name="autoOpen">true</Property>
@@ -53,56 +60,58 @@
       <Property name="dataSet">dataSetIndustry</Property>
       <Property name="autoOpen">true</Property>
     </DataSetDropDown>
-    <UpdateAction id="actionUpdate">
-      <UpdateItem>
-        <Property name="dataSet">dataSetUnit</Property>
-      </UpdateItem>
-    </UpdateAction>
     <ToolBar>
-      <DataPilot id="pilotUnit">
-        <Property name="dataSet">dataSetUnit</Property>
-        <Property name="itemCodes">pages,+,-,x</Property>
-      </DataPilot>
-      <Separator/>
-      <ToolBarButton id="btnUnitModify">
-        <Property name="caption">修改</Property>
-        <Property name="icon">url(>skin>common/icons.gif) -200px -0px</Property>
+      <ToolBarButton id="btnUnitCreateBrother">
+        <Property name="caption">添加同级单位</Property>
+        <Property name="iconClass">fa fa-plus</Property>
       </ToolBarButton>
-      <ToolBarButton>
-        <Property name="caption">保存</Property>
-        <Property name="icon">url(>skin>common/icons.gif) -140px -20px</Property>
-        <Property name="action">actionUpdate</Property>
+      <ToolBarButton id="btnUnitCreateChild">
+        <Property name="caption">添加下级单位</Property>
+        <Property name="iconClass">fa fa-plus</Property>
       </ToolBarButton>
-      <ToolBarButton id="btnUnitQuery">
-        <Property name="caption">查询</Property>
-        <Property name="icon">url(>skin>common/icons.gif) -20px -40px</Property>
+      <ToolBarButton id="btnUnitDelete">
+        <Property name="caption">删除</Property>
+        <Property name="iconClass">fa fa-minus</Property>
       </ToolBarButton>
     </ToolBar>
-    <AutoForm id="formUnitCondition">
-      <Property name="cols">*,*,*</Property>
-      <Property name="labelAlign">right</Property>
-      <Property name="labelSeparator">：</Property>
-      <AutoFormElement>
-        <Property name="name">name</Property>
-        <Property name="label">名称</Property>
-        <Editor/>
-      </AutoFormElement>
-      <AutoFormElement>
-        <Property name="name">industry</Property>
-        <Property name="label">行业</Property>
-        <Editor/>
-      </AutoFormElement>
-      <AutoFormElement>
-        <Property name="name">region</Property>
-        <Property name="label">社区</Property>
-        <Editor/>
-      </AutoFormElement>
-    </AutoForm>
+    <ToolBar>
+      <AutoForm id="formUnitCondition">
+        <Property name="cols">*,*,*</Property>
+        <Property name="labelAlign">right</Property>
+        <Property name="labelSeparator">：</Property>
+        <Property name="labelWidth">70</Property>
+        <Property name="showHint">false</Property>
+        <AutoFormElement>
+          <Property name="name">name</Property>
+          <Property name="label">名称</Property>
+          <Editor/>
+        </AutoFormElement>
+        <AutoFormElement>
+          <Property name="name">industry</Property>
+          <Property name="label">行业</Property>
+          <Property name="trigger">triggerClear,dropDownIndustry</Property>
+          <Property name="width">330</Property>
+          <Editor/>
+        </AutoFormElement>
+        <AutoFormElement>
+          <Property name="name">region</Property>
+          <Property name="label">社区</Property>
+          <Property name="trigger">triggerClear,dropDownRegion</Property>
+          <Property name="width">180</Property>
+          <Editor/>
+        </AutoFormElement>
+      </AutoForm>
+      <ToolBarButton id="btnUnitQuery">
+        <Property name="caption">查询</Property>
+        <Property name="iconClass">fa fa-search</Property>
+      </ToolBarButton>
+    </ToolBar>
     <DataTreeGrid id="gridUnit">
       <Property name="dataSet">dataSetUnit</Property>
       <Property name="dataType"></Property>
       <Property name="treeColumn">name</Property>
       <Property name="readOnly">true</Property>
+      <Property name="showLines">true</Property>
       <BindingConfigs>
         <BindingConfig>
           <Property name="hasChildProperty">hasChild</Property>
@@ -160,26 +169,26 @@
     <Dialog id="dialogUnit">
       <Property name="center">true</Property>
       <Property name="width">450</Property>
-      <Property name="height">350</Property>
       <Property name="modal">true</Property>
       <Property name="closeable">false</Property>
       <Property name="caption">数据编辑</Property>
       <Buttons>
         <Button id="btnUnitSave">
           <Property name="caption">确定</Property>
-          <Property name="icon">url(>skin>common/icons.gif) -140px -20px</Property>
+          <Property name="iconClass">fa fa-check</Property>
         </Button>
         <Button id="btnUnitCancel">
           <Property name="caption">取消</Property>
-          <Property name="icon">url(>skin>common/icons.gif) -40px -0px</Property>
+          <Property name="iconClass">fa fa-times</Property>
         </Button>
       </Buttons>
       <Children>
-        <AutoForm>
+        <AutoForm id="formUnit">
           <Property name="dataSet">dataSetUnit</Property>
           <Property name="cols">*</Property>
           <Property name="labelAlign">right</Property>
           <Property name="labelSeparator">：</Property>
+          <Property name="dataPath">#new</Property>
           <AutoFormElement name="name">
             <Property name="name">name</Property>
             <Property name="property">name</Property>
@@ -265,11 +274,11 @@
       <Buttons>
         <Button id="btnConfirmLiaisons">
           <Property name="caption">确定</Property>
-          <Property name="icon">url(>skin>common/icons.gif) -140px -20px</Property>
+          <Property name="iconClass">fa fa-check</Property>
         </Button>
         <Button id="btnCloseLiaisonsDialog">
           <Property name="caption">取消</Property>
-          <Property name="icon">url(>skin>common/icons.gif) -40px -0px</Property>
+          <Property name="iconClass">fa fa-times</Property>
         </Button>
       </Buttons>
       <Children>
@@ -281,7 +290,7 @@
           <Separator/>
           <ToolBarButton id="btnLiaisonsQuery">
             <Property name="caption">查询</Property>
-            <Property name="icon">url(>skin>common/icons.gif) -20px -40px</Property>
+            <Property name="iconClass">fa fa-search</Property>
           </ToolBarButton>
         </ToolBar>
         <AutoForm id="formLiaisonsCondition">

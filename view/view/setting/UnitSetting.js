@@ -1,33 +1,45 @@
-// @Bind #pilotUnit.onSubControlAction
-function pilotUnitOnSubControlAction(self, arg) {
+// @Bind #btnUnitCreateBrother.onClick
+function btnUnitCreateBrotherOnClick(self, arg) {
+//	var tree = view.get('#gridUnit');
+//	var currentNode = tree.get('currentNode') ? tree.get('currentNode') : tree.get('root');
+//	currentNode.addNode({name: '<新单位>'});
+//	tree.refreshNode();
+	
 	var datas = view.get("#dataSetUnit.data");
-	var action = view.get("#actionUpdate");
-	switch(arg.code){
-		case "+":{
-			datas.insert();
-			view.get("#dialogUnit").show();
-			arg.processDefault=false;
-			break;
-		}
-		case "-":{
-			dorado.MessageBox.confirm("您真的想删除当前数据吗?",function(){
-				datas.remove();
-				actionUpdate.execute();
-			});
-			arg.processDefault=false;
-			break;
-		}
-	}
+	var entity = datas.current;
+	var parent = entity ? entity.get('parent') : null;
+	var newEntity = datas.insert();
+	if (parent) 
+		parent.get('children').insert(newEntity);
+	
+	datas.setCurrent(newEntity);
+	view.get("#dialogUnit").show();
 }
 
-// @Bind #btnUnitModify.onClick
-function btnUnitModifyOnClick(self, arg) {
-	var data=view.get("#dataSetUnit.data");
-	if(data.current){
-		view.get("#dialogLiaisons").show();
-	}else{
-		dorado.MessageBox.alert("当前表没有信息可供编辑!");
-	}
+// @Bind #btnUnitCreateChild.onClick
+function btnUnitCreateChildOnClick(self, arg) {
+	var datas = view.get("#dataSetUnit.data");
+	var entity = datas.current;
+	if (entity) {
+		var newEntity = datas.insert();
+		entity.get('children').insert(newEntity);
+		entity.get('children').setCurrent(newEntity);
+		view.get("#dialogUnit").show();
+	} else
+		dorado.widget.NotifyTipManager.notify('请先创建父单位再创建子单位！');
+}
+
+// @Bind #btnUnitDelete.onClick
+function btnUnitDeleteOnClick(self, arg) {
+	dorado.MessageBox.confirm("您真的想删除当前数据吗(所有下级都将被同时删除)?",function(){
+		view.get("#dataSetUnit.data").remove();
+		actionUpdate.execute();
+	});
+}
+
+// @Bind #gridUnit.onDataRowDoubleClick
+function gridUnitOnDataRowDoubleClick(self, arg) {
+	view.get("#dialogUnit").show();
 }
 
 // @Bind #btnUnitQuery.onClick

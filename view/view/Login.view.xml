@@ -11,7 +11,6 @@
     <Dialog id="dialogLogin">
       <Property name="caption">系统登陆</Property>
       <Property name="width">300</Property>
-      <Property name="height">150</Property>
       <Property name="maximizeable">false</Property>
       <Property name="showCaptionBar">true</Property>
       <Property name="contentOverflow">hidden</Property>

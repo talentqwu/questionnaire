@@ -88,10 +88,17 @@ public class CommonService {
 			Unit unit = EntityUtils.toEntity(data[0]);
 			EntityUtils.setValue(unit, "region", data[1]);
 			EntityUtils.setValue(unit, "industry", data[2]);
+			unit.getLiaisonses().size();
 			units.add(unit);
 		}
 		
 		return units;
+	}
+	
+	@DataResolver
+	@Transactional
+	public void saveUnit(List<Unit> units) {
+		
 	}
 	
 	@DataProvider

@@ -12,10 +12,11 @@ public class UnitDao extends DoradoHibernateDao<Unit, String> {
 
 	public List<Object[]> getRoot() {
 		String hql = "SELECT u,"
-				+ "          u.region region,"
-				+ "          u.industry industry"
+				+ "          u.region AS region,"
+				+ "          u.industry AS industry"
 				+ "   FROM Unit u "
-				+ "   WHERE u.parent IS NULL ORDER BY name";
+				+ "   WHERE u.parent IS NULL ORDER BY u.name";
+		
 		return find(hql);
 	}
 }
