@@ -22,6 +22,25 @@
     <Property name="autoCreatePropertyDefs">true</Property>
     <Property name="matchType">com.kam.qs.entity.common.Liaisons</Property>
     <Property name="defaultDisplayProperty">name</Property>
+    <PropertyDef name="name">
+      <Property/>
+      <Property name="label">姓名</Property>
+      <Property name="required">true</Property>
+    </PropertyDef>
+    <PropertyDef name="duty">
+      <Property/>
+      <Property name="label">职务</Property>
+      <Property name="required">true</Property>
+    </PropertyDef>
+    <PropertyDef name="telphone">
+      <Property/>
+      <Property name="label">手机号</Property>
+      <Property name="required">true</Property>
+    </PropertyDef>
+    <PropertyDef name="email">
+      <Property/>
+      <Property name="label">邮件地址</Property>
+    </PropertyDef>
   </DataType>
   <DataType name="Log" parent="AbstractEntity">
     <Property name="autoCreatePropertyDefs">true</Property>

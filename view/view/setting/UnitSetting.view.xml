@@ -8,11 +8,11 @@
       <PropertyDef name="hasChild">
         <Property name="dataType">boolean</Property>
       </PropertyDef>
-      <PropertyDef name="childCount">
-        <Property name="dataType">int</Property>
-      </PropertyDef>
       <Reference name="children">
         <Property name="dataType">[SELF]</Property>
+        <Property name="submittable">false</Property>
+        <Property name="dataProvider">qs.commonService#getUnitChildren</Property>
+        <Property name="parameter">$${this.id}</Property>
       </Reference>
       <PropertyDef name="industry">
         <Property name="dataType">Industry</Property>
@@ -29,6 +29,9 @@
       <PropertyDef name="name">
         <Property name="required">true</Property>
       </PropertyDef>
+      <PropertyDef name="parentId">
+        <Property name="dataType">String</Property>
+      </PropertyDef>
     </DataType>
   </Model>
   <View>
@@ -37,21 +40,23 @@
       <Property name="dataType">[Unit]</Property>
       <Property name="dataProvider">qs.commonService#getUnitRoot</Property>
     </DataSet>
-    <DataSet id="dataSetLiaisons">
-      <Property name="dataProvider">qs.commonService#getAllLiaisons</Property>
-      <Property name="dataType">[Liaisons]</Property>
-    </DataSet>
     <DataSet id="dataSetIndustry">
       <Property name="dataType">[Industry]</Property>
       <Property name="dataProvider">qs.commonService#getAllIndustry</Property>
+    </DataSet>
+    <DataSet id="dataSetLiaisons">
+      <Property name="dataProvider">qs.commonService#getAllLiaisons</Property>
+      <Property name="dataType">[Liaisons]</Property>
     </DataSet>
     <DataSet id="dataSetRegion">
       <Property name="dataType">[Region]</Property>
       <Property name="dataProvider">qs.commonService#getAllRegion</Property>
     </DataSet>
     <UpdateAction id="actionUpdate">
+      <Property name="dataResolver">qs.commonService#saveUnit</Property>
       <UpdateItem>
         <Property name="dataSet">dataSetUnit</Property>
+        <Property name="dataPath">[#dirty]children(R)</Property>
       </UpdateItem>
     </UpdateAction>
     <DataSetDropDown id="dropDownRegion">
@@ -62,6 +67,39 @@
       <Property name="dataSet">dataSetIndustry</Property>
       <Property name="autoOpen">true</Property>
     </DataSetDropDown>
+    <DataSetDropDown id="dropDownRegion1">
+      <Property name="dataSet">dataSetRegion</Property>
+      <Property name="autoOpen">true</Property>
+      <Property name="useEmptyItem">true</Property>
+    </DataSetDropDown>
+    <DataSetDropDown id="dropDownIndustry1">
+      <Property name="dataSet">dataSetIndustry</Property>
+      <Property name="autoOpen">true</Property>
+      <Property name="useEmptyItem">true</Property>
+    </DataSetDropDown>
+    <CustomDropDown id="dropDownSelectLiaisons">
+      <Property name="height">500</Property>
+      <Property name="autoOpen">true</Property>
+      <DataGrid id="gridSelectLiaisons">
+        <Property name="dataSet">dataSetLiaisons</Property>
+        <Property name="selectionMode">none</Property>
+        <Property name="readOnly">true</Property>
+        <Property name="showFilterBar">true</Property>
+        <DataColumn name="name">
+          <Property name="property">name</Property>
+          <Property name="caption">姓名</Property>
+        </DataColumn>
+        <DataColumn>
+          <Property name="property">duty</Property>
+          <Property name="caption">职务</Property>
+          <Property name="name">duty</Property>
+        </DataColumn>
+        <DataColumn name="telphone">
+          <Property name="property">telphone</Property>
+          <Property name="caption">手机</Property>
+        </DataColumn>
+      </DataGrid>
+    </CustomDropDown>
     <ToolBar>
       <ToolBarButton id="btnUnitCreateBrother">
         <Property name="caption">添加同级单位</Property>
@@ -100,14 +138,14 @@
         <AutoFormElement>
           <Property name="name">industry</Property>
           <Property name="label">行业</Property>
-          <Property name="trigger">triggerClear,dropDownIndustry</Property>
+          <Property name="trigger">dropDownIndustry1</Property>
           <Property name="width">330</Property>
           <Editor/>
         </AutoFormElement>
         <AutoFormElement>
           <Property name="name">region</Property>
           <Property name="label">社区</Property>
-          <Property name="trigger">triggerClear,dropDownRegion</Property>
+          <Property name="trigger">dropDownRegion1</Property>
           <Property name="width">180</Property>
           <Editor/>
         </AutoFormElement>
@@ -188,28 +226,5 @@
         </DataColumn>
       </Columns>
     </DataTreeGrid>
-    <CustomDropDown id="dropDownSelectLiaisons">
-      <Property name="height">500</Property>
-      <Property name="autoOpen">true</Property>
-      <DataGrid id="gridSelectLiaisons">
-        <Property name="dataSet">dataSetLiaisons</Property>
-        <Property name="selectionMode">none</Property>
-        <Property name="readOnly">true</Property>
-        <Property name="showFilterBar">true</Property>
-        <DataColumn name="name">
-          <Property name="property">name</Property>
-          <Property name="caption">姓名</Property>
-        </DataColumn>
-        <DataColumn>
-          <Property name="property">duty</Property>
-          <Property name="caption">职务</Property>
-          <Property name="name">duty</Property>
-        </DataColumn>
-        <DataColumn name="telphone">
-          <Property name="property">telphone</Property>
-          <Property name="caption">手机</Property>
-        </DataColumn>
-      </DataGrid>
-    </CustomDropDown>
   </View>
 </ViewConfig>

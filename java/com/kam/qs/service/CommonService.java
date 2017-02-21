@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,7 +22,6 @@ import com.bstek.dorado.annotation.DataProvider;
 import com.bstek.dorado.annotation.DataResolver;
 import com.bstek.dorado.annotation.Expose;
 import com.bstek.dorado.data.entity.EntityUtils;
-import com.bstek.dorado.data.entity.FilterType;
 import com.bstek.dorado.data.provider.Page;
 import com.bstek.dorado.web.DoradoContext;
 import com.kam.qs.dao.common.ArchivesDao;
@@ -80,14 +78,35 @@ public class CommonService {
 	private UnitDao unitDao;
 	
 	@DataProvider
-	public List<Unit> getUnitRoot() throws Exception {
+	public List<Unit> getUnitRoot(Map<String, Object> parameter) throws Exception {
 		List<Unit> units = new ArrayList<Unit>();
 		
-		List<Object[]> datas = unitDao.getRoot();
+		List<Object[]> datas = parameter != null ?
+				unitDao.getByParamenter(parameter) : unitDao.getRoot();
 		for (Object[] data : datas) {
 			Unit unit = EntityUtils.toEntity(data[0]);
 			EntityUtils.setValue(unit, "region", data[1]);
 			EntityUtils.setValue(unit, "industry", data[2]);
+			EntityUtils.setValue(unit, "parentId", data[3]);
+			EntityUtils.setValue(unit, "hasChild", ((long)data[4] > 0 ? true : false));
+			unit.getLiaisonses().size();
+			units.add(unit);
+		}
+		
+		return units;
+	}
+	
+	@DataProvider
+	public List<Unit> getUnitChildren(String parentId) throws Exception {
+		List<Unit> units = new ArrayList<Unit>();
+		
+		List<Object[]> datas = unitDao.getChildrenByParentId(parentId);
+		for (Object[] data : datas) {
+			Unit unit = EntityUtils.toEntity(data[0]);
+			EntityUtils.setValue(unit, "region", data[1]);
+			EntityUtils.setValue(unit, "industry", data[2]);
+			EntityUtils.setValue(unit, "parentId", data[3]);
+			EntityUtils.setValue(unit, "hasChild", ((long)data[4] > 0 ? true : false));
 			unit.getLiaisonses().size();
 			units.add(unit);
 		}
@@ -98,7 +117,11 @@ public class CommonService {
 	@DataResolver
 	@Transactional
 	public void saveUnit(List<Unit> units) {
-		
+		for (Unit unit : units) {
+			Unit parent = unitDao.get(EntityUtils.getString(unit, "parentId"));
+			unit.setParent(parent);
+		}
+		unitDao.persistEntities(units);
 	}
 	
 	@DataProvider
@@ -114,18 +137,7 @@ public class CommonService {
 	@DataResolver
 	@Transactional
 	public void saveLiaisons(Collection<Liaisons> datas) throws Exception {
-		for (Iterator<Liaisons> iter = EntityUtils.getIterator(datas,
-				FilterType.DELETED, Liaisons.class); iter.hasNext();) {
-			 liaisonsDao.delete(iter.next());
-		}
-		for (Iterator<Liaisons> iter = EntityUtils.getIterator(datas,
-				FilterType.MODIFIED, Liaisons.class); iter.hasNext();) {
-			liaisonsDao.save(iter.next());
-		}
-		for (Iterator<Liaisons> iter = EntityUtils.getIterator(datas,
-				FilterType.NEW, Liaisons.class); iter.hasNext();) {
-			 liaisonsDao.save(iter.next());
-		}
+		liaisonsDao.persistEntities(datas);
 	}
 	
 	@DataProvider
@@ -136,18 +148,7 @@ public class CommonService {
 	@DataResolver
 	@Transactional
 	public void saveRegion(Collection<Region> datas) throws Exception {
-		for (Iterator<Region> iter = EntityUtils.getIterator(datas,
-				FilterType.DELETED, Region.class); iter.hasNext();) {
-			regionDao.delete(iter.next());
-		}
-		for (Iterator<Region> iter = EntityUtils.getIterator(datas,
-				FilterType.MODIFIED, Region.class); iter.hasNext();) {
-			regionDao.save(iter.next());
-		}
-		for (Iterator<Region> iter = EntityUtils.getIterator(datas,
-				FilterType.NEW, Region.class); iter.hasNext();) {
-			regionDao.save(iter.next());
-		}
+		regionDao.persistEntities(datas);
 	}
 	
 	@DataProvider
@@ -158,18 +159,7 @@ public class CommonService {
 	@DataResolver
 	@Transactional
 	public void saveIndustry(Collection<Industry> datas) throws Exception {
-		for (Iterator<Industry> iter = EntityUtils.getIterator(datas,
-				FilterType.DELETED, Industry.class); iter.hasNext();) {
-			industryDao.delete(iter.next());
-		}
-		for (Iterator<Industry> iter = EntityUtils.getIterator(datas,
-				FilterType.MODIFIED, Industry.class); iter.hasNext();) {
-			industryDao.save(iter.next());
-		}
-		for (Iterator<Industry> iter = EntityUtils.getIterator(datas,
-				FilterType.NEW, Industry.class); iter.hasNext();) {
-			industryDao.save(iter.next());
-		}
+		industryDao.persistEntities(datas);
 	}
 	
 	@DataProvider

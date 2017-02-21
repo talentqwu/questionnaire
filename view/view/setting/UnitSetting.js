@@ -1,3 +1,8 @@
+// @Bind view.onReady
+function viewOnReady(self, arg) {
+	view.get('#gridUnit').enableAutoRefresh();
+}
+
 // @Bind #btnUnitCreateBrother.onClick
 function btnUnitCreateBrotherOnClick(self, arg) {
 	var treeGrid = view.get('#gridUnit');
@@ -6,9 +11,25 @@ function btnUnitCreateBrotherOnClick(self, arg) {
 	var newEntity = null;
 	if (currentNode) {
 		var currentEntity = currentNode.get("data");
-		newEntity = currentEntity.createBrother({name: '<新单位>'});
+		if (currentNode.get('level') == 2) {
+			newEntity = currentEntity.createBrother({
+				name : '<新单位>',
+				industry : dorado.Core.clone(currentEntity.get('industry')),
+				region : dorado.Core.clone(currentEntity.get('region')),
+				parentId : currentEntity.get('parentId')
+			});
+			currentEntity.get('liaisonses').each(function(liaisons) {
+				newEntity.get('liaisonses').insert(dorado.Core.clone(liaisons));
+			});
+		} else
+			newEntity = currentEntity.createBrother({
+				name : '<新单位>',
+				parentId : currentEntity.get('parentId')
+			});
 	} else
-		newEntity = datas.insert({name: '<新单位>'});
+		newEntity = datas.insert({
+			name : '<新单位>'
+		});
 	treeGrid.set('currentEntity', newEntity);
 }
 
@@ -16,14 +37,28 @@ function btnUnitCreateBrotherOnClick(self, arg) {
 function btnUnitCreateChildOnClick(self, arg) {
 	var treeGrid = view.get('#gridUnit');
 	var currentNode = treeGrid.get("currentNode");
-	if (currentNode.get('level') == 2) 
-		dorado.widget.NotifyTipManager.notify('最多只能创建两层单位！');
-	else if (currentNode) {
-		var currentEntity = currentNode.get("data");
-		currentNode.expandAsync(function() {
-			var newEntity = currentEntity.createChild("children", {name: '<新单位>'});
-			treeGrid.set('currentEntity', newEntity);
-		});
+	if (currentNode) {
+		if (currentNode.get('level') == 2)
+			dorado.widget.NotifyTipManager.notify('最多只能创建两层单位！');
+		else {
+			var currentEntity = currentNode.get("data");
+			if (currentEntity.get('id')) {
+				currentNode.expandAsync(function() {
+					var newEntity = currentEntity.createChild("children", {
+						name : '<新单位>',
+						industry : dorado.Core.clone(currentEntity.get('industry')),
+						region : dorado.Core.clone(currentEntity.get('region')),
+						parentId : currentEntity.get('id')
+					});
+					currentEntity.get('liaisonses').each(
+							function(liaisons) {
+								newEntity.get('liaisonses').insert(dorado.Core.clone(liaisons));
+							});
+					treeGrid.set('currentEntity', newEntity);
+				});
+			} else
+				dorado.widget.NotifyTipManager.notify('请先保存父单位再创建子单位！');
+		}
 	} else
 		dorado.widget.NotifyTipManager.notify('请先创建父单位再创建子单位！');
 }
@@ -41,7 +76,7 @@ function btnUnitDeleteOnClick(self, arg) {
 		});
 }
 
-//@Bind #btnUnitSave.onClick
+// @Bind #btnUnitSave.onClick
 function btnUnitSaveOnClick(self, arg) {
 	dorado.MessageBox.confirm("您真的要保存吗?",function(){
 		view.get("#actionUpdate").execute();
