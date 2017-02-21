@@ -1,8 +1,6 @@
 package com.kam.qs.entity.exampool;
 
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,6 +13,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.bstek.dorado.annotation.PropertyDef;
+import com.kam.qs.emnu.QuestionType;
 import com.kam.qs.entity.AuditEntity;
 
 /**
@@ -51,28 +50,63 @@ public class Question  extends AuditEntity {
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "parent")
 	private List<Question> children;
-	
-	
-	public enum QuestionType {
-		
-		SINGLE_CHOICE   ("单选题"),
-		MULTIPLE_CHOICE ("多选题");
 
-		private String description;
-		
-		private QuestionType(String description) {
-			this.description = description;
-		}
-		
-		public String getDescription() {
-			return description;
-		}
-		
-		public static Map<String, String> toMap() {
-			Map<String, String> map = new LinkedHashMap<String, String>();
-			for (QuestionType value : QuestionType.values())
-				map.put(value.toString(), value.description);
-			return map;
-		}
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "question")
+	private List<Answer> answers;
+	
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
+	public String getQuestion() {
+		return question;
+	}
+
+	public void setQuestion(String question) {
+		this.question = question;
+	}
+
+	public QuestionType getType() {
+		return type;
+	}
+
+	public void setType(QuestionType type) {
+		this.type = type;
+	}
+
+	public Question getParent() {
+		return parent;
+	}
+
+	public void setParent(Question parent) {
+		this.parent = parent;
+	}
+
+	public List<Question> getChildren() {
+		return children;
+	}
+
+	public void setChildren(List<Question> children) {
+		this.children = children;
+	}
+
+	public List<Answer> getAnswers() {
+		return answers;
+	}
+
+	public void setAnswers(List<Answer> answers) {
+		this.answers = answers;
 	}
 }

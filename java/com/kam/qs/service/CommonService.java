@@ -25,6 +25,7 @@ import com.bstek.dorado.data.entity.EntityUtils;
 import com.bstek.dorado.data.provider.Page;
 import com.bstek.dorado.web.DoradoContext;
 import com.kam.qs.dao.common.ArchivesDao;
+import com.kam.qs.dao.common.AwardDao;
 import com.kam.qs.dao.common.DoradoServiceDao;
 import com.kam.qs.dao.common.IndustryDao;
 import com.kam.qs.dao.common.LiaisonsDao;
@@ -38,6 +39,7 @@ import com.kam.qs.emnu.ArchivesType;
 import com.kam.qs.emnu.Role;
 import com.kam.qs.emnu.TreeNodeCategory;
 import com.kam.qs.entity.common.Archives;
+import com.kam.qs.entity.common.Award;
 import com.kam.qs.entity.common.DoradoService;
 import com.kam.qs.entity.common.Industry;
 import com.kam.qs.entity.common.Liaisons;
@@ -84,6 +86,20 @@ public class CommonService {
 	
 	@Resource
 	private UserDao userDao;
+	
+	@Resource
+	private AwardDao awardDao;
+	
+	@DataProvider
+	public List<Award> getAllAward() {
+		return awardDao.getAll();
+	}
+	
+	@DataResolver
+	@Transactional
+	public void saveAward(List<Award> datas) {
+		awardDao.persistEntities(datas);
+	}
 	
 	@DataProvider
 	public List<User> queryUser(Map<String, Object> parameter) {

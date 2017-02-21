@@ -2,6 +2,239 @@
 <ViewConfig>
   <Arguments/>
   <Context/>
-  <Model/>
-  <View/>
+  <Model>
+    <DataType name="Template" parent="global:Template">
+      <Reference name="questions">
+        <Property name="dataType">[Instance]</Property>
+      </Reference>
+    </DataType>
+    <DataType name="Instance" parent="global:Instance">
+      <PropertyDef name="question">
+        <Property name="dataType">Question</Property>
+      </PropertyDef>
+    </DataType>
+    <DataType name="Question" parent="global:Question">
+      <PropertyDef name="score">
+        <Property name="dataType">double</Property>
+      </PropertyDef>
+      <PropertyDef name="order">
+        <Property name="dataType">int</Property>
+      </PropertyDef>
+    </DataType>
+  </Model>
+  <View>
+    <Property name="packages">font-awesome</Property>
+    <DataSet id="dataSetTemplate">
+      <Property name="dataType">[Template]</Property>
+    </DataSet>
+    <DataSet id="dataSetQuestions">
+      <Property name="dataType">[Question]</Property>
+    </DataSet>
+    <UpdateAction id="actionUpdate">
+      <UpdateItem>
+        <Property name="dataSet">dataSetTemplate</Property>
+      </UpdateItem>
+    </UpdateAction>
+    <ToolBar>
+      <ToolBarButton id="btnCreate">
+        <Property name="caption">添加</Property>
+        <Property name="iconClass">fa fa-plus</Property>
+      </ToolBarButton>
+      <ToolBarButton id="btnDelete">
+        <Property name="caption">删除</Property>
+        <Property name="iconClass">fa fa-minus</Property>
+      </ToolBarButton>
+      <Separator/>
+      <ToolBarButton id="btnReview">
+        <Property name="caption">预览</Property>
+        <Property name="iconClass">fa fa-share-square-o</Property>
+      </ToolBarButton>
+    </ToolBar>
+    <DataGrid>
+      <Property name="dataSet">dataSetTemplate</Property>
+      <Property name="readOnly">true</Property>
+      <RowNumColumn/>
+      <DataColumn>
+        <Property name="name">name</Property>
+        <Property name="property">name</Property>
+        <Property name="caption">名称</Property>
+        <Property name="width">200</Property>
+        <Editor/>
+      </DataColumn>
+      <DataColumn>
+        <Property name="name">title</Property>
+        <Property name="property">title</Property>
+        <Property name="caption">标题</Property>
+        <Property name="width">300</Property>
+        <Editor/>
+      </DataColumn>
+      <DataColumn>
+        <Property name="name">description</Property>
+        <Property name="property">description</Property>
+        <Property name="caption">描述</Property>
+        <Editor/>
+      </DataColumn>
+    </DataGrid>
+    <Dialog id="dialogTemplate">
+      <Property name="width">800</Property>
+      <Buttons>
+        <Button id="btnDialogOK">
+          <Property name="caption">确定</Property>
+          <Property name="iconClass">fa fa-check</Property>
+        </Button>
+        <Button id="btnDialogCancel">
+          <Property name="caption">取消</Property>
+          <Property name="iconClass">fa fa-times</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <AutoForm>
+          <Property name="cols">*</Property>
+          <Property name="labelAlign">right</Property>
+          <Property name="labelSeparator">：</Property>
+          <Property name="labelWidth">120</Property>
+          <Property name="dataSet">dataSetTemplate</Property>
+          <AutoFormElement>
+            <Property name="label">名称</Property>
+            <Property name="name">name</Property>
+            <Property name="property">name</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">title</Property>
+            <Property name="property">title</Property>
+            <Property name="label">标题</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="label">描述</Property>
+            <Property name="name">description</Property>
+            <Property name="property">description</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="label">问卷头部图片</Property>
+            <Property name="property">imageUrl</Property>
+            <Property name="name">imageUrl</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="label">试题</Property>
+            <Property name="height">350</Property>
+            <Editor>
+              <Container>
+                <ToolBar>
+                  <ToolBarButton id="btnAddQuestion">
+                    <Property name="caption">添加</Property>
+                    <Property name="iconClass">fa fa-plus</Property>
+                  </ToolBarButton>
+                  <ToolBarButton id="btnRemoveQuestion">
+                    <Property name="caption">移除</Property>
+                    <Property name="iconClass">fa fa-minus</Property>
+                  </ToolBarButton>
+                </ToolBar>
+                <DataGrid id="gridQuestions">
+                  <Property name="dataPath">#.questions</Property>
+                  <RowNumColumn/>
+                  <DataColumn>
+                    <Property name="name">name</Property>
+                    <Property name="property">name</Property>
+                    <Property name="caption">名称</Property>
+                    <Editor/>
+                  </DataColumn>
+                  <DataColumn>
+                    <Property name="property">type</Property>
+                    <Property name="name">type</Property>
+                    <Property name="caption">类型</Property>
+                    <Property name="width">80</Property>
+                    <Editor/>
+                  </DataColumn>
+                  <DataColumn>
+                    <Property name="name">score</Property>
+                    <Property name="property">score</Property>
+                    <Property name="caption">分数</Property>
+                    <Property name="width">50</Property>
+                    <Editor/>
+                  </DataColumn>
+                </DataGrid>
+              </Container>
+            </Editor>
+          </AutoFormElement>
+        </AutoForm>
+      </Children>
+      <Tools/>
+    </Dialog>
+    <Dialog id="dialogChoseQuestion">
+      <Property name="width">800</Property>
+      <Property name="height">600</Property>
+      <Property name="caption">试题库</Property>
+      <Buttons>
+        <Button id="btnDialogChoseOK">
+          <Property name="caption">确定</Property>
+          <Property name="iconClass">fa fa-check</Property>
+        </Button>
+        <Button id="btnDialogChoseCancel">
+          <Property name="caption">取消</Property>
+          <Property name="iconClass">fa fa-times</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <DataGrid id="gridChoseQuestion">
+          <Property name="dataSet">dataSetQuestions</Property>
+          <Property name="showFooter">true</Property>
+          <Property name="selectionMode">multiRows</Property>
+          <RowSelectorColumn/>
+          <DataColumn>
+            <Property name="name">name</Property>
+            <Property name="property">name</Property>
+            <Property name="caption">名称</Property>
+            <Property name="readOnly">true</Property>
+            <Property name="width">120</Property>
+            <Editor/>
+          </DataColumn>
+          <DataColumn>
+            <Property name="name">question</Property>
+            <Property name="property">question</Property>
+            <Property name="caption">问题</Property>
+            <Property name="readOnly">true</Property>
+            <Editor/>
+          </DataColumn>
+          <DataColumn>
+            <Property name="property">type</Property>
+            <Property name="name">type</Property>
+            <Property name="caption">类型</Property>
+            <Property name="width">80</Property>
+            <Property name="readOnly">true</Property>
+            <Editor/>
+          </DataColumn>
+          <DataColumn>
+            <Property name="caption">序号</Property>
+            <Property name="name">order</Property>
+            <Property name="property">order</Property>
+            <Property name="width">50</Property>
+            <Editor>
+              <NumberSpinner>
+                <Property name="min">0</Property>
+                <Property name="max">20</Property>
+              </NumberSpinner>
+            </Editor>
+          </DataColumn>
+          <DataColumn>
+            <Property name="name">score</Property>
+            <Property name="property">score</Property>
+            <Property name="caption">分数</Property>
+            <Property name="width">50</Property>
+            <Editor>
+              <NumberSpinner>
+                <Property name="min">0</Property>
+                <Property name="max">100</Property>
+                <Property name="step">0.5</Property>
+              </NumberSpinner>
+            </Editor>
+          </DataColumn>
+        </DataGrid>
+      </Children>
+      <Tools/>
+    </Dialog>
+  </View>
 </ViewConfig>

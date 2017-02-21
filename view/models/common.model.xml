@@ -12,6 +12,21 @@
     <Property name="autoCreatePropertyDefs">true</Property>
     <Property name="matchType">com.kam.qs.entity.common.Award</Property>
     <Property name="defaultDisplayProperty">name</Property>
+    <PropertyDef name="name">
+      <Property/>
+      <Property name="label">名称</Property>
+      <Property name="required">true</Property>
+    </PropertyDef>
+    <PropertyDef name="supplier">
+      <Property/>
+      <Property name="label">供应商</Property>
+      <Property name="required">true</Property>
+    </PropertyDef>
+    <PropertyDef name="specifications">
+      <Property/>
+      <Property name="label">规格</Property>
+      <Property name="required">true</Property>
+    </PropertyDef>
   </DataType>
   <DataType name="Industry" parent="AbstractEntity">
     <Property name="autoCreatePropertyDefs">true</Property>
@@ -94,12 +109,12 @@
       <Property name="required">true</Property>
     </PropertyDef>
     <PropertyDef name="password">
-      <Property/>
+      <Property></Property>
       <Property name="label">密码</Property>
       <Property name="required">true</Property>
     </PropertyDef>
     <PropertyDef name="roleStr">
-      <Property/>
+      <Property></Property>
       <Property name="required">true</Property>
     </PropertyDef>
   </DataType>

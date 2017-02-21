@@ -13,6 +13,11 @@
     <Property name="autoCreatePropertyDefs">true</Property>
     <Property name="matchType">com.kam.qs.entity.exampool.Question</Property>
     <Property name="defaultDisplayProperty">question</Property>
+    <PropertyDef name="type">
+      <Property name="mapping">
+        <Property name="mapValues">${dorado.getDataProvider(&quot;qs.commonService#getEnumKeyValues&quot;).getResult(&quot;QuestionType&quot;)}</Property>
+      </Property>
+    </PropertyDef>
   </DataType>
   <DataType name="Template" parent="AuditEntity">
     <Property name="autoCreatePropertyDefs">true</Property>

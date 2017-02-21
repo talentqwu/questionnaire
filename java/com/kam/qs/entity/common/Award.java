@@ -21,10 +21,14 @@ public class Award extends AuditEntity {
 	@Column(length = 256, nullable = false)
 	private String name;
 	
-	@PropertyDef(label = "代码")
-	@Column(length = 32, nullable = false)
-	private String code;
-
+	@PropertyDef(label = "供应商")
+	@Column(length = 256, nullable = false)
+	private String supplier;
+	
+	@PropertyDef(label = "规格")
+	@Column(length = 512, nullable = false)
+	private String specifications;
+	
 	@PropertyDef(label = "描述")
 	@Column(length = 2048)
 	private String description;
@@ -41,14 +45,6 @@ public class Award extends AuditEntity {
 		this.name = name;
 	}
 
-	public String getCode() {
-		return code;
-	}
-
-	public void setCode(String code) {
-		this.code = code;
-	}
-
 	public String getDescription() {
 		return description;
 	}
@@ -63,5 +59,21 @@ public class Award extends AuditEntity {
 
 	public void setImageUrl(String imageUrl) {
 		this.imageUrl = imageUrl;
+	}
+
+	public String getSupplier() {
+		return supplier;
+	}
+
+	public void setSupplier(String supplier) {
+		this.supplier = supplier;
+	}
+
+	public String getSpecifications() {
+		return specifications;
+	}
+
+	public void setSpecifications(String specifications) {
+		this.specifications = specifications;
 	}
 }

@@ -25,10 +25,6 @@ public class Template extends AuditEntity {
 	@Column(length = 256, nullable = false)
 	private String name;
 	
-	@PropertyDef(label = "代码")
-	@Column(length = 32, nullable = false)
-	private String code;
-
 	@PropertyDef(label = "标题")
 	@Column(length = 256, nullable = false)
 	private String title;
@@ -50,14 +46,6 @@ public class Template extends AuditEntity {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public String getCode() {
-		return code;
-	}
-
-	public void setCode(String code) {
-		this.code = code;
 	}
 
 	public String getDescription() {
