@@ -13,9 +13,9 @@ import com.bstek.dorado.view.resolver.HtmlViewResolver;
 import com.bstek.dorado.web.DoradoContext;
 import com.kam.qs.dao.common.TreeNodeDao;
 import com.kam.qs.emnu.Role;
-import com.kam.qs.entity.common.Permission;
 import com.kam.qs.entity.common.TreeNode;
 import com.kam.qs.entity.common.User;
+import com.kam.qs.pojo.Permission;
 import com.kam.qs.util.Constants;
 
 public class HtmlViewSecurityInterceptor extends HandlerInterceptorAdapter {

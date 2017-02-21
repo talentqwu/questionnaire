@@ -1,7 +1,6 @@
 // @Bind #btnCreate.onClick
 function btnCreateOnClick(self, arg) {
 	view.get("#dataSetLiaisons.data").insert();
-	view.get("#dialogLiaisons").show();
 }
 
 // @Bind #btnDelete.onClick

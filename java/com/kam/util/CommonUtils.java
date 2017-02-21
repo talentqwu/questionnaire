@@ -27,13 +27,51 @@ public class CommonUtils {
 		return shortBuffer.toString();
 	}
 	
-	public static String encoderByMd5(String str) {
+	// 全局数组
+    private static final String[] strDigits = { "0", "1", "2", "3", "4", "5",
+            "6", "7", "8", "9", "a", "b", "c", "d", "e", "f" };
+
+    // 返回形式为数字跟字符串
+    private static String byteToArrayString(byte bByte) {
+        int iRet = bByte;
+        if (iRet < 0) {
+            iRet += 256;
+        }
+        int iD1 = iRet / 16;
+        int iD2 = iRet % 16;
+        return strDigits[iD1] + strDigits[iD2];
+    }
+	
+    private static String byteToString(byte[] bByte) {
+        StringBuffer sBuffer = new StringBuffer();
+        for (int i = 0; i < bByte.length; i++) {
+            sBuffer.append(byteToArrayString(bByte[i]));
+        }
+        return sBuffer.toString();
+    }
+	
+    public static String encoderByMd5WithBase64(String str) {
 		String encodeStr = null;
 		
 		try {
 			MessageDigest md5 = MessageDigest.getInstance("MD5");
 			BASE64Encoder base64en = new BASE64Encoder();
 			encodeStr = base64en.encode(md5.digest(str.getBytes("utf-8")));
+		} catch(NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		} catch(UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+
+		return encodeStr;
+    }
+    
+	public static String encoderByMd5(String str) {
+		String encodeStr = null;
+		
+		try {
+			MessageDigest md5 = MessageDigest.getInstance("MD5");
+			encodeStr = byteToString(md5.digest(str.getBytes("utf-8")));
 		} catch(NoSuchAlgorithmException e) {
 			e.printStackTrace();
 		} catch(UnsupportedEncodingException e) {

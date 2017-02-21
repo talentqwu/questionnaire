@@ -58,7 +58,7 @@ MainEvent.viewOnReady = function(self, arg) {
 		currentUser : results.CURRENT_USER
 	};
 	
-	var showPublish = false, showManage = false, showTask = false, showAnalysis = false;
+	var showSetting = false, showManage = false, showTask = false, showAnalysis = false;
 	if (Context.VIEW.CONTEXT.currentUser.permissions)
 		Context.VIEW.CONTEXT.currentUser.permissions.each(function(permission) {
 			switch(permission.role) {

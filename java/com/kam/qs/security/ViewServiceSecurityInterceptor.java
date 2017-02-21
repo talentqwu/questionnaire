@@ -17,8 +17,8 @@ import com.bstek.dorado.web.DoradoContext;
 import com.kam.qs.dao.common.DoradoServiceDao;
 import com.kam.qs.emnu.Role;
 import com.kam.qs.entity.common.DoradoService;
-import com.kam.qs.entity.common.Permission;
 import com.kam.qs.entity.common.User;
+import com.kam.qs.pojo.Permission;
 import com.kam.qs.security.interceptor.InnerInterceptor;
 import com.kam.qs.util.Constants;
 

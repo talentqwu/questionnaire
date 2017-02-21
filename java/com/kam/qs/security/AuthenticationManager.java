@@ -10,8 +10,8 @@ import com.bstek.dorado.web.DoradoContext;
 import com.kam.qs.dao.common.UnitDao;
 import com.kam.qs.dao.common.UserDao;
 import com.kam.qs.emnu.Role;
-import com.kam.qs.entity.common.Permission;
 import com.kam.qs.entity.common.User;
+import com.kam.qs.pojo.Permission;
 import com.kam.qs.util.Constants;
 import com.kam.util.CommonUtils;
 
@@ -71,12 +71,10 @@ public class AuthenticationManager implements com.bstek.dorado.console.authentic
 
 	private User createSystemUser() {
 		User user = new User("system", "System");
-		List<Permission> permissions = new ArrayList<Permission>();
-		permissions.add(new Permission(null, Role.ADMIN));
-		permissions.add(new Permission(null, Role.SYSTEM));
-		permissions.add(new Permission(null, Role.ANALYSIS));
-		permissions.add(new Permission(null, Role.PUBLISH));
-		user.setPermissions(permissions);
+		String roleStr = "";
+		for (Role value : Role.values())
+			roleStr += value.toString() + ",";
+		user.setRoleStr(roleStr);
 		
 		return user;
 	}
@@ -87,6 +85,7 @@ public class AuthenticationManager implements com.bstek.dorado.console.authentic
 		target.setCode(source.getCode());
 		target.setId(source.getId());
 		target.setName(source.getName());
+		target.setRoleStr(source.getRoleStr());
 		if (source.getPermissions() != null && source.getPermissions().size() > 0) {
 			List<Permission> permissions = new ArrayList<Permission>();
 			for (Permission permission : source.getPermissions())
@@ -102,7 +101,6 @@ public class AuthenticationManager implements com.bstek.dorado.console.authentic
 		
 		if (source != null) {
 			target = new Permission();
-			target.setId(source.getId());
 			target.setOrder(source.getOrder());
 			target.setRole(source.getRole());
 		}

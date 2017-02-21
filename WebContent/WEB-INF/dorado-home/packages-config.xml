@@ -14,6 +14,7 @@
 			classpath:libraries/common/enums,
 			classpath:libraries/common/types,
 			classpath:libraries/common/context,
+			classpath:libraries/common/md5.min,
 			classpath:libraries/common/other
 		</Package>
 		

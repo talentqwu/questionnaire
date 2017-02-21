@@ -29,9 +29,11 @@ import com.kam.qs.dao.common.DoradoServiceDao;
 import com.kam.qs.dao.common.IndustryDao;
 import com.kam.qs.dao.common.LiaisonsDao;
 import com.kam.qs.dao.common.LogDao;
+import com.kam.qs.dao.common.PermissionDao;
 import com.kam.qs.dao.common.RegionDao;
 import com.kam.qs.dao.common.TreeNodeDao;
 import com.kam.qs.dao.common.UnitDao;
+import com.kam.qs.dao.common.UserDao;
 import com.kam.qs.emnu.ArchivesType;
 import com.kam.qs.emnu.Role;
 import com.kam.qs.emnu.TreeNodeCategory;
@@ -40,12 +42,12 @@ import com.kam.qs.entity.common.DoradoService;
 import com.kam.qs.entity.common.Industry;
 import com.kam.qs.entity.common.Liaisons;
 import com.kam.qs.entity.common.Log;
-import com.kam.qs.entity.common.Permission;
 import com.kam.qs.entity.common.Region;
 import com.kam.qs.entity.common.TreeNode;
 import com.kam.qs.entity.common.Unit;
 import com.kam.qs.entity.common.User;
 import com.kam.qs.pojo.KeyValue;
+import com.kam.qs.pojo.Permission;
 import com.kam.qs.util.Constants;
 
 @Component(value = "qs.commonService")
@@ -76,6 +78,23 @@ public class CommonService {
 	
 	@Resource
 	private UnitDao unitDao;
+	
+	@Resource
+	private PermissionDao permissionDao;
+	
+	@Resource
+	private UserDao userDao;
+	
+	@DataProvider
+	public List<User> queryUser(Map<String, Object> parameter) {
+		return userDao.getByParameter(parameter);
+	}
+	
+	@DataResolver
+	@Transactional
+	public void saveUser(Collection<User> datas) throws Exception {
+		userDao.persistEntities(datas);
+	}
 	
 	@DataProvider
 	public List<Unit> getUnitRoot(Map<String, Object> parameter) throws Exception {

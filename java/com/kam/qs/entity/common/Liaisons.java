@@ -1,5 +1,6 @@
 package com.kam.qs.entity.common;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -7,6 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import com.bstek.dorado.annotation.PropertyDef;
 import com.kam.qs.entity.AuditEntity;
@@ -40,6 +43,11 @@ public class Liaisons  extends AuditEntity {
 	@PropertyDef(label = "验证密钥")
 	@Column(name = "secret_key", length = 12, nullable = false)
 	private String secretKey = String.valueOf((int)((Math.random()*9+1)*100000));
+	
+	@PropertyDef(label = "验证密钥生成时间")
+	@Column(name = "key_generate_time")
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date keyGenerateTime;
 	
 	/**
 	 * 有在用户将公众号绑定到微信开放平台帐号后，才会出现该字段。
@@ -145,5 +153,13 @@ public class Liaisons  extends AuditEntity {
 
 	public void setDuty(String duty) {
 		this.duty = duty;
+	}
+
+	public Date getKeyGenerateTime() {
+		return keyGenerateTime;
+	}
+
+	public void setKeyGenerateTime(Date keyGenerateTime) {
+		this.keyGenerateTime = keyGenerateTime;
 	}
 }
