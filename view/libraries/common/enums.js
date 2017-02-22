@@ -6,3 +6,9 @@ ENUM.Role = {
 	ADMIN : 'ADMIN',
 	SYSTEM : 'SYSTEM'
 };
+
+ENUM.TaskStatus = {
+	EDITING   : 'EDITING',
+	PUBLISHED : 'PUBLISHED',
+	FINISHED  : 'FINISHED'
+};

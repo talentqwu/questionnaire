@@ -89,6 +89,13 @@ public class Participator extends AuditEntity {
 	@JoinColumn(name = "prize_id")
 	private Prize prize;
 	
+	/**
+	 * 有效答卷的得分
+	 */
+	@PropertyDef(label = "得分")
+	@Column(name = "total_score", nullable = false)
+	private double totalScore = 0;
+	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "participator")
 	private List<Sheet> sheets;
 	
@@ -225,5 +232,13 @@ public class Participator extends AuditEntity {
 
 	public void setTelphone(String telphone) {
 		this.telphone = telphone;
+	}
+
+	public double getTotalScore() {
+		return totalScore;
+	}
+
+	public void setTotalScore(double totalScore) {
+		this.totalScore = totalScore;
 	}
 }

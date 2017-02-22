@@ -29,11 +29,11 @@ public class Sheet extends AuditEntity {
 	private boolean valid = true;
 	
 	@PropertyDef(label = "总得分")
-	@Column(nullable = false)
+	@Column(name = "total_score", nullable = false)
 	private double totalScore = 0;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "participator", nullable = false)
+	@JoinColumn(name = "participator_id", nullable = false)
 	private Participator participator;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "sheet")

@@ -55,26 +55,19 @@
     </ToolBar>
     <DataTreeGrid id="gridQuestion">
       <Property name="dataSet">dataSetQuestion</Property>
-      <Property name="treeColumn">name</Property>
+      <Property name="treeColumn">question</Property>
       <Property name="showLines">true</Property>
       <BindingConfigs>
         <BindingConfig>
           <Property name="childrenProperty">children</Property>
           <Property name="hasChildProperty">hasChild</Property>
-          <Property name="labelProperty">name</Property>
+          <Property name="labelProperty">question</Property>
           <Property name="recursive">true</Property>
         </BindingConfig>
       </BindingConfigs>
       <Columns>
         <IndicatorColumn/>
         <RowNumColumn/>
-        <DataColumn>
-          <Property name="name">name</Property>
-          <Property name="property">name</Property>
-          <Property name="caption">名称</Property>
-          <Property name="width">180</Property>
-          <Editor/>
-        </DataColumn>
         <DataColumn>
           <Property name="caption">问题</Property>
           <Property name="name">question</Property>

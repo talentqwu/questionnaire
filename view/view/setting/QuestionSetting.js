@@ -12,12 +12,12 @@ function btnCreateOnClick(self, arg) {
 	if (currentNode) {
 		var currentEntity = currentNode.get("data");
 		newEntity = currentEntity.createBrother({
-			name : '<新试题>',
+			question : '<新试题>',
 			parentId : currentEntity.get('parentId')
 		});
 	} else
 		newEntity = datas.insert({
-			name : '<新试题>'
+			question : '<新试题>'
 		});
 	treeGrid.set('currentEntity', newEntity);
 }
@@ -34,7 +34,7 @@ function btnCreateSubOnClick(self, arg) {
 			if (currentEntity.get('id')) {
 				currentNode.expandAsync(function() {
 					var newEntity = currentEntity.createChild("children", {
-						name : '<新试题>',
+						question : '<新试题>',
 						parentId : currentEntity.get('id')
 					});
 					treeGrid.set('currentEntity', newEntity);
@@ -49,5 +49,14 @@ function btnCreateSubOnClick(self, arg) {
 
 // @Bind #btnSetAnswer.onClick
 function btnSetAnswerOnClick(self, arg) {
-	view.get('#dialogAnswer').show();
+	var treeGrid = view.get('#gridQuestion');
+	var currentNode = treeGrid.get("currentNode");
+	if (currentNode) {
+		var currentEntity = currentNode.get("data");
+		if (currentEntity.get('id')) 
+			view.get('#dialogAnswer').show();
+		else
+			dorado.widget.NotifyTipManager.notify('请先保存试题再编辑答案！');
+	} else
+		dorado.widget.NotifyTipManager.notify('请先选择一道试题！');
 }

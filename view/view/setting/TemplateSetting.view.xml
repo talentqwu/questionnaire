@@ -110,6 +110,8 @@
             <Property name="label">描述</Property>
             <Property name="name">description</Property>
             <Property name="property">description</Property>
+            <Property name="editorType">TextArea</Property>
+            <Property name="height">50</Property>
             <Editor/>
           </AutoFormElement>
           <AutoFormElement>
@@ -135,11 +137,23 @@
                 </ToolBar>
                 <DataGrid id="gridQuestions">
                   <Property name="dataPath">#.questions</Property>
-                  <RowNumColumn/>
+                  <Property name="showFooter">true</Property>
                   <DataColumn>
-                    <Property name="name">name</Property>
-                    <Property name="property">name</Property>
-                    <Property name="caption">名称</Property>
+                    <Property name="caption">序号</Property>
+                    <Property name="name">order</Property>
+                    <Property name="property">order</Property>
+                    <Property name="width">50</Property>
+                    <Editor>
+                      <NumberSpinner>
+                        <Property name="min">0</Property>
+                        <Property name="max">20</Property>
+                      </NumberSpinner>
+                    </Editor>
+                  </DataColumn>
+                  <DataColumn>
+                    <Property name="name">question</Property>
+                    <Property name="property">question</Property>
+                    <Property name="caption">问题</Property>
                     <Editor/>
                   </DataColumn>
                   <DataColumn>
@@ -165,8 +179,8 @@
       <Tools/>
     </Dialog>
     <Dialog id="dialogChoseQuestion">
-      <Property name="width">800</Property>
-      <Property name="height">600</Property>
+      <Property name="width">700</Property>
+      <Property name="height">500</Property>
       <Property name="caption">试题库</Property>
       <Buttons>
         <Button id="btnDialogChoseOK">
@@ -184,14 +198,6 @@
           <Property name="showFooter">true</Property>
           <Property name="selectionMode">multiRows</Property>
           <RowSelectorColumn/>
-          <DataColumn>
-            <Property name="name">name</Property>
-            <Property name="property">name</Property>
-            <Property name="caption">名称</Property>
-            <Property name="readOnly">true</Property>
-            <Property name="width">120</Property>
-            <Editor/>
-          </DataColumn>
           <DataColumn>
             <Property name="name">question</Property>
             <Property name="property">question</Property>
@@ -222,7 +228,7 @@
           <DataColumn>
             <Property name="name">score</Property>
             <Property name="property">score</Property>
-            <Property name="caption">分数</Property>
+            <Property name="caption">分值</Property>
             <Property name="width">50</Property>
             <Editor>
               <NumberSpinner>

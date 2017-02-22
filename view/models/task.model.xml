@@ -3,6 +3,12 @@
   <DataType name="Batch" parent="AbstractEntity">
     <Property name="autoCreatePropertyDefs">true</Property>
     <Property name="matchType">com.kam.qs.entity.task.Batch</Property>
+    <PropertyDef name="beginDate">
+      <Property name="displayFormat">y-m-d</Property>
+    </PropertyDef>
+    <PropertyDef name="endDate">
+      <Property name="displayFormat">y-m-d</Property>
+    </PropertyDef>
   </DataType>
   <DataType name="Prize" parent="AuditEntity">
     <Property name="autoCreatePropertyDefs">true</Property>
@@ -17,5 +23,16 @@
     <Property name="autoCreatePropertyDefs">true</Property>
     <Property name="matchType">com.kam.qs.entity.task.Task</Property>
     <Property name="defaultDisplayProperty">name</Property>
+    <PropertyDef name="beginDate">
+      <Property name="displayFormat">y-m-d</Property>
+    </PropertyDef>
+    <PropertyDef name="endDate">
+      <Property name="displayFormat">y-m-d</Property>
+    </PropertyDef>
+    <PropertyDef name="status">
+      <Property name="mapping">
+        <Property name="mapValues">${dorado.getDataProvider(&quot;qs.commonService#getEnumKeyValues&quot;).getResult(&quot;TaskStatus&quot;)}</Property>
+      </Property>
+    </PropertyDef>
   </DataType>
 </Model>

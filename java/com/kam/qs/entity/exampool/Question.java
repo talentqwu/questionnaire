@@ -27,10 +27,6 @@ public class Question  extends AuditEntity {
 
 	private static final long serialVersionUID = 1L;
 
-	@PropertyDef(label = "名称")
-	@Column(length = 256, nullable = false)
-	private String name;
-	
 	@PropertyDef(label = "代码")
 	@Column(length = 32, nullable = false)
 	private String code;
@@ -54,14 +50,6 @@ public class Question  extends AuditEntity {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "question")
 	private List<Answer> answers;
 	
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
 	public String getCode() {
 		return code;
 	}

@@ -83,4 +83,12 @@ public class Statistics extends AbstractEntity {
 	public void setDetails(List<StatisticsDetail> details) {
 		this.details = details;
 	}
+
+	public int getPeopleNumber() {
+		return peopleNumber;
+	}
+
+	public void setPeopleNumber(int peopleNumber) {
+		this.peopleNumber = peopleNumber;
+	}
 }

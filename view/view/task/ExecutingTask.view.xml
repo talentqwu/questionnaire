@@ -4,20 +4,18 @@
   <Context/>
   <Model>
     <DataType name="Task" parent="global:Task">
-      <Reference name="batchs">
-        <Property name="dataType">[Batch]</Property>
-      </Reference>
-      <Reference name="prizes">
-        <Property name="dataType">[Prize]</Property>
-      </Reference>
       <PropertyDef name="statistics">
         <Property name="dataType">Statistics</Property>
       </PropertyDef>
+      <PropertyDef name="template">
+        <Property name="dataType">Template</Property>
+        <Property name="required">true</Property>
+      </PropertyDef>
     </DataType>
     <DataType name="Batch" parent="global:Batch">
-      <Reference name="subTasks">
-        <Property name="dataType">[SubTask]</Property>
-      </Reference>
+      <PropertyDef name="task">
+        <Property name="dataType">Task</Property>
+      </PropertyDef>
     </DataType>
     <DataType name="SubTask" parent="global:SubTask">
       <PropertyDef name="unit">
@@ -26,16 +24,56 @@
       <PropertyDef name="statistics">
         <Property name="dataType">Statistics</Property>
       </PropertyDef>
+      <PropertyDef name="batch">
+        <Property name="dataType">Batch</Property>
+      </PropertyDef>
     </DataType>
     <DataType name="Prize" parent="global:Prize">
       <PropertyDef name="award">
         <Property name="dataType">Award</Property>
       </PropertyDef>
+      <PropertyDef name="task">
+        <Property name="dataType">Task</Property>
+      </PropertyDef>
+    </DataType>
+    <DataType name="Participator" parent="global:Participator">
+      <PropertyDef name="sharerNickName"/>
     </DataType>
   </Model>
   <View>
     <Property name="packages">font-awesome</Property>
-    <DataSet id="dataSetTask"/>
+    <DataSet id="dataSetTask">
+      <Property name="dataType">[Task]</Property>
+      <Property name="dataProvider">qs.taskService#getExecutingTask</Property>
+    </DataSet>
+    <DataSet id="dataSetPrize">
+      <Property name="dataType">[Prize]</Property>
+      <Property name="dataProvider">qs.taskService#getPrizeByTask</Property>
+      <Property name="loadMode">manual</Property>
+    </DataSet>
+    <DataSet id="dataSetBatch">
+      <Property name="dataType">[Batch]</Property>
+      <Property name="dataProvider">qs.taskService#getBatchByTask</Property>
+      <Property name="loadMode">manual</Property>
+    </DataSet>
+    <DataSet id="dataSetSubTask">
+      <Property name="dataType">[SubTask]</Property>
+      <Property name="dataProvider">qs.taskService#getSubTaskByBatch</Property>
+      <Property name="loadMode">manual</Property>
+    </DataSet>
+    <DataSet id="dataSetParticipator">
+      <Property name="dataType">[Participator]</Property>
+      <Property name="dataProvider">qs.contentService#getParticipatorBySubTask</Property>
+      <Property name="loadMode">manual</Property>
+    </DataSet>
+    <DataSet id="dataSetAward">
+      <Property name="dataType">[Award]</Property>
+      <Property name="dataProvider">qs.commonService#getAllAward</Property>
+    </DataSet>
+    <DataSet id="dataSetTemplate">
+      <Property name="dataType">[Template]</Property>
+      <Property name="dataProvider">qs.exampoolService#getAllTemplate</Property>
+    </DataSet>
     <SplitPanel>
       <Property name="direction">top</Property>
       <Property name="position">200</Property>
@@ -45,66 +83,77 @@
           <MainControl>
             <Container>
               <ToolBar>
-                <ToolBarButton>
-                  <Property name="caption">显示所有单位</Property>
-                </ToolBarButton>
-                <ToolBarButton>
+                <ToolBarButton id="btnShowParticipatorList">
                   <Property name="caption">参与者明细</Property>
+                  <Property name="iconClass">fa fa-list</Property>
                 </ToolBarButton>
                 <Fill/>
                 <ToolBarButton>
-                  <Property name="caption">刷新</Property>
+                  <Property name="iconClass">fa fa-refresh</Property>
                 </ToolBarButton>
               </ToolBar>
-              <DataGrid>
+              <DataGrid id="gridSubTask">
                 <Property name="showFooter">true</Property>
+                <Property name="dataSet">dataSetSubTask</Property>
                 <RowNumColumn/>
                 <DataColumn>
                   <Property name="caption">单位名称</Property>
+                  <Property name="name">name</Property>
+                  <Property name="property">unit.name</Property>
                   <Editor/>
                 </DataColumn>
                 <DataColumn>
                   <Property name="caption">所属社区</Property>
                   <Property name="width">100</Property>
+                  <Property name="name">region</Property>
+                  <Property name="property">unit.region</Property>
                   <Editor/>
                 </DataColumn>
                 <DataColumn>
                   <Property name="caption">所属行业</Property>
                   <Property name="width">250</Property>
+                  <Property name="name">industry</Property>
+                  <Property name="property">unit.industry</Property>
                   <Editor/>
                 </DataColumn>
                 <DataColumn>
                   <Property name="caption">包干</Property>
                   <Property name="width">40</Property>
+                  <Property name="name">enableShare</Property>
+                  <Property name="property">unit.enableShare</Property>
                   <Editor/>
                 </DataColumn>
                 <DataColumn>
                   <Property name="caption">登记人数</Property>
                   <Property name="width">60</Property>
+                  <Property name="name">unitPeopleNumber</Property>
+                  <Property name="property">unit.peopleNumber</Property>
                   <Editor/>
                 </DataColumn>
                 <DataColumn>
                   <Property name="caption">参与人数</Property>
                   <Property name="width">60</Property>
+                  <Property name="name">statisticsPeopleNumber</Property>
+                  <Property name="property">statistics.peopleNumber</Property>
                   <Editor/>
                 </DataColumn>
                 <DataColumn>
                   <Property name="name">averageScore</Property>
-                  <Property name="property">averageScore</Property>
+                  <Property name="property">statistics.averageScore</Property>
                   <Property name="caption">平均分</Property>
                   <Property name="width">60</Property>
                   <Editor/>
                 </DataColumn>
                 <DataColumn>
                   <Property name="name">highestScore</Property>
-                  <Property name="property">highestScore</Property>
+                  <Property name="property">statistics.highestScore</Property>
                   <Property name="caption">最高分</Property>
                   <Property name="width">60</Property>
                   <Editor/>
                 </DataColumn>
                 <DataColumn>
                   <Property name="name">lowestScore</Property>
-                  <Property name="property">lowestScore</Property>
+                  <Property name="property">statistics.lowestScore</Property>
                   <Property name="caption">最低分</Property>
                   <Property name="width">60</Property>
                   <Editor/>
@@ -115,18 +164,22 @@
           <SideControl>
             <Container>
               <ToolBar>
-                <ToolBarButton>
+                <ToolBarButton id="btnCreateBatch">
                   <Property name="caption">添加批次</Property>
+                  <Property name="iconClass">fa fa-plus</Property>
                 </ToolBarButton>
-                <ToolBarButton>
+                <ToolBarButton id="btnDeleteBatch">
                   <Property name="caption">删除批准</Property>
+                  <Property name="iconClass">fa fa-minus</Property>
                 </ToolBarButton>
                 <Separator/>
-                <ToolBarButton>
+                <ToolBarButton id="btnChangeBatchDate">
                   <Property name="caption">调整期限</Property>
+                  <Property name="iconClass">fa fa-tachometer</Property>
                 </ToolBarButton>
               </ToolBar>
-              <DataGrid>
+              <DataGrid id="gridBatch">
+                <Property name="dataSet">dataSetBatch</Property>
                 <RowNumColumn/>
                 <DataColumn>
                   <Property name="name">name</Property>
@@ -156,21 +209,37 @@
       <SideControl>
         <Container>
           <ToolBar>
-            <ToolBarButton>
+            <ToolBarButton id="btnCreateTask">
               <Property name="caption">添加任务</Property>
+              <Property name="iconClass">fa fa-plus</Property>
             </ToolBarButton>
-            <ToolBarButton>
-              <Property name="caption">发布任务</Property>
-            </ToolBarButton>
-            <ToolBarButton>
+            <ToolBarButton id="btnDeleteTask">
               <Property name="caption">删除任务</Property>
+              <Property name="iconClass">fa fa-minus</Property>
             </ToolBarButton>
             <Separator/>
-            <ToolBarButton>
+            <ToolBarButton id="btnPublishTask">
+              <Property name="caption">发布任务</Property>
+              <Property name="iconClass">fa fa-bullhorn</Property>
+            </ToolBarButton>
+            <ToolBarButton id="btnCopyTask">
+              <Property name="caption">复制任务</Property>
+              <Property name="iconClass">fa fa-clipboard</Property>
+            </ToolBarButton>
+            <Separator/>
+            <ToolBarButton id="btnSetPrize">
+              <Property name="caption">奖项设置</Property>
+              <Property name="tip">仅限于启用奖品的任务</Property>
+              <Property name="iconClass">fa fa-money</Property>
+            </ToolBarButton>
+            <ToolBarButton id="btnChangeTaskDate">
               <Property name="caption">调整期限</Property>
+              <Property name="iconClass">fa fa-tachometer</Property>
             </ToolBarButton>
           </ToolBar>
           <DataGrid id="gridTask">
+            <Property name="dataSet">dataSetTask</Property>
+            <Property name="readOnly">true</Property>
             <RowNumColumn/>
             <DataColumn>
               <Property name="name">name</Property>
@@ -196,7 +265,7 @@
               <Property name="name">enableShare</Property>
               <Property name="property">enableShare</Property>
               <Property name="caption">包干</Property>
-              <Property name="width">40</Property>
+              <Property name="width">35</Property>
               <Editor/>
             </DataColumn>
             <DataColumn>
@@ -209,8 +278,8 @@
             <DataColumn>
               <Property name="name">enablePrizeDraw</Property>
               <Property name="property">enablePrizeDraw</Property>
-              <Property name="caption">启用奖品</Property>
-              <Property name="width">60</Property>
+              <Property name="caption">奖励</Property>
+              <Property name="width">35</Property>
               <Editor/>
             </DataColumn>
             <DataColumn>
@@ -229,32 +298,355 @@
             <DataColumn>
               <Property name="caption">参与人数</Property>
               <Property name="width">60</Property>
+              <Property name="name">peopleNumber</Property>
+              <Property name="property">statistics.peopleNumber</Property>
               <Editor/>
             </DataColumn>
             <DataColumn>
               <Property name="name">averageScore</Property>
-              <Property name="property">averageScore</Property>
+              <Property name="property">statistics.averageScore</Property>
               <Property name="caption">平均分</Property>
               <Property name="width">60</Property>
               <Editor/>
             </DataColumn>
             <DataColumn>
               <Property name="name">highestScore</Property>
-              <Property name="property">highestScore</Property>
+              <Property name="property">statistics.highestScore</Property>
               <Property name="caption">最高分</Property>
               <Property name="width">60</Property>
               <Editor/>
             </DataColumn>
             <DataColumn>
               <Property name="name">lowestScore</Property>
-              <Property name="property">lowestScore</Property>
+              <Property name="property">statistics.lowestScore</Property>
               <Property name="caption">最低分</Property>
               <Property name="width">60</Property>
+              <Editor/>
+            </DataColumn>
+            <DataColumn>
+              <Property name="caption">状态</Property>
+              <Property name="width">50</Property>
+              <Property name="name">status</Property>
+              <Property name="property">status</Property>
               <Editor/>
             </DataColumn>
           </DataGrid>
         </Container>
       </SideControl>
     </SplitPanel>
+    <Dialog id="dialogTask">
+      <Property name="caption">任务编辑器</Property>
+      <Property name="width">400</Property>
+      <Buttons>
+        <Button id="btnConfirmTask">
+          <Property name="caption">确定</Property>
+          <Property name="iconClass">fa fa-check</Property>
+        </Button>
+        <Button id="btnCancelTask">
+          <Property name="caption">取消</Property>
+          <Property name="iconClass">fa fa-times</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <AutoForm id="formTask">
+          <Property name="cols">*</Property>
+          <Property name="labelAlign">right</Property>
+          <Property name="labelSeparator">：</Property>
+          <Property name="dataSet">dataSetTask</Property>
+          <AutoFormElement>
+            <Property name="label">名称</Property>
+            <Property name="name">name</Property>
+            <Property name="property">name</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="label">启动日期</Property>
+            <Property name="name">beginDate</Property>
+            <Property name="property">beginDate</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="label">截至日期</Property>
+            <Property name="name">endDate</Property>
+            <Property name="property">endDate</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="label">启用包干</Property>
+            <Property name="name">enableShare</Property>
+            <Property name="property">enableShare</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="label">包干人数</Property>
+            <Property name="name">shareNumber</Property>
+            <Property name="property">shareNumber</Property>
+            <Editor>
+              <NumberSpinner>
+                <Property name="min">1</Property>
+                <Property name="max">10</Property>
+              </NumberSpinner>
+            </Editor>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="label">启用奖励</Property>
+            <Property name="name">enablePrizeDraw</Property>
+            <Property name="property">enablePrizeDraw</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="label">合格分数</Property>
+            <Property name="name">passScore</Property>
+            <Property name="property">passScore</Property>
+            <Editor>
+              <NumberSpinner>
+                <Property name="min">60</Property>
+                <Property name="max">100</Property>
+              </NumberSpinner>
+            </Editor>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="label">问卷模板</Property>
+            <Property name="name">template</Property>
+            <Property name="property">template</Property>
+            <Property name="trigger">dropDownTemplate</Property>
+            <Editor/>
+          </AutoFormElement>
+        </AutoForm>
+      </Children>
+      <Tools/>
+    </Dialog>
+    <Dialog id="dialogPrize">
+      <Property name="caption">奖项设置</Property>
+      <Property name="width">600</Property>
+      <Property name="height">400</Property>
+      <Buttons>
+        <Button id="btnConfirmPrize">
+          <Property name="caption">确定</Property>
+          <Property name="iconClass">fa fa-check</Property>
+        </Button>
+        <Button id="btnCancelPrize">
+          <Property name="caption">取消</Property>
+          <Property name="iconClass">fa fa-times</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <ToolBar>
+          <ToolBarButton id="btnCreatePrize">
+            <Property name="iconClass">fa fa-plus</Property>
+            <Property name="caption">添加</Property>
+          </ToolBarButton>
+          <ToolBarButton id="btnDeletePrize">
+            <Property name="iconClass">fa fa-minus</Property>
+            <Property name="caption">删除</Property>
+          </ToolBarButton>
+        </ToolBar>
+        <DataGrid id="gridPrize">
+          <Property name="dataSet">dataSetPrize</Property>
+          <IndicatorColumn/>
+          <RowNumColumn/>
+          <DataColumn>
+            <Property name="name">name</Property>
+            <Property name="property">name</Property>
+            <Property name="caption">奖项名称</Property>
+            <Property name="width">120</Property>
+            <Editor/>
+          </DataColumn>
+          <DataColumn>
+            <Property name="name">number</Property>
+            <Property name="property">number</Property>
+            <Property name="caption">数量</Property>
+            <Property name="width">60</Property>
+            <Editor/>
+          </DataColumn>
+          <DataColumn>
+            <Property name="name">award</Property>
+            <Property name="property">award</Property>
+            <Property name="caption">奖品</Property>
+            <Property name="trigger">dropDownPrize</Property>
+            <Editor/>
+          </DataColumn>
+        </DataGrid>
+      </Children>
+      <Tools/>
+    </Dialog>
+    <Dialog id="dialogBatch">
+      <Property name="caption">批次编辑器</Property>
+      <Property name="width">800</Property>
+      <Buttons>
+        <Button id="btnConfirmBatch">
+          <Property name="caption">确定</Property>
+          <Property name="iconClass">fa fa-check</Property>
+          <Property name="hideMode">display</Property>
+        </Button>
+        <Button id="btnCancelBatch">
+          <Property name="caption">取消</Property>
+          <Property name="iconClass">fa fa-times</Property>
+          <Property name="hideMode">display</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <AutoForm id="formBatch">
+          <Property name="cols">*</Property>
+          <Property name="dataSet">dataSetBatch</Property>
+          <Property name="labelAlign">right</Property>
+          <Property name="labelSeparator">：</Property>
+          <Property name="labelWidth">100</Property>
+          <AutoFormElement>
+            <Property name="name">name</Property>
+            <Property name="property">name</Property>
+            <Property name="label">批次名称</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">beginDate</Property>
+            <Property name="property">beginDate</Property>
+            <Property name="label">启动日期</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="name">endDate</Property>
+            <Property name="property">endDate</Property>
+            <Property name="label">截至日期</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="label">可选参与单位</Property>
+            <Property name="height">300</Property>
+            <Editor>
+              <DataGrid>
+                <Property name="selectionMode">multiRows</Property>
+                <Property name="readOnly">true</Property>
+                <RowSelectorColumn/>
+                <RowNumColumn/>
+                <DataColumn>
+                  <Property name="name">name</Property>
+                  <Property name="property">name</Property>
+                  <Property name="caption">名称</Property>
+                  <Editor/>
+                </DataColumn>
+                <DataColumn>
+                  <Property name="name">region</Property>
+                  <Property name="property">region</Property>
+                  <Property name="caption">所属社区</Property>
+                  <Property name="width">80</Property>
+                  <Editor/>
+                </DataColumn>
+                <DataColumn>
+                  <Property name="name">industry</Property>
+                  <Property name="property">industry</Property>
+                  <Property name="caption">所属行业</Property>
+                  <Property name="width">250</Property>
+                  <Editor/>
+                </DataColumn>
+                <DataColumn>
+                  <Property name="name">peopleNumber</Property>
+                  <Property name="property">peopleNumber</Property>
+                  <Property name="caption">登记人数</Property>
+                  <Property name="width">60</Property>
+                  <Editor/>
+                </DataColumn>
+              </DataGrid>
+            </Editor>
+          </AutoFormElement>
+        </AutoForm>
+      </Children>
+      <Tools/>
+    </Dialog>
+    <Dialog id="dialogParticipatorList">
+      <Property name="caption">参与者明细</Property>
+      <Property name="width">800</Property>
+      <Property name="height">500</Property>
+      <Buttons/>
+      <Children>
+        <DataGrid id="gridParticipator">
+          <Property name="dataSet">dataSetParticipator</Property>
+          <Property name="readOnly">true</Property>
+          <RowNumColumn/>
+          <DataColumn>
+            <Property name="name">nickName</Property>
+            <Property name="property">nickName</Property>
+            <Property name="caption">昵称</Property>
+            <Property name="width">80</Property>
+            <Editor/>
+          </DataColumn>
+          <DataColumn>
+            <Property name="caption">性别</Property>
+            <Property name="name">sex</Property>
+            <Property name="property">sex</Property>
+            <Property name="width">35</Property>
+            <Editor/>
+          </DataColumn>
+          <DataColumn>
+            <Property name="name">address</Property>
+            <Property name="property">address</Property>
+            <Property name="caption">地址</Property>
+            <Editor/>
+          </DataColumn>
+          <DataColumn>
+            <Property name="caption">分享者昵称</Property>
+            <Property name="name">sharerNickName</Property>
+            <Property name="property">sharerNickName</Property>
+            <Property name="width">80</Property>
+            <Editor/>
+          </DataColumn>
+          <DataColumn>
+            <Property name="name">totalScore</Property>
+            <Property name="property">totalScore</Property>
+            <Property name="caption">得分</Property>
+            <Property name="width">60</Property>
+            <Editor/>
+          </DataColumn>
+          <DataColumn>
+            <Property name="name">qualified</Property>
+            <Property name="property">qualified</Property>
+            <Property name="caption">合格</Property>
+            <Property name="width">35</Property>
+            <Editor/>
+          </DataColumn>
+        </DataGrid>
+      </Children>
+      <Tools/>
+    </Dialog>
+    <Dialog id="dialogChangeDate">
+      <Property name="caption">调整期限</Property>
+      <Property name="width">300</Property>
+      <Buttons>
+        <Button id="btnConfirmChangeDate">
+          <Property name="caption">确定</Property>
+          <Property name="iconClass">fa fa-check</Property>
+        </Button>
+        <Button id="btnCancelChangeDate">
+          <Property name="caption">取消</Property>
+          <Property name="iconClass">fa fa-times</Property>
+        </Button>
+      </Buttons>
+      <Children>
+        <AutoForm id="formChangeDate">
+          <Property name="cols">*</Property>
+          <Property name="labelAlign">right</Property>
+          <Property name="labelSeparator">：</Property>
+          <AutoFormElement>
+            <Property name="name">beginDate</Property>
+            <Property name="property">beginDate</Property>
+            <Property name="label">启动日期</Property>
+            <Editor/>
+          </AutoFormElement>
+          <AutoFormElement>
+            <Property name="label">截至日期</Property>
+            <Property name="name">endDate</Property>
+            <Property name="property">endDate</Property>
+            <Editor/>
+          </AutoFormElement>
+        </AutoForm>
+      </Children>
+      <Tools/>
+    </Dialog>
+    <DataSetDropDown id="dropDownTemplate">
+      <Property name="dataSet">dataSetTemplate</Property>
+    </DataSetDropDown>
+    <DataSetDropDown id="dropDownPrize">
+      <Property name="dataSet">dataSetPrize</Property>
+    </DataSetDropDown>
   </View>
 </ViewConfig>

@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -15,6 +17,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import com.bstek.dorado.annotation.PropertyDef;
+import com.kam.qs.emnu.TaskStatus;
 import com.kam.qs.entity.AuditEntity;
 import com.kam.qs.entity.content.Statistics;
 import com.kam.qs.entity.exampool.Template;
@@ -32,6 +35,11 @@ public class Task extends AuditEntity {
 	@PropertyDef(label = "名称")
 	@Column(length = 256, nullable = false)
 	private String name;
+	
+	@PropertyDef(label = "状态")
+	@Column(nullable = false, length = 128)
+	@Enumerated(EnumType.STRING)
+	public TaskStatus status = TaskStatus.EDITING;
 	
 	@PropertyDef(label = "开始日期")
 	@Column(name = "begin_date", nullable = false)
@@ -164,5 +172,13 @@ public class Task extends AuditEntity {
 
 	public void setEnablePrizeDraw(boolean enablePrizeDraw) {
 		this.enablePrizeDraw = enablePrizeDraw;
+	}
+
+	public TaskStatus getStatus() {
+		return status;
+	}
+
+	public void setStatus(TaskStatus status) {
+		this.status = status;
 	}
 }
