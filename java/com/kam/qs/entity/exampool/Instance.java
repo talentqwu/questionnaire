@@ -1,10 +1,13 @@
 package com.kam.qs.entity.exampool;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.bstek.dorado.annotation.PropertyDef;
@@ -36,6 +39,13 @@ public class Instance extends AbstractEntity {
 	@JoinColumn(name = "template_id", nullable = false)
 	private Template template;
 
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "parent_id")
+	private Instance parent;
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "parent")
+	private List<Instance> children;
+	
 	public int getOrder() {
 		return order;
 	}

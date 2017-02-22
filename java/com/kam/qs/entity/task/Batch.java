@@ -1,12 +1,14 @@
 package com.kam.qs.entity.task;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -43,6 +45,9 @@ public class Batch extends AbstractEntity {
 	@JoinColumn(name = "task_id", nullable = false)
 	private Task task;
 
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "batch")
+	private List<SubTask> subTasks;
+	
 	public String getName() {
 		return name;
 	}
@@ -73,5 +78,13 @@ public class Batch extends AbstractEntity {
 
 	public void setTask(Task task) {
 		this.task = task;
+	}
+
+	public List<SubTask> getSubTasks() {
+		return subTasks;
+	}
+
+	public void setSubTasks(List<SubTask> subTasks) {
+		this.subTasks = subTasks;
 	}
 }

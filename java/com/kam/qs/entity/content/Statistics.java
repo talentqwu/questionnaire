@@ -6,12 +6,10 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.bstek.dorado.annotation.PropertyDef;
 import com.kam.qs.entity.AbstractEntity;
-import com.kam.qs.entity.task.SubTask;
 
 /**
  * 每个单位的统计数据。
@@ -23,6 +21,10 @@ public class Statistics extends AbstractEntity {
 
 	private static final long serialVersionUID = 1L;
 
+	@PropertyDef(label = "参与人数")
+	@Column(name = "people_number", nullable = false)
+	private int peopleNumber = 0;
+	
 	@PropertyDef(label = "总得分")
 	@Column(name = "total_score", nullable = false)
 	private double totalScore = 0;
@@ -38,9 +40,6 @@ public class Statistics extends AbstractEntity {
 	@PropertyDef(label = "最低分")
 	@Column(name = "lowest_score", nullable = false)
 	private double lowestScore = 0;
-	
-	@OneToOne(fetch = FetchType.LAZY, mappedBy = "statistics")
-	private SubTask subTask;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "statistics")
 	private List<StatisticsDetail> details;
@@ -75,14 +74,6 @@ public class Statistics extends AbstractEntity {
 
 	public void setLowestScore(double lowestScore) {
 		this.lowestScore = lowestScore;
-	}
-
-	public SubTask getSubTask() {
-		return subTask;
-	}
-
-	public void setSubTask(SubTask subTask) {
-		this.subTask = subTask;
 	}
 
 	public List<StatisticsDetail> getDetails() {

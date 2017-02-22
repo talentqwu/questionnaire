@@ -9,12 +9,14 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import com.bstek.dorado.annotation.PropertyDef;
 import com.kam.qs.entity.AuditEntity;
+import com.kam.qs.entity.content.Statistics;
 import com.kam.qs.entity.exampool.Template;
 
 /**
@@ -50,34 +52,21 @@ public class Task extends AuditEntity {
 	@Column(name = "share_number", nullable = false)
 	private int shareNumber = 5;
 	
-	@PropertyDef(label = "批数")
-	@Column(name = "batch_number", nullable = false)
-	private int batchNumber = 1;
-	
 	@PropertyDef(label = "及格分数")
 	@Column(name = "pass_score", nullable = false)
 	private double passScore = 92;
-	
-	@PropertyDef(label = "总得分")
-	@Column(name = "total_score", nullable = false)
-	private double totalScore = 0;
-	
-	@PropertyDef(label = "平均分")
-	@Column(name = "average_score", nullable = false)
-	private double averageScore = 0;
-	
-	@PropertyDef(label = "最高分")
-	@Column(name = "highest_score", nullable = false)
-	private double highestScore = 0;
-	
-	@PropertyDef(label = "最低分")
-	@Column(name = "lowest_score", nullable = false)
-	private double lowestScore = 0;
 	
 	@PropertyDef(label = "启用抽奖")
 	@Column(name = "enable_prize_draw", nullable = false)
 	@org.hibernate.annotations.Type(type="yes_no")
 	private boolean enablePrizeDraw = false;
+	
+	/**
+	 * 任务的统计数据
+	 */
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "statistics_id")
+	private Statistics statistics;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "template_id", nullable = false)
@@ -85,9 +74,6 @@ public class Task extends AuditEntity {
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "task")
 	private List<Prize> prizes;
-	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "task")
-	private List<SubTask> subTasks;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "task")
 	private List<Batch> batchs;
@@ -124,14 +110,6 @@ public class Task extends AuditEntity {
 		this.shareNumber = shareNumber;
 	}
 
-	public int getBatchNumber() {
-		return batchNumber;
-	}
-
-	public void setBatchNumber(int batchNumber) {
-		this.batchNumber = batchNumber;
-	}
-
 	public double getPassScore() {
 		return passScore;
 	}
@@ -140,36 +118,12 @@ public class Task extends AuditEntity {
 		this.passScore = passScore;
 	}
 
-	public double getTotalScore() {
-		return totalScore;
+	public Statistics getStatistics() {
+		return statistics;
 	}
 
-	public void setTotalScore(double totalScore) {
-		this.totalScore = totalScore;
-	}
-
-	public double getAverageScore() {
-		return averageScore;
-	}
-
-	public void setAverageScore(double averageScore) {
-		this.averageScore = averageScore;
-	}
-
-	public double getHighestScore() {
-		return highestScore;
-	}
-
-	public void setHighestScore(double highestScore) {
-		this.highestScore = highestScore;
-	}
-
-	public double getLowestScore() {
-		return lowestScore;
-	}
-
-	public void setLowestScore(double lowestScore) {
-		this.lowestScore = lowestScore;
+	public void setStatistics(Statistics statistics) {
+		this.statistics = statistics;
 	}
 
 	public Template getTemplate() {
@@ -186,14 +140,6 @@ public class Task extends AuditEntity {
 
 	public void setPrizes(List<Prize> prizes) {
 		this.prizes = prizes;
-	}
-
-	public List<SubTask> getSubTasks() {
-		return subTasks;
-	}
-
-	public void setSubTasks(List<SubTask> subTasks) {
-		this.subTasks = subTasks;
 	}
 
 	public List<Batch> getBatchs() {

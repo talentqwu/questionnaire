@@ -2,6 +2,259 @@
 <ViewConfig>
   <Arguments/>
   <Context/>
-  <Model/>
-  <View/>
+  <Model>
+    <DataType name="Task" parent="global:Task">
+      <Reference name="batchs">
+        <Property name="dataType">[Batch]</Property>
+      </Reference>
+      <Reference name="prizes">
+        <Property name="dataType">[Prize]</Property>
+      </Reference>
+      <PropertyDef name="statistics">
+        <Property name="dataType">Statistics</Property>
+      </PropertyDef>
+    </DataType>
+    <DataType name="Batch" parent="global:Batch">
+      <Reference name="subTasks">
+        <Property name="dataType">[SubTask]</Property>
+      </Reference>
+    </DataType>
+    <DataType name="SubTask" parent="global:SubTask">
+      <PropertyDef name="unit">
+        <Property name="dataType">Unit</Property>
+      </PropertyDef>
+      <PropertyDef name="statistics">
+        <Property name="dataType">Statistics</Property>
+      </PropertyDef>
+    </DataType>
+    <DataType name="Prize" parent="global:Prize">
+      <PropertyDef name="award">
+        <Property name="dataType">Award</Property>
+      </PropertyDef>
+    </DataType>
+  </Model>
+  <View>
+    <Property name="packages">font-awesome</Property>
+    <DataSet id="dataSetTask"/>
+    <SplitPanel>
+      <Property name="direction">top</Property>
+      <Property name="position">200</Property>
+      <MainControl>
+        <SplitPanel>
+          <Property name="position">300</Property>
+          <MainControl>
+            <Container>
+              <ToolBar>
+                <ToolBarButton>
+                  <Property name="caption">显示所有单位</Property>
+                </ToolBarButton>
+                <ToolBarButton>
+                  <Property name="caption">参与者明细</Property>
+                </ToolBarButton>
+                <Fill/>
+                <ToolBarButton>
+                  <Property name="caption">刷新</Property>
+                </ToolBarButton>
+              </ToolBar>
+              <DataGrid>
+                <Property name="showFooter">true</Property>
+                <RowNumColumn/>
+                <DataColumn>
+                  <Property name="caption">单位名称</Property>
+                  <Editor/>
+                </DataColumn>
+                <DataColumn>
+                  <Property name="caption">所属社区</Property>
+                  <Property name="width">100</Property>
+                  <Editor/>
+                </DataColumn>
+                <DataColumn>
+                  <Property name="caption">所属行业</Property>
+                  <Property name="width">250</Property>
+                  <Editor/>
+                </DataColumn>
+                <DataColumn>
+                  <Property name="caption">包干</Property>
+                  <Property name="width">40</Property>
+                  <Editor/>
+                </DataColumn>
+                <DataColumn>
+                  <Property name="caption">登记人数</Property>
+                  <Property name="width">60</Property>
+                  <Editor/>
+                </DataColumn>
+                <DataColumn>
+                  <Property name="caption">参与人数</Property>
+                  <Property name="width">60</Property>
+                  <Editor/>
+                </DataColumn>
+                <DataColumn>
+                  <Property name="name">averageScore</Property>
+                  <Property name="property">averageScore</Property>
+                  <Property name="caption">平均分</Property>
+                  <Property name="width">60</Property>
+                  <Editor/>
+                </DataColumn>
+                <DataColumn>
+                  <Property name="name">highestScore</Property>
+                  <Property name="property">highestScore</Property>
+                  <Property name="caption">最高分</Property>
+                  <Property name="width">60</Property>
+                  <Editor/>
+                </DataColumn>
+                <DataColumn>
+                  <Property name="name">lowestScore</Property>
+                  <Property name="property">lowestScore</Property>
+                  <Property name="caption">最低分</Property>
+                  <Property name="width">60</Property>
+                  <Editor/>
+                </DataColumn>
+              </DataGrid>
+            </Container>
+          </MainControl>
+          <SideControl>
+            <Container>
+              <ToolBar>
+                <ToolBarButton>
+                  <Property name="caption">添加批次</Property>
+                </ToolBarButton>
+                <ToolBarButton>
+                  <Property name="caption">删除批准</Property>
+                </ToolBarButton>
+                <Separator/>
+                <ToolBarButton>
+                  <Property name="caption">调整期限</Property>
+                </ToolBarButton>
+              </ToolBar>
+              <DataGrid>
+                <RowNumColumn/>
+                <DataColumn>
+                  <Property name="name">name</Property>
+                  <Property name="property">name</Property>
+                  <Property name="caption">批次名称</Property>
+                  <Editor/>
+                </DataColumn>
+                <DataColumn>
+                  <Property name="name">beginDate</Property>
+                  <Property name="property">beginDate</Property>
+                  <Property name="caption">启动日期</Property>
+                  <Property name="width">70</Property>
+                  <Editor/>
+                </DataColumn>
+                <DataColumn>
+                  <Property name="name">endDate</Property>
+                  <Property name="property">endDate</Property>
+                  <Property name="caption">截至日期</Property>
+                  <Property name="width">70</Property>
+                  <Editor/>
+                </DataColumn>
+              </DataGrid>
+            </Container>
+          </SideControl>
+        </SplitPanel>
+      </MainControl>
+      <SideControl>
+        <Container>
+          <ToolBar>
+            <ToolBarButton>
+              <Property name="caption">添加任务</Property>
+            </ToolBarButton>
+            <ToolBarButton>
+              <Property name="caption">发布任务</Property>
+            </ToolBarButton>
+            <ToolBarButton>
+              <Property name="caption">删除任务</Property>
+            </ToolBarButton>
+            <Separator/>
+            <ToolBarButton>
+              <Property name="caption">调整期限</Property>
+            </ToolBarButton>
+          </ToolBar>
+          <DataGrid id="gridTask">
+            <RowNumColumn/>
+            <DataColumn>
+              <Property name="name">name</Property>
+              <Property name="property">name</Property>
+              <Property name="caption">名称</Property>
+              <Editor/>
+            </DataColumn>
+            <DataColumn>
+              <Property name="name">beginDate</Property>
+              <Property name="property">beginDate</Property>
+              <Property name="caption">启动日期</Property>
+              <Property name="width">70</Property>
+              <Editor/>
+            </DataColumn>
+            <DataColumn>
+              <Property name="name">endDate</Property>
+              <Property name="property">endDate</Property>
+              <Property name="caption">截至日期</Property>
+              <Property name="width">70</Property>
+              <Editor/>
+            </DataColumn>
+            <DataColumn>
+              <Property name="name">enableShare</Property>
+              <Property name="property">enableShare</Property>
+              <Property name="caption">包干</Property>
+              <Property name="width">40</Property>
+              <Editor/>
+            </DataColumn>
+            <DataColumn>
+              <Property name="name">shareNumber</Property>
+              <Property name="property">shareNumber</Property>
+              <Property name="caption">包干人数</Property>
+              <Property name="width">60</Property>
+              <Editor/>
+            </DataColumn>
+            <DataColumn>
+              <Property name="name">enablePrizeDraw</Property>
+              <Property name="property">enablePrizeDraw</Property>
+              <Property name="caption">启用奖品</Property>
+              <Property name="width">60</Property>
+              <Editor/>
+            </DataColumn>
+            <DataColumn>
+              <Property name="name">template</Property>
+              <Property name="property">template</Property>
+              <Property name="caption">模板</Property>
+              <Editor/>
+            </DataColumn>
+            <DataColumn>
+              <Property name="name">passScore</Property>
+              <Property name="property">passScore</Property>
+              <Property name="caption">合格分数</Property>
+              <Property name="width">60</Property>
+              <Editor/>
+            </DataColumn>
+            <DataColumn>
+              <Property name="caption">参与人数</Property>
+              <Property name="width">60</Property>
+              <Editor/>
+            </DataColumn>
+            <DataColumn>
+              <Property name="name">averageScore</Property>
+              <Property name="property">averageScore</Property>
+              <Property name="caption">平均分</Property>
+              <Property name="width">60</Property>
+              <Editor/>
+            </DataColumn>
+            <DataColumn>
+              <Property name="name">highestScore</Property>
+              <Property name="property">highestScore</Property>
+              <Property name="caption">最高分</Property>
+              <Property name="width">60</Property>
+              <Editor/>
+            </DataColumn>
+            <DataColumn>
+              <Property name="name">lowestScore</Property>
+              <Property name="property">lowestScore</Property>
+              <Property name="caption">最低分</Property>
+              <Property name="width">60</Property>
+              <Editor/>
+            </DataColumn>
+          </DataGrid>
+        </Container>
+      </SideControl>
+    </SplitPanel>
+  </View>
 </ViewConfig>

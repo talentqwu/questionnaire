@@ -37,12 +37,15 @@ public class SubTask extends AbstractEntity {
 	private String uuid = CommonUtils.generateShortUuid();
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "task_id", nullable = false)
-	private Task task;
-	
-	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "unit_id", nullable = false)
 	private Unit unit;
+	
+	/**
+	 * 子任务的统计数据
+	 */
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "statistics_id")
+	private Statistics statistics;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "subTask")
 	private List<Participator> participators;
@@ -51,21 +54,9 @@ public class SubTask extends AbstractEntity {
 	@JoinColumn(name = "qrcode_id")
 	private QRCode qrcode;
 
-	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "statistics_id")
-	private Statistics statistics;
-	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "batch_id", nullable = false)
 	private Batch batch;
-
-	public Task getTask() {
-		return task;
-	}
-
-	public void setTask(Task task) {
-		this.task = task;
-	}
 
 	public Unit getUnit() {
 		return unit;

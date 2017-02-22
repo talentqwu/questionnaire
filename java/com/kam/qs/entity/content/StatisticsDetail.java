@@ -21,6 +21,10 @@ public class StatisticsDetail extends AbstractEntity {
 
 	private static final long serialVersionUID = 1L;
 
+	@PropertyDef(label = "参与人数")
+	@Column(name = "people_number", nullable = false)
+	private int peopleNumber = 0;
+	
 	@PropertyDef(label = "总得分")
 	@Column(name = "total_score", nullable = false)
 	private double totalScore = 0;
@@ -91,5 +95,13 @@ public class StatisticsDetail extends AbstractEntity {
 
 	public void setQuestion(Instance question) {
 		this.question = question;
+	}
+
+	public int getPeopleNumber() {
+		return peopleNumber;
+	}
+
+	public void setPeopleNumber(int peopleNumber) {
+		this.peopleNumber = peopleNumber;
 	}
 }
