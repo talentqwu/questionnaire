@@ -13,7 +13,9 @@ public class SubTaskDao extends DoradoHibernateDao<SubTask, String> {
 	public List<Object[]> getByBatch(String batchId) {
 		String hql = "SELECT s,"
 				+ "          s.unit,"
-				+ "          s.statistics"
+				+ "          s.statistics,"
+				+ "          s.unit.region,"
+				+ "          s.unit.industry"
 				+ "   FROM SubTask s"
 				+ "   WHERE s.batch.id = ?"
 				+ "   ORDER BY s.unit.name";

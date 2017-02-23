@@ -1,4 +1,5 @@
-var ENUM = function() {};
+var ENUM = function() {
+};
 
 ENUM.Role = {
 	PUBLISH : 'PUBLISH',
@@ -8,7 +9,27 @@ ENUM.Role = {
 };
 
 ENUM.TaskStatus = {
-	EDITING   : 'EDITING',
+	EDITING : 'EDITING',
 	PUBLISHED : 'PUBLISHED',
-	FINISHED  : 'FINISHED'
+	FINISHED : 'FINISHED'
+};
+
+ENUM.TaskAction = {
+	SAVE : 'SAVE',
+	DELETE : 'DELETE',
+	PUBLISH : 'PUBLISH',
+	COPY : 'COPY',
+	ADJUST : 'ADJUST',
+	CANCEL : 'CANCEL'
+};
+
+ENUM.BatchAction = {
+	SAVE : 'SAVE',
+	DELETE : 'DELETE',
+	ADJUST : 'ADJUST'
+};
+
+ENUM.SubTaskAction = {
+	SAVE : 'SAVE',
+	DELETE : 'DELETE'
 };

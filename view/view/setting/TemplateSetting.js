@@ -8,3 +8,9 @@ function btnCreateOnClick(self, arg) {
 function btnAddQuestionOnClick(self, arg) {
 	view.get('#dialogChoseQuestion').show();
 }
+
+// @Bind #gridTemplate.onDataRowDoubleClick
+function gridTemplateOnDataRowDoubleClick(self, arg) {
+//	arg.data.get('questions');
+	view.get('#dialogTemplate').show();
+}

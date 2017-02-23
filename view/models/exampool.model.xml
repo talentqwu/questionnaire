@@ -18,6 +18,16 @@
         <Property name="mapValues">${dorado.getDataProvider(&quot;qs.commonService#getEnumKeyValues&quot;).getResult(&quot;QuestionType&quot;)}</Property>
       </Property>
     </PropertyDef>
+    <PropertyDef name="showType">
+      <Property name="mapping">
+        <Property name="mapValues">${dorado.getDataProvider(&quot;qs.commonService#getEnumKeyValues&quot;).getResult(&quot;QuestionShowType&quot;)}</Property>
+      </Property>
+    </PropertyDef>
+    <PropertyDef name="scoringMethod">
+      <Property name="mapping">
+        <Property name="mapValues">${dorado.getDataProvider(&quot;qs.commonService#getEnumKeyValues&quot;).getResult(&quot;QuestionScoringMethod&quot;)}</Property>
+      </Property>
+    </PropertyDef>
   </DataType>
   <DataType name="Template" parent="AuditEntity">
     <Property name="autoCreatePropertyDefs">true</Property>

@@ -26,7 +26,8 @@ http://www.bstek.com/dorado/schema http://www.bstek.com/dorado/schema/spring-dor
 	<!-- Startup Listeners -->
 	<bean class="com.kam.qs.util.Starter">
 		<property name="order" value="1001" />
-		<property name="service" ref="qs.commonService" />
+		<property name="commonService" ref="qs.commonService" />
+		<property name="exampoolService" ref="qs.exampoolService" />
 	</bean>
 	
 </beans>

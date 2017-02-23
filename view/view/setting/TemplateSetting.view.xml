@@ -6,6 +6,8 @@
     <DataType name="Template" parent="global:Template">
       <Reference name="questions">
         <Property name="dataType">[Instance]</Property>
+        <Property name="dataProvider">qs.exampoolService#getInstanceByTemplateId</Property>
+        <Property name="parameter">$${this.id}</Property>
       </Reference>
     </DataType>
     <DataType name="Instance" parent="global:Instance">
@@ -26,9 +28,11 @@
     <Property name="packages">font-awesome</Property>
     <DataSet id="dataSetTemplate">
       <Property name="dataType">[Template]</Property>
+      <Property name="dataProvider">qs.exampoolService#getAllTemplate</Property>
     </DataSet>
     <DataSet id="dataSetQuestions">
       <Property name="dataType">[Question]</Property>
+      <Property name="dataProvider">qs.exampoolService#getQuestionRoot</Property>
     </DataSet>
     <UpdateAction id="actionUpdate">
       <UpdateItem>
@@ -50,7 +54,7 @@
         <Property name="iconClass">fa fa-share-square-o</Property>
       </ToolBarButton>
     </ToolBar>
-    <DataGrid>
+    <DataGrid id="gridTemplate">
       <Property name="dataSet">dataSetTemplate</Property>
       <Property name="readOnly">true</Property>
       <RowNumColumn/>
@@ -138,6 +142,7 @@
                 <DataGrid id="gridQuestions">
                   <Property name="dataPath">#.questions</Property>
                   <Property name="showFooter">true</Property>
+                  <Property name="dataSet">dataSetTemplate</Property>
                   <DataColumn>
                     <Property name="caption">序号</Property>
                     <Property name="name">order</Property>

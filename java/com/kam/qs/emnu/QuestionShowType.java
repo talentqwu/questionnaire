@@ -3,15 +3,16 @@ package com.kam.qs.emnu;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public enum QuestionType {
-	
-	SINGLE_CHOICE   ("单选题"),
-	MULTIPLE_CHOICE ("多选题"),
-	IS_PARENT       ("主试题");
+public enum QuestionShowType {
+
+	CHECK_BOX       ("单选题"),
+	RADIO_GROUP     ("多选题"),
+	DROP_DOWN_LIST  ("主试题"),
+	NONE            ("无");
 
 	private String description;
 	
-	private QuestionType(String description) {
+	private QuestionShowType(String description) {
 		this.description = description;
 	}
 	
@@ -21,7 +22,7 @@ public enum QuestionType {
 	
 	public static Map<String, String> toMap() {
 		Map<String, String> map = new LinkedHashMap<String, String>();
-		for (QuestionType value : QuestionType.values())
+		for (QuestionShowType value : QuestionShowType.values())
 			map.put(value.toString(), value.description);
 		return map;
 	}

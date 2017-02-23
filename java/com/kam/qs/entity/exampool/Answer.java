@@ -9,6 +9,7 @@ import javax.persistence.Table;
 
 import com.bstek.dorado.annotation.PropertyDef;
 import com.kam.qs.entity.AbstractEntity;
+import com.kam.util.CommonUtils;
 
 /**
  * 问卷题目答案。
@@ -22,7 +23,7 @@ public class Answer extends AbstractEntity {
 
 	@PropertyDef(label = "代码")
 	@Column(length = 32, nullable = false)
-	private String code;
+	private String code = "A_" + CommonUtils.generateShortUuid();
 	
 	@PropertyDef(label = "顺序")
 	@Column(name = "order_")
@@ -48,6 +49,14 @@ public class Answer extends AbstractEntity {
 	@JoinColumn(name = "question_id", nullable = false)
 	private Question question;
 
+	public Answer() {}
+	
+	public Answer(int order, String content, double weight) {
+		this.order = order;
+		this.weight = weight;
+		this.content = content;
+	}
+	
 	public int getOrder() {
 		return order;
 	}
@@ -78,5 +87,21 @@ public class Answer extends AbstractEntity {
 
 	public void setQuestion(Question question) {
 		this.question = question;
+	}
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
+	public double getWeight() {
+		return weight;
+	}
+
+	public void setWeight(double weight) {
+		this.weight = weight;
 	}
 }

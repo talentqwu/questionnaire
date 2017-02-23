@@ -11,136 +11,170 @@
         <Property name="dataType">[SELF]</Property>
         <Property name="submittable">false</Property>
         <Property name="parameter">$${this.id}</Property>
+        <Property name="dataProvider">qs.exampoolService#getQuestionChildren</Property>
       </Reference>
       <PropertyDef name="parentId">
         <Property name="dataType">String</Property>
       </PropertyDef>
-      <Reference name="answers">
-        <Property name="dataType">[Answer]</Property>
-      </Reference>
     </DataType>
   </Model>
   <View>
     <Property name="packages">font-awesome</Property>
     <DataSet id="dataSetQuestion">
       <Property name="dataType">[Question]</Property>
+      <Property name="dataProvider">qs.exampoolService#getQuestionRoot</Property>
     </DataSet>
-    <ToolBar>
-      <ToolBarButton id="btnCreate">
-        <Property name="caption">添加试题</Property>
-        <Property name="iconClass">fa fa-plus</Property>
-      </ToolBarButton>
-      <ToolBarButton id="btnCreateSub">
-        <Property name="caption">添加子试题</Property>
-        <Property name="iconClass">fa fa-plus</Property>
-      </ToolBarButton>
-      <ToolBarButton id="btnDelete">
-        <Property name="caption">删除</Property>
-        <Property name="iconClass">fa fa-minus</Property>
-      </ToolBarButton>
-      <Separator/>
-      <ToolBarButton id="btnSave">
-        <Property name="caption">保存</Property>
-        <Property name="iconClass">fa fa-save</Property>
-      </ToolBarButton>
-      <ToolBarButton id="btnCancel">
-        <Property name="caption">取消</Property>
-        <Property name="iconClass">fa fa-undo</Property>
-      </ToolBarButton>
-      <Separator/>
-      <ToolBarButton id="btnSetAnswer">
-        <Property name="iconClass">fa fa-cog</Property>
-        <Property name="caption">编辑答案</Property>
-      </ToolBarButton>
-    </ToolBar>
-    <DataTreeGrid id="gridQuestion">
-      <Property name="dataSet">dataSetQuestion</Property>
-      <Property name="treeColumn">question</Property>
-      <Property name="showLines">true</Property>
-      <BindingConfigs>
-        <BindingConfig>
-          <Property name="childrenProperty">children</Property>
-          <Property name="hasChildProperty">hasChild</Property>
-          <Property name="labelProperty">question</Property>
-          <Property name="recursive">true</Property>
-        </BindingConfig>
-      </BindingConfigs>
-      <Columns>
-        <IndicatorColumn/>
-        <RowNumColumn/>
-        <DataColumn>
-          <Property name="caption">问题</Property>
-          <Property name="name">question</Property>
-          <Property name="property">question</Property>
-          <Editor/>
-        </DataColumn>
-        <DataColumn>
-          <Property name="caption">类型</Property>
-          <Property name="name">type</Property>
-          <Property name="property">type</Property>
-          <Property name="width">80</Property>
-          <Editor/>
-        </DataColumn>
-      </Columns>
-    </DataTreeGrid>
-    <Dialog id="dialogAnswer">
-      <Property name="width">800</Property>
-      <Property name="height">400</Property>
-      <Property name="caption">试题答案</Property>
-      <Buttons>
-        <Button id="btnDialogOK">
-          <Property name="caption">确定</Property>
-          <Property name="iconClass">fa fa-check</Property>
-        </Button>
-        <Button id="btnDialogCancel">
-          <Property name="caption">取消</Property>
-          <Property name="iconClass">fa fa-times</Property>
-        </Button>
-      </Buttons>
-      <Children>
-        <ToolBar>
-          <ToolBarButton id="btnCreateAnswer">
-            <Property name="caption">添加</Property>
-            <Property name="iconClass">fa fa-plus</Property>
-          </ToolBarButton>
-          <ToolBarButton id="btnDeleteAnswer">
-            <Property name="caption">删除</Property>
-            <Property name="iconClass">fa fa-minus</Property>
-          </ToolBarButton>
-        </ToolBar>
-        <DataGrid>
-          <Property name="dataSet">dataSetQuestion</Property>
-          <Property name="dataPath">#.answers</Property>
-          <Property name="showFooter">true</Property>
-          <DataColumn>
-            <Property name="name">content</Property>
-            <Property name="caption">内容</Property>
-            <Editor/>
-          </DataColumn>
-          <DataColumn>
-            <Property name="name">order</Property>
-            <Property name="property">order</Property>
-            <Property name="width">50</Property>
-            <Property name="caption">序号</Property>
-            <Editor/>
-          </DataColumn>
-          <DataColumn>
-            <Property name="name">weight</Property>
-            <Property name="property">weight</Property>
-            <Property name="width">50</Property>
-            <Property name="caption">权重</Property>
-            <Editor/>
-          </DataColumn>
-          <DataColumn>
-            <Property name="name">additional</Property>
-            <Property name="property">additional</Property>
-            <Property name="width">50</Property>
-            <Property name="caption">其他</Property>
-            <Editor/>
-          </DataColumn>
-        </DataGrid>
-      </Children>
-      <Tools/>
-    </Dialog>
+    <DataSet id="dataSetAnswer">
+      <Property name="loadMode">manual</Property>
+      <Property name="dataType">[Answer]</Property>
+      <Property name="dataProvider">qs.exampoolService#getAnswerByQuestionId</Property>
+    </DataSet>
+    <SplitPanel>
+      <Property name="direction">top</Property>
+      <Property name="position">400</Property>
+      <MainControl>
+        <Container>
+          <ToolBar>
+            <ToolBarButton id="btnCreateAnswer">
+              <Property name="caption">添加答案</Property>
+              <Property name="iconClass">fa fa-plus</Property>
+            </ToolBarButton>
+            <ToolBarButton id="btnDeleteAnswer">
+              <Property name="caption">删除答案</Property>
+              <Property name="iconClass">fa fa-minus</Property>
+            </ToolBarButton>
+            <Separator/>
+            <ToolBarButton id="btnSaveAnswer">
+              <Property name="caption">保存</Property>
+              <Property name="iconClass">fa fa-save</Property>
+            </ToolBarButton>
+            <ToolBarButton id="btnCancelAnswer">
+              <Property name="caption">取消</Property>
+              <Property name="iconClass">fa fa-undo</Property>
+            </ToolBarButton>
+          </ToolBar>
+          <DataGrid id="gridAnswer">
+            <Property name="dataSet">dataSetAnswer</Property>
+            <Property name="showFooter">true</Property>
+            <DataColumn>
+              <Property name="name">order</Property>
+              <Property name="property">order</Property>
+              <Property name="width">50</Property>
+              <Property name="caption">序号</Property>
+              <Property name="align">center</Property>
+              <Editor>
+                <NumberSpinner>
+                  <Property name="max">20</Property>
+                  <Property name="min">1</Property>
+                </NumberSpinner>
+              </Editor>
+            </DataColumn>
+            <DataColumn>
+              <Property name="name">code</Property>
+              <Property name="property">code</Property>
+              <Property name="caption">代码</Property>
+              <Property name="width">100</Property>
+              <Property name="readOnly">true</Property>
+              <Editor/>
+            </DataColumn>
+            <DataColumn>
+              <Property name="name">content</Property>
+              <Property name="caption">内容</Property>
+              <Editor/>
+            </DataColumn>
+            <DataColumn>
+              <Property name="name">weight</Property>
+              <Property name="property">weight</Property>
+              <Property name="width">50</Property>
+              <Property name="caption">权重</Property>
+              <Editor/>
+            </DataColumn>
+            <DataColumn>
+              <Property name="name">additional</Property>
+              <Property name="property">additional</Property>
+              <Property name="width">50</Property>
+              <Property name="caption">其他</Property>
+              <Editor/>
+            </DataColumn>
+          </DataGrid>
+        </Container>
+      </MainControl>
+      <SideControl>
+        <Container>
+          <ToolBar>
+            <ToolBarButton id="btnCreate">
+              <Property name="caption">添加试题</Property>
+              <Property name="iconClass">fa fa-plus</Property>
+            </ToolBarButton>
+            <ToolBarButton id="btnCreateSub">
+              <Property name="caption">添加子试题</Property>
+              <Property name="iconClass">fa fa-plus</Property>
+            </ToolBarButton>
+            <ToolBarButton id="btnDelete">
+              <Property name="caption">删除</Property>
+              <Property name="iconClass">fa fa-minus</Property>
+            </ToolBarButton>
+            <Separator/>
+            <ToolBarButton id="btnSave">
+              <Property name="caption">保存</Property>
+              <Property name="iconClass">fa fa-save</Property>
+            </ToolBarButton>
+            <ToolBarButton id="btnCancel">
+              <Property name="caption">取消</Property>
+              <Property name="iconClass">fa fa-undo</Property>
+            </ToolBarButton>
+            <Separator/>
+            <ToolBarButton id="btnSetScript">
+              <Property name="iconClass">fa fa-cog</Property>
+              <Property name="caption">设置脚本</Property>
+            </ToolBarButton>
+          </ToolBar>
+          <DataTreeGrid id="gridQuestion">
+            <Property name="dataSet">dataSetQuestion</Property>
+            <Property name="treeColumn">question</Property>
+            <Property name="showLines">true</Property>
+            <BindingConfigs>
+              <BindingConfig>
+                <Property name="childrenProperty">children</Property>
+                <Property name="hasChildProperty">hasChild</Property>
+                <Property name="labelProperty">question</Property>
+                <Property name="recursive">true</Property>
+              </BindingConfig>
+            </BindingConfigs>
+            <Columns>
+              <IndicatorColumn/>
+              <RowNumColumn/>
+              <DataColumn>
+                <Property name="caption">问题</Property>
+                <Property name="name">question</Property>
+                <Property name="property">question</Property>
+                <Editor/>
+              </DataColumn>
+              <DataColumn>
+                <Property name="caption">类型</Property>
+                <Property name="name">type</Property>
+                <Property name="property">type</Property>
+                <Property name="width">80</Property>
+                <Editor/>
+              </DataColumn>
+              <DataColumn>
+                <Property name="name">showType</Property>
+                <Property name="property">showType</Property>
+                <Property name="caption">显示</Property>
+                <Property name="width">80</Property>
+                <Editor/>
+              </DataColumn>
+              <DataColumn>
+                <Property name="caption">计分方式</Property>
+                <Property name="name">scoringMethod</Property>
+                <Property name="property">scoringMethod</Property>
+                <Property name="width">80</Property>
+                <Editor/>
+              </DataColumn>
+            </Columns>
+          </DataTreeGrid>
+        </Container>
+      </SideControl>
+    </SplitPanel>
   </View>
 </ViewConfig>

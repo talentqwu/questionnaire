@@ -79,4 +79,20 @@ public class UnitDao extends DoradoHibernateDao<Unit, String> {
 		} else
 			return getRoot();
 	}
+
+	public List<Object[]> getChooseForBatch(String taskId) {
+		String hql = "SELECT u,"
+				+ "          u.region AS region,"
+				+ "          u.industry AS industry"
+		        + "   FROM Unit u"
+				+ "   WHERE u.id NOT IN ("
+				+ "                          SELECT st.unit.id FROM SubTask st"
+				+ "                          WHERE st.batch.id IN ("
+				+ "                                                   SELECT b.id FROM Batch b"
+				+ "                                                   WHERE b.task.id = ?"
+				+ "                                               )"
+				+ "                     )"
+				+ "   ORDER BY u.name";
+		return find(hql, taskId);
+	}
 }

@@ -46,6 +46,14 @@ public class Instance extends AbstractEntity {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "parent")
 	private List<Instance> children;
 	
+	public Instance() {}
+	
+	public Instance( double score, Question question, Template template) {
+		this.score = score;
+		this.question = question;
+		this.template = template;
+	}
+	
 	public int getOrder() {
 		return order;
 	}
@@ -76,5 +84,21 @@ public class Instance extends AbstractEntity {
 
 	public void setTemplate(Template template) {
 		this.template = template;
+	}
+
+	public Instance getParent() {
+		return parent;
+	}
+
+	public void setParent(Instance parent) {
+		this.parent = parent;
+	}
+
+	public List<Instance> getChildren() {
+		return children;
+	}
+
+	public void setChildren(List<Instance> children) {
+		this.children = children;
 	}
 }

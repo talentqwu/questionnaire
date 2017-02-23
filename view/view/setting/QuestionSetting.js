@@ -46,6 +46,11 @@ function btnCreateSubOnClick(self, arg) {
 		dorado.widget.NotifyTipManager.notify('请先创建父试题再创建子试题！');
 }
 
+// @Bind #gridQuestion.onDataRowClick
+function gridQuestionOnDataRowClick(self, arg) {
+	var questionId = arg.data.get('data.id');
+	view.get('#dataSetAnswer').set('parameter', questionId).flushAsync();
+}
 
 // @Bind #btnSetAnswer.onClick
 function btnSetAnswerOnClick(self, arg) {

@@ -13,8 +13,11 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.bstek.dorado.annotation.PropertyDef;
+import com.kam.qs.emnu.QuestionScoringMethod;
+import com.kam.qs.emnu.QuestionShowType;
 import com.kam.qs.emnu.QuestionType;
 import com.kam.qs.entity.AuditEntity;
+import com.kam.util.CommonUtils;
 
 /**
  * 问卷题目。
@@ -29,7 +32,7 @@ public class Question  extends AuditEntity {
 
 	@PropertyDef(label = "代码")
 	@Column(length = 32, nullable = false)
-	private String code;
+	private String code = "Q_" + CommonUtils.generateShortUuid();
 	
 	@PropertyDef(label = "问题")
 	@Column(length = 2048, nullable = false)
@@ -40,6 +43,20 @@ public class Question  extends AuditEntity {
 	@Enumerated(EnumType.STRING)
 	private QuestionType type;
 	
+	@PropertyDef(label = "问题类型")
+	@Column(name = "show_type", nullable = false)
+	@Enumerated(EnumType.STRING)
+	private QuestionShowType showType;
+	
+	@PropertyDef(label = "计分方法")
+	@Column(name = "scoring_method", nullable = false)
+	@Enumerated(EnumType.STRING)
+	private QuestionScoringMethod scoringMethod;
+	
+	@PropertyDef(label = "计分脚本")
+	@Column(name = "scoring_script", length = 2048)
+	private String scoringScript;
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "parent_id")
 	private Question parent;
@@ -49,6 +66,15 @@ public class Question  extends AuditEntity {
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "question")
 	private List<Answer> answers;
+	
+	public Question() {}
+	
+	public Question(String question, QuestionType type, QuestionShowType showType, QuestionScoringMethod scoringMethod) {
+		this.question = question;
+		this.type = type;
+		this.showType = showType;
+		this.scoringMethod = scoringMethod;
+	}
 	
 	public String getCode() {
 		return code;
@@ -96,5 +122,29 @@ public class Question  extends AuditEntity {
 
 	public void setAnswers(List<Answer> answers) {
 		this.answers = answers;
+	}
+
+	public QuestionShowType getShowType() {
+		return showType;
+	}
+
+	public void setShowType(QuestionShowType showType) {
+		this.showType = showType;
+	}
+
+	public QuestionScoringMethod getScoringMethod() {
+		return scoringMethod;
+	}
+
+	public void setScoringMethod(QuestionScoringMethod scoringMethod) {
+		this.scoringMethod = scoringMethod;
+	}
+
+	public String getScoringScript() {
+		return scoringScript;
+	}
+
+	public void setScoringScript(String scoringScript) {
+		this.scoringScript = scoringScript;
 	}
 }

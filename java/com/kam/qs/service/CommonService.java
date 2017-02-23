@@ -91,6 +91,21 @@ public class CommonService {
 	private AwardDao awardDao;
 	
 	@DataProvider
+	public List<Unit> getChooseUnitForBatch(String taskId) throws Exception {
+		List<Unit> units = new ArrayList<Unit>();
+		
+		List<Object[]> datas = unitDao.getChooseForBatch(taskId);
+		for (Object[] data : datas) {
+			Unit unit = EntityUtils.toEntity(data[0]);
+			EntityUtils.setValue(unit, "region", data[1]);
+			EntityUtils.setValue(unit, "industry", data[2]);
+			units.add(unit);
+		}
+		
+		return units;
+	}
+	
+	@DataProvider
 	public List<Award> getAllAward() {
 		return awardDao.getAll();
 	}

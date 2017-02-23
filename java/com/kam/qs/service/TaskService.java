@@ -2,17 +2,23 @@ package com.kam.qs.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.bstek.dorado.annotation.DataProvider;
+import com.bstek.dorado.annotation.DataResolver;
 import com.bstek.dorado.data.entity.EntityUtils;
 import com.kam.qs.dao.task.BatchDao;
 import com.kam.qs.dao.task.PrizeDao;
 import com.kam.qs.dao.task.SubTaskDao;
 import com.kam.qs.dao.task.TaskDao;
+import com.kam.qs.emnu.BatchAction;
+import com.kam.qs.emnu.SubTaskAction;
+import com.kam.qs.emnu.TaskAction;
 import com.kam.qs.entity.task.Batch;
 import com.kam.qs.entity.task.Prize;
 import com.kam.qs.entity.task.SubTask;
@@ -33,6 +39,66 @@ public class TaskService {
 	@Resource
 	private TaskDao taskDao;
 	
+	@DataResolver
+	@Transactional
+	public void saveTask(List<Task> datas, Map<String, Object> parameter) {
+		TaskAction action = TaskAction.valueOf((String)parameter.get("action"));
+		switch (action) {
+		case ADJUST:
+			break;
+		case CANCEL:
+			break;
+		case DELETE:
+			break;
+		case PUBLISH:
+			break;
+		case SAVE:
+			taskDao.persistEntities(datas);
+			break;
+		default:
+			break;
+		}
+	}
+	
+	@DataResolver
+	@Transactional
+	public void saveBatch(List<Batch> datas, Map<String, Object> parameter) {
+		BatchAction action = BatchAction.valueOf((String)parameter.get("action"));
+		switch (action) {
+		case ADJUST:
+			break;
+		case DELETE:
+			break;
+		case SAVE:
+			batchDao.persistEntities(datas);
+			break;
+		default:
+			break;
+		}
+	}
+	
+	@DataResolver
+	@Transactional
+	public void saveSubTask(List<SubTask> datas, Map<String, Object> parameter) {
+		SubTaskAction action = SubTaskAction.valueOf((String)parameter.get("action"));
+		switch (action) {
+		case DELETE:
+			subTaskDao.persistEntities(datas);
+			break;
+		case SAVE:
+			subTaskDao.persistEntities(datas);
+			break;
+		default:
+			break;
+		}
+	}
+	
+	@DataResolver
+	@Transactional
+	public void savePrize(List<Prize> datas, Map<String, Object> parameter) {
+		// TODO
+	}
+	
 	@DataProvider
 	public List<Task> getExecutingTask() throws Exception {
 		List<Task> results = new ArrayList<Task>();
@@ -41,7 +107,7 @@ public class TaskService {
 		for (Object[] data : datas) {
 			Task entity = EntityUtils.toEntity(data[0]);
 			EntityUtils.setValue(entity, "statistics", data[1]);
-			EntityUtils.setValue(entity, "template", data[1]);
+			EntityUtils.setValue(entity, "template", data[2]);
 			results.add(entity);
 		}
 		
