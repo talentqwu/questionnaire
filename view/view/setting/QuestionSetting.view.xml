@@ -83,10 +83,10 @@
               <Editor/>
             </DataColumn>
             <DataColumn>
-              <Property name="name">weight</Property>
-              <Property name="property">weight</Property>
+              <Property name="name">score</Property>
+              <Property name="property">score</Property>
               <Property name="width">50</Property>
-              <Property name="caption">权重</Property>
+              <Property name="caption">分数</Property>
               <Editor/>
             </DataColumn>
             <DataColumn>
@@ -161,13 +161,6 @@
                 <Property name="name">showType</Property>
                 <Property name="property">showType</Property>
                 <Property name="caption">显示</Property>
-                <Property name="width">80</Property>
-                <Editor/>
-              </DataColumn>
-              <DataColumn>
-                <Property name="caption">计分方式</Property>
-                <Property name="name">scoringMethod</Property>
-                <Property name="property">scoringMethod</Property>
                 <Property name="width">80</Property>
                 <Editor/>
               </DataColumn>

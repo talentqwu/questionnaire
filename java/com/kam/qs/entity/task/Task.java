@@ -3,7 +3,6 @@ package com.kam.qs.entity.task;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -73,7 +72,7 @@ public class Task extends AuditEntity {
 	/**
 	 * 任务的统计数据
 	 */
-	@OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.ALL})
+	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "statistics_id")
 	private Statistics statistics;
 	

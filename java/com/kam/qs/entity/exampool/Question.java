@@ -13,7 +13,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.bstek.dorado.annotation.PropertyDef;
-import com.kam.qs.emnu.QuestionScoringMethod;
 import com.kam.qs.emnu.QuestionShowType;
 import com.kam.qs.emnu.QuestionType;
 import com.kam.qs.entity.AuditEntity;
@@ -43,19 +42,10 @@ public class Question  extends AuditEntity {
 	@Enumerated(EnumType.STRING)
 	private QuestionType type;
 	
-	@PropertyDef(label = "问题类型")
+	@PropertyDef(label = "显示类型")
 	@Column(name = "show_type", nullable = false)
 	@Enumerated(EnumType.STRING)
 	private QuestionShowType showType;
-	
-	@PropertyDef(label = "计分方法")
-	@Column(name = "scoring_method", nullable = false)
-	@Enumerated(EnumType.STRING)
-	private QuestionScoringMethod scoringMethod;
-	
-	@PropertyDef(label = "计分脚本")
-	@Column(name = "scoring_script", length = 2048)
-	private String scoringScript;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "parent_id")
@@ -69,11 +59,10 @@ public class Question  extends AuditEntity {
 	
 	public Question() {}
 	
-	public Question(String question, QuestionType type, QuestionShowType showType, QuestionScoringMethod scoringMethod) {
+	public Question(String question, QuestionType type, QuestionShowType showType) {
 		this.question = question;
 		this.type = type;
 		this.showType = showType;
-		this.scoringMethod = scoringMethod;
 	}
 	
 	public String getCode() {
@@ -130,21 +119,5 @@ public class Question  extends AuditEntity {
 
 	public void setShowType(QuestionShowType showType) {
 		this.showType = showType;
-	}
-
-	public QuestionScoringMethod getScoringMethod() {
-		return scoringMethod;
-	}
-
-	public void setScoringMethod(QuestionScoringMethod scoringMethod) {
-		this.scoringMethod = scoringMethod;
-	}
-
-	public String getScoringScript() {
-		return scoringScript;
-	}
-
-	public void setScoringScript(String scoringScript) {
-		this.scoringScript = scoringScript;
 	}
 }

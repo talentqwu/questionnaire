@@ -5,11 +5,14 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.bstek.dorado.annotation.PropertyDef;
 import com.kam.qs.entity.AuditEntity;
+import com.kam.qs.entity.common.Image;
 
 /**
  * 调查问卷模板。
@@ -33,6 +36,10 @@ public class Template extends AuditEntity {
 	@Column(length = 2048)
 	private String description;
 	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "image_id")
+	private Image image;
+	
 	@PropertyDef(label = "图片地址")
 	@Column(length = 256)
 	private String imageUrl;
@@ -40,6 +47,11 @@ public class Template extends AuditEntity {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "template")
 	private List<Instance> questions;
 
+	@PropertyDef(label = "是否发布")
+	@Column(nullable = false)
+	@org.hibernate.annotations.Type(type="yes_no")
+	private boolean published = false;
+	
 	public String getName() {
 		return name;
 	}
@@ -78,5 +90,21 @@ public class Template extends AuditEntity {
 
 	public void setTitle(String title) {
 		this.title = title;
+	}
+
+	public boolean isPublished() {
+		return published;
+	}
+
+	public void setPublished(boolean published) {
+		this.published = published;
+	}
+
+	public Image getImage() {
+		return image;
+	}
+
+	public void setImage(Image image) {
+		this.image = image;
 	}
 }

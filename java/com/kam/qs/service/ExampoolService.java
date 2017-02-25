@@ -16,14 +16,12 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.bstek.dorado.annotation.DataProvider;
-import com.bstek.dorado.annotation.Expose;
 import com.bstek.dorado.data.entity.EntityUtils;
 import com.bstek.dorado.web.DoradoContext;
 import com.kam.qs.dao.exampool.AnswerDao;
 import com.kam.qs.dao.exampool.InstanceDao;
 import com.kam.qs.dao.exampool.QuestionDao;
 import com.kam.qs.dao.exampool.TemplateDao;
-import com.kam.qs.emnu.QuestionScoringMethod;
 import com.kam.qs.emnu.QuestionShowType;
 import com.kam.qs.emnu.QuestionType;
 import com.kam.qs.entity.exampool.Answer;
@@ -100,20 +98,17 @@ public class ExampoolService {
 		return templateDao.getAll();
 	}
 	
-	@Expose
 	@Transactional
 	public void initQuestion() throws IOException {
 		if (questionDao.getAll().size() > 0) return;
 		
 		logger.info("初始系统默认试题资料... ...");
-		int order = 0;
 		Question parent = null, question = null;
 		String root = DoradoContext.getCurrent().getServletContext().getRealPath("/"), line;
 		String filePath = root + "data" + File.separatorChar + "question.txt";
 		BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(filePath),"UTF-8"));
 		while((line = br.readLine()) != null) {
 			if (StringUtils.isBlank(line) || line.startsWith("#")) {
-				order = 0;
 				parent = null;
 				question = null;
 				continue;
@@ -121,10 +116,9 @@ public class ExampoolService {
 			
 			String content = line.substring(1);
 			if (line.startsWith("~")) {
-				order++;
 				String[] data = content.split(":");
-				Answer answer = new Answer(order, data[0], Double.parseDouble(data[1]));
-				if (data.length == 3)
+				Answer answer = new Answer(Integer.valueOf(data[0]), data[1], Double.parseDouble(data[2]));
+				if (data.length == 4)
 					answer.setAdditional(true);
 				answer.setQuestion(question);
 				answerDao.save(answer);
@@ -132,8 +126,7 @@ public class ExampoolService {
 				String[] datas = content.split(":");
 				QuestionType type = QuestionType.valueOf(datas[1]);
 				QuestionShowType showType = QuestionShowType.valueOf(datas[2]);
-				QuestionScoringMethod scoringMethod = QuestionScoringMethod.valueOf(datas[3]);
-				question = new Question(datas[0], type, showType, scoringMethod);
+				question = new Question(datas[0], type, showType);
 				question.setParent(parent);
 				if (type.equals(QuestionType.IS_PARENT))
 					parent = question;
@@ -144,57 +137,55 @@ public class ExampoolService {
 		logger.info("所有的默认试题资料都已经初始化。");
 	}
 	
-	@Expose
 	@Transactional
 	public void initTemplate() throws IOException{
-		if (templateDao.getAll().size() > 0) return;
-		
-		logger.info("初始默认的问卷模板资料... ...");
-		Template template = new Template();
 		String root = DoradoContext.getCurrent().getServletContext().getRealPath("/"), line;
-		String filePath = root + "data" + File.separatorChar + "template.txt";
-		BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(filePath),"UTF-8"));
-		while((line = br.readLine()) != null) {
-			if (line.startsWith("name:"))
-				template.setName(line.substring("name:".length()));
-			else if (line.startsWith("title:"))
-				template.setTitle(line.substring("title:".length()));
-			else if (line.startsWith("description:"))
-				template.setDescription(line.substring("description:".length()));
-			else if (line.startsWith("image:"))
-				template.setImageUrl(line.substring("image:".length()));
-		}
-		templateDao.save(template);
-		br.close();
 		
-		int order = 0, subOrder = 0;
-		Instance parent = null, instance = null;
-		filePath = root + "data" + File.separatorChar + "instance.txt";
-		br = new BufferedReader(new InputStreamReader(new FileInputStream(filePath),"UTF-8"));
-		while((line = br.readLine()) != null) {
-			if (line.startsWith("#")) continue;
+		Template template = null;
+		if (templateDao.getAll().size() == 0) {
+			logger.info("初始默认的问卷模板资料... ...");
+			template = new Template();
 			
-			String[] datas = line.split(",");
-			Question question = questionDao.get(datas[0]);
-			QuestionType questionType = QuestionType.valueOf(datas[1]);
-			String parentQuestionId = datas[2];
-			double score = Double.parseDouble(datas[3]);
-			instance = new Instance(score, question, template);
-			if (parentQuestionId.equals("NULL")) {
-				subOrder = 0;
-				order++;
-				instance.setOrder(order);
-			} else {
-				subOrder++;
-				instance.setOrder(subOrder);
-				instance.setParent(parent);
+			String filePath = root + "data" + File.separatorChar + "template.txt";
+			BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(filePath),"UTF-8"));
+			while((line = br.readLine()) != null) {
+				if (line.startsWith("name:"))
+					template.setName(line.substring("name:".length()));
+				else if (line.startsWith("title:"))
+					template.setTitle(line.substring("title:".length()));
+				else if (line.startsWith("description:"))
+					template.setDescription(line.substring("description:".length()));
+				else if (line.startsWith("image:"))
+					template.setImageUrl(line.substring("image:".length()));
 			}
-			if (questionType.equals(QuestionType.IS_PARENT)) 
-				parent = instance;
-			instanceDao.save(instance);
-		}
-		br.close();
+			templateDao.save(template);
+			br.close();
+			logger.info("默认的问卷模板都已经初始化。");
+		} else
+			template = templateDao.getAll().get(0);
 		
-		logger.info("所有默认的问卷模板都已经初始化。");
+		if (instanceDao.getAll().size() == 0) {
+			Instance parent = null, instance = null;
+			String filePath = root + "data" + File.separatorChar + "instance.txt";
+			BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(filePath),"UTF-8"));
+			while((line = br.readLine()) != null) {
+				if (StringUtils.isBlank(line) || line.startsWith("#")) continue;
+				
+				String[] datas = line.split(",");
+				int order = Integer.parseInt(datas[0]);
+				Question question = questionDao.get(datas[1]);
+				QuestionType questionType = QuestionType.valueOf(datas[2]);
+				String parentQuestionId = datas[3];
+				double proportion = Double.parseDouble(datas[4]);
+				instance = new Instance(proportion, question, template);
+				instance.setOrder(order);
+				if (!parentQuestionId.equals("NULL")) 
+					instance.setParent(parent);
+				if (questionType.equals(QuestionType.IS_PARENT)) 
+					parent = instance;
+				instanceDao.save(instance);
+			}
+			br.close();
+		}
 	}
 }

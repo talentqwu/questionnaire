@@ -3,7 +3,6 @@ package com.kam.qs.entity.common;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -63,7 +62,7 @@ public class TreeNode extends AbstractEntity {
 	/**
 	 * 孩子节点
 	 */
-	@OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL, mappedBy = "parent")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "parent")
 	@OrderBy(value = "order")
 	private List<TreeNode> children;
 	

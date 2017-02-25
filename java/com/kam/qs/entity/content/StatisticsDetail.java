@@ -9,7 +9,7 @@ import javax.persistence.Table;
 
 import com.bstek.dorado.annotation.PropertyDef;
 import com.kam.qs.entity.AbstractEntity;
-import com.kam.qs.entity.exampool.Instance;
+import com.kam.qs.entity.exampool.Question;
 
 /**
  * 每个单位每一题的统计。
@@ -47,7 +47,7 @@ public class StatisticsDetail extends AbstractEntity {
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "question_id", nullable = false)
-	private Instance question;
+	private Question question;
 
 	public double getTotalScore() {
 		return totalScore;
@@ -87,14 +87,6 @@ public class StatisticsDetail extends AbstractEntity {
 
 	public void setStatistics(Statistics statistics) {
 		this.statistics = statistics;
-	}
-
-	public Instance getQuestion() {
-		return question;
-	}
-
-	public void setQuestion(Instance question) {
-		this.question = question;
 	}
 
 	public int getPeopleNumber() {

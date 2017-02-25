@@ -18,9 +18,9 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.alibaba.druid.util.StringUtils;
 import com.bstek.dorado.annotation.DataProvider;
 import com.bstek.dorado.annotation.DataResolver;
-import com.bstek.dorado.annotation.Expose;
 import com.bstek.dorado.data.entity.EntityUtils;
 import com.bstek.dorado.data.provider.Page;
 import com.bstek.dorado.web.DoradoContext;
@@ -167,9 +167,13 @@ public class CommonService {
 	@DataResolver
 	@Transactional
 	public void saveUnit(List<Unit> units) {
+		String parentId = null;
 		for (Unit unit : units) {
-			Unit parent = unitDao.get(EntityUtils.getString(unit, "parentId"));
-			unit.setParent(parent);
+			parentId = EntityUtils.getString(unit, "parentId");
+			if (!StringUtils.isEmpty(parentId)) {
+				Unit parent = unitDao.get(parentId);
+				unit.setParent(parent);
+			}
 		}
 		unitDao.persistEntities(units);
 	}
@@ -306,7 +310,6 @@ public class CommonService {
 		treeNodeDao.persistEntities(treeNodes);
 	}
 	
-	@Expose
 	@Transactional
 	public void initTreeNode() throws IOException {
 		if (treeNodeDao.getAll().size() > 0) return;
@@ -347,7 +350,6 @@ public class CommonService {
 		logger.info("所有的树形菜单都已经初始化。");
 	}
 	
-	@Expose
 	@Transactional
 	public void initArchives() throws IOException {
 		if (archivesDao.getAll().size() > 0) return;
@@ -373,7 +375,6 @@ public class CommonService {
 		logger.info("所有的系统设置档案都已经初始化。");
 	}
 	
-	@Expose
 	@Transactional
 	public void initIndustries() throws IOException {
 		if (industryDao.getAll().size() > 0) return;
@@ -391,7 +392,6 @@ public class CommonService {
 		logger.info("所有的行业分类资料都已经初始化。");
 	}
 	
-	@Expose
 	@Transactional
 	public void initRegions() throws IOException {
 		if (regionDao.getAll().size() > 0) return;

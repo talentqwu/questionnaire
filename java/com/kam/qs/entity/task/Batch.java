@@ -3,7 +3,6 @@ package com.kam.qs.entity.task;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -46,7 +45,7 @@ public class Batch extends AbstractEntity {
 	@JoinColumn(name = "task_id", nullable = false)
 	private Task task;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "batch", cascade = {CascadeType.ALL})
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "batch")
 	private List<SubTask> subTasks;
 	
 	public String getName() {

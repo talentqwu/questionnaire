@@ -11,8 +11,10 @@ function btnCreateTaskOnClick(self, arg) {
 
 // @Bind #btnDeleteTask.onClick
 function btnDeleteTaskOnClick(self, arg) {
-	// TODO
-	dorado.widget.NotifyTipManager.notify('功能尚未开发！');
+	view.get('#dataSetTask.data').current.remove();
+	view.get('#actionUpdateTask').set('parameter', {
+		action : ENUM.TaskAction.DELETE
+	}).execute();
 }
 
 // @Bind #btnPublishTask.onClick

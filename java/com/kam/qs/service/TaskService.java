@@ -47,8 +47,10 @@ public class TaskService {
 		case ADJUST:
 			break;
 		case CANCEL:
+			taskDao.persistEntities(datas);
 			break;
 		case DELETE:
+			taskDao.deleteAll(datas.get(0));
 			break;
 		case PUBLISH:
 			break;

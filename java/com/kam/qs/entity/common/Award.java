@@ -2,6 +2,9 @@ package com.kam.qs.entity.common;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.bstek.dorado.annotation.PropertyDef;
@@ -32,6 +35,10 @@ public class Award extends AuditEntity {
 	@PropertyDef(label = "描述")
 	@Column(length = 2048)
 	private String description;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "image_id")
+	private Image image;
 	
 	@PropertyDef(label = "图片地址")
 	@Column(length = 256)
@@ -75,5 +82,13 @@ public class Award extends AuditEntity {
 
 	public void setSpecifications(String specifications) {
 		this.specifications = specifications;
+	}
+
+	public Image getImage() {
+		return image;
+	}
+
+	public void setImage(Image image) {
+		this.image = image;
 	}
 }

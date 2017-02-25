@@ -14,13 +14,15 @@
       <PropertyDef name="question">
         <Property name="dataType">Question</Property>
       </PropertyDef>
+      <PropertyDef name="proportion"/>
     </DataType>
     <DataType name="Question" parent="global:Question">
-      <PropertyDef name="score">
-        <Property name="dataType">double</Property>
-      </PropertyDef>
       <PropertyDef name="order">
         <Property name="dataType">int</Property>
+      </PropertyDef>
+      <PropertyDef name="proportion">
+        <Property name="dataType">double</Property>
+        <Property name="defaultValue">0</Property>
       </PropertyDef>
     </DataType>
   </Model>
@@ -162,16 +164,16 @@
                     <Editor/>
                   </DataColumn>
                   <DataColumn>
-                    <Property name="property">type</Property>
+                    <Property name="property">question.type</Property>
                     <Property name="name">type</Property>
                     <Property name="caption">类型</Property>
                     <Property name="width">80</Property>
                     <Editor/>
                   </DataColumn>
                   <DataColumn>
-                    <Property name="name">score</Property>
-                    <Property name="property">score</Property>
-                    <Property name="caption">分数</Property>
+                    <Property name="name">proportion</Property>
+                    <Property name="property">proportion</Property>
+                    <Property name="caption">总分占比</Property>
                     <Property name="width">50</Property>
                     <Editor/>
                   </DataColumn>
@@ -231,9 +233,9 @@
             </Editor>
           </DataColumn>
           <DataColumn>
-            <Property name="name">score</Property>
-            <Property name="property">score</Property>
-            <Property name="caption">分值</Property>
+            <Property name="name">proportion</Property>
+            <Property name="property">proportion</Property>
+            <Property name="caption">总分占比</Property>
             <Property name="width">50</Property>
             <Editor>
               <NumberSpinner>

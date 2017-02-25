@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Model>
-  <DataType name="AbstractEntity" meta="child:AuditEntity,Industry,Log,TreeNode,Permission,Region,QRCode,CalendarEvent,DoradoService,Archives">
+  <DataType name="AbstractEntity" meta="child:AuditEntity,Industry,Log,TreeNode,Permission,Region,QRCode,CalendarEvent,DoradoService,Archives,Image">
     <Property name="autoCreatePropertyDefs">true</Property>
     <Property name="matchType">com.kam.qs.entity.AbstractEntity</Property>
   </DataType>
@@ -13,17 +13,17 @@
     <Property name="matchType">com.kam.qs.entity.common.Award</Property>
     <Property name="defaultDisplayProperty">name</Property>
     <PropertyDef name="name">
-      <Property/>
+      <Property></Property>
       <Property name="label">名称</Property>
       <Property name="required">true</Property>
     </PropertyDef>
     <PropertyDef name="supplier">
-      <Property/>
+      <Property></Property>
       <Property name="label">供应商</Property>
       <Property name="required">true</Property>
     </PropertyDef>
     <PropertyDef name="specifications">
-      <Property/>
+      <Property></Property>
       <Property name="label">规格</Property>
       <Property name="required">true</Property>
     </PropertyDef>
@@ -65,9 +65,9 @@
     <Property name="autoCreatePropertyDefs">true</Property>
     <Property name="matchType">com.kam.qs.pojo.Permission</Property>
   </DataType>
-  <DataType name="QRCode" parent="AbstractEntity">
+  <DataType name="Image" parent="AbstractEntity">
     <Property name="autoCreatePropertyDefs">true</Property>
-    <Property name="matchType">com.kam.qs.entity.common.QRCode</Property>
+    <Property name="matchType">com.kam.qs.entity.common.Image</Property>
   </DataType>
   <DataType name="Region" parent="AbstractEntity">
     <Property name="autoCreatePropertyDefs">true</Property>

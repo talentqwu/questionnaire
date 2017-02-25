@@ -8,14 +8,13 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.bstek.dorado.annotation.PropertyDef;
 import com.kam.qs.entity.AuditEntity;
-import com.kam.qs.entity.common.QRCode;
 import com.kam.qs.entity.task.Prize;
 import com.kam.qs.entity.task.SubTask;
+import com.kam.util.CommonUtils;
 
 /**
  * 调查参与者。
@@ -75,15 +74,11 @@ public class Participator extends AuditEntity {
 	 */
 	@PropertyDef(label = "UUID")
 	@Column(length = 8, nullable = false)
-	private String uuid;
+	private String uuid = CommonUtils.generateShortUuid();
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "subtask_id", nullable = false)
 	private SubTask subTask;
-	
-	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "qrcode_id")
-	private QRCode qrcode;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "prize_id")
@@ -97,7 +92,7 @@ public class Participator extends AuditEntity {
 	private double totalScore = 0;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "participator")
-	private List<Sheet> sheets;
+	private List<AnswerSheet> sheets;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "parent_id")
@@ -186,14 +181,6 @@ public class Participator extends AuditEntity {
 		this.subTask = subTask;
 	}
 
-	public QRCode getQrcode() {
-		return qrcode;
-	}
-
-	public void setQrcode(QRCode qrcode) {
-		this.qrcode = qrcode;
-	}
-
 	public Prize getPrize() {
 		return prize;
 	}
@@ -202,11 +189,11 @@ public class Participator extends AuditEntity {
 		this.prize = prize;
 	}
 
-	public List<Sheet> getSheets() {
+	public List<AnswerSheet> getSheets() {
 		return sheets;
 	}
 
-	public void setSheets(List<Sheet> sheets) {
+	public void setSheets(List<AnswerSheet> sheets) {
 		this.sheets = sheets;
 	}
 

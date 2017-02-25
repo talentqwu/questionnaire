@@ -29,9 +29,9 @@ public class Answer extends AbstractEntity {
 	@Column(name = "order_")
 	private int order;
 	
-	@PropertyDef(label = "权重")
+	@PropertyDef(label = "得分")
 	@Column(nullable = false)
-	private double weight = 1;
+	private double score = 1;
 	
 	@PropertyDef(label = "内容")
 	@Column(length = 2048, nullable = false)
@@ -51,9 +51,9 @@ public class Answer extends AbstractEntity {
 
 	public Answer() {}
 	
-	public Answer(int order, String content, double weight) {
+	public Answer(int order, String content, double score) {
 		this.order = order;
-		this.weight = weight;
+		this.score = score;
 		this.content = content;
 	}
 	
@@ -97,11 +97,11 @@ public class Answer extends AbstractEntity {
 		this.code = code;
 	}
 
-	public double getWeight() {
-		return weight;
+	public double getScore() {
+		return score;
 	}
 
-	public void setWeight(double weight) {
-		this.weight = weight;
+	public void setScore(double score) {
+		this.score = score;
 	}
 }

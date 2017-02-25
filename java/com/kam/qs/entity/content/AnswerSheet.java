@@ -18,8 +18,8 @@ import com.kam.qs.entity.AuditEntity;
  * @author Talent
  */
 @Entity
-@Table(name = "con_sheet")
-public class Sheet extends AuditEntity {
+@Table(name = "con_answer_sheet")
+public class AnswerSheet extends AuditEntity {
 
 	private static final long serialVersionUID = 1L;
 
@@ -37,7 +37,7 @@ public class Sheet extends AuditEntity {
 	private Participator participator;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "sheet")
-	private List<Score> scores;
+	private List<AnswerInstance> answerInstances;
 
 	public double getTotalScore() {
 		return totalScore;
@@ -55,12 +55,12 @@ public class Sheet extends AuditEntity {
 		this.participator = participator;
 	}
 
-	public List<Score> getScores() {
-		return scores;
+	public List<AnswerInstance> getAnswerInstances() {
+		return answerInstances;
 	}
 
-	public void setScores(List<Score> scores) {
-		this.scores = scores;
+	public void setAnswerInstances(List<AnswerInstance> answerInstances) {
+		this.answerInstances = answerInstances;
 	}
 
 	public boolean isValid() {

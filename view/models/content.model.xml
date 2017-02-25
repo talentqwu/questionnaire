@@ -5,13 +5,13 @@
     <Property name="matchType">com.kam.qs.entity.content.Participator</Property>
     <Property name="defaultDisplayProperty">nickName</Property>
   </DataType>
-  <DataType name="Score" parent="AbstractEntity">
+  <DataType name="AnswerInstance" parent="AbstractEntity">
     <Property name="autoCreatePropertyDefs">true</Property>
-    <Property name="matchType">com.kam.qs.entity.content.Score</Property>
+    <Property name="matchType">com.kam.qs.entity.content.AnswerInstance</Property>
   </DataType>
-  <DataType name="Sheet" parent="AuditEntity">
+  <DataType name="AnswerSheet" parent="AuditEntity">
     <Property name="autoCreatePropertyDefs">true</Property>
-    <Property name="matchType">com.kam.qs.entity.content.Sheet</Property>
+    <Property name="matchType">com.kam.qs.entity.content.AnswerSheet</Property>
   </DataType>
   <DataType name="Statistics" parent="AbstractEntity">
     <Property name="autoCreatePropertyDefs">true</Property>

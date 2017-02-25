@@ -27,9 +27,9 @@ public class Instance extends AbstractEntity {
 	@Column(name = "order_", nullable = false)
 	private int order = 0;
 	
-	@PropertyDef(label = "分数")
+	@PropertyDef(label = "总分占比")
 	@Column(nullable = false)
-	private double score = 0;
+	private double proportion = 0;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "question_id", nullable = false)
@@ -48,8 +48,8 @@ public class Instance extends AbstractEntity {
 	
 	public Instance() {}
 	
-	public Instance( double score, Question question, Template template) {
-		this.score = score;
+	public Instance( double proportion, Question question, Template template) {
+		this.proportion = proportion;
 		this.question = question;
 		this.template = template;
 	}
@@ -62,12 +62,12 @@ public class Instance extends AbstractEntity {
 		this.order = order;
 	}
 
-	public double getScore() {
-		return score;
+	public double getProportion() {
+		return proportion;
 	}
 
-	public void setScore(double score) {
-		this.score = score;
+	public void setProportion(double proportion) {
+		this.proportion = proportion;
 	}
 
 	public Question getQuestion() {
